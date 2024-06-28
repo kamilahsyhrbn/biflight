@@ -53,7 +53,9 @@ export default function NavbarMobile() {
             </span>
           </div>
           <div
-            className="flex flex-col items-center justify-center gap-2 mt-2.5"
+            className={`flex flex-col items-center justify-center gap-2 ${
+              isLoggedIn ? "mt-2.5" : ""
+            }`}
             onClick={() => {
               if (isLoggedIn) {
                 navigate("/notifikasi");
