@@ -31,14 +31,17 @@ export default function sideMenu() {
     setStep(1);
   };
 
+  // UNTUK MELANJUTKAN KE MODAL CAPTCHA
   const handleYesClick = () => {
     setStep(2);
   };
 
+  // MENG-GENERATE ULANG SETIAP MODAL HAPUS AKUN DI KLIK
   useEffect(() => {
     generateCaptchaCode();
   }, [confirmDeleteOpen]);
 
+  // MEMBUAT KODE CAPTCHA
   const generateCaptchaCode = () => {
     const characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -47,8 +50,10 @@ export default function sideMenu() {
       code += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     setCaptchaCode(code);
+    setIsValid(false);
   };
 
+  // MEMVALIDASI KODE CAPTCHA
   const handleUserInput = (e) => {
     setUserInput(e.target.value);
     if (e.target.value === captchaCode) {
@@ -58,6 +63,7 @@ export default function sideMenu() {
     }
   };
 
+  // MENGIRIM KODE CAPTCHA
   const handleSubmit = (e) => {
     e.preventDefault();
 
