@@ -88,7 +88,7 @@ export default function OrderSummary() {
       <div className="max-w-[800px] w-full bg-white rounded-xl shadow-lg mb-5 relative">
         <h1 className="text-lg font-semibold mb-3 bg-[#2A629A] text-white rounded-t-xl shadow-md px-4 py-3 flex items-center z-10">
           <IoAirplaneSharp className="w-7 h-7 mr-2" />
-          Rincian Pemesanan
+          Rincian Pemesanan Tiket
         </h1>
         <div className="px-4 py-3">
           {choosenFlight.map((flight, index) => (

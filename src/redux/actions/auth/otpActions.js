@@ -86,7 +86,7 @@ export const resendOtp = () => async (dispatch) => {
     }
 
     const response = await axios.post(
-      "https://express-production-3572.up.railway.app/api/v1/users/resend-otp",
+      `${import.meta.env.VITE_REACT_APP_SERVER}/users/resend-otp`,
       { email: email },
       {
         headers: {

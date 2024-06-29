@@ -4,7 +4,7 @@ import Navbar from "../../../assets/components/navigations/navbar/Navbar";
 import Footer from "../../../assets/components/navigations/Footer";
 import NavbarMobile from "../../../assets/components/navigations/navbar/Navbar-mobile";
 import AirportInput from "../../../assets/components/AirportInput";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { getFlight } from "../../../redux/actions/flight/flightActions";
@@ -19,7 +19,7 @@ import background from "../../../assets/images/otp.png";
 // ICON
 import { RiSearchLine } from "react-icons/ri";
 import { IoFilter } from "react-icons/io5";
-import { TfiArrowCircleDown, TfiArrowCircleUp } from "react-icons/tfi";
+import { TfiArrowCircleDown } from "react-icons/tfi";
 import { PiBagSimpleBold, PiSeatFill } from "react-icons/pi";
 import { FiInfo } from "react-icons/fi";
 import { LuLuggage } from "react-icons/lu";
@@ -40,6 +40,7 @@ export default function SearchResult() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // MENYIMPAN DATA YANG DIAMBIL DARI URL
   const query = new URLSearchParams(location.search);
   const from = query.get("from");
   const to = query.get("to");
@@ -51,6 +52,7 @@ export default function SearchResult() {
   const child = parseInt(query.get("child"));
   const infant = parseInt(query.get("infant"));
 
+  // MODAL, DRAWER & KEPERLUAN LAINNYA
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false); // MODAL FILTER URUTAN
   const [isChecked, setIsChecked] = useState(false); // TOGGLE TANGGAL KEPULANGAN
   const [seatModalOpen, setSeatModalOpen] = useState(false); // MODAL KELAS PENERBANGAN
@@ -61,10 +63,29 @@ export default function SearchResult() {
   const [filter, setFilter] = useState(""); // UNTUK FILTER BERDASARKAN PILIHAN
   const [currentPage, setCurrentPage] = useState(1); // MENGATUR HALAMAN PERTAMA KE HALAMAN 1
   const [detailOpen, setDetailOpen] = useState(null); // UNTUK MEMBUKA DETAIL TIKET PENERBANGAN
+
+  // RESPONSIVE
   const isMobile = useMediaQuery({ maxWidth: 767 }); // RESPONSIVE MOBILE
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // RESPONSIVE TABLET
+
+  // DATA UNTUK DATEPICKER
   const [daysOfWeek, setDaysOfWeek] = useState([]); // MENYIMPAN DATA HARI SEMINGGU
   const [dates, setDates] = useState([]); // MENYIMPAN TANGGAL UNTUK DATA HARI SEMINGGU
+
+  // UNTUK MENYIMPAN DATA UBAH PENCARIAN TIKET YANG SIFATNYA SEMENTARA (BIAR GA LANGSUNG KEUBAH JIKA TIDAK JADI DISUBMIT)
+  const [search, setSearch] = useState({
+    departure_code: from,
+    arrival_code: to,
+    departure_date: departureDate,
+    return_date: returnDate,
+    seat_class: seatClass,
+    total_passenger: passenger,
+    adult: adult,
+    child: child,
+    infant: infant,
+  });
+
+  // DATA UNTUK TIKET PENERBANGAN
   const [departure_code, setDeparture_code] = useState(from); // MENYIMPAN KODE KEBERANGKATAN
   const [arrival_code, setArrival_code] = useState(to); // MENYIMPAN KODE KEDATANGAN
   const [seat_class, setSeat_class] = useState(seatClass); // MENYIMPAN KELAS PENERBANGAN
@@ -99,7 +120,12 @@ export default function SearchResult() {
 
   // BUAT INPUT KELAS PENERBANGAN
   const handleSeat = (e) => {
-    setSeat_class(e?.target?.value);
+    const newSeatClass = e?.target?.value;
+
+    setSearch((prevState) => ({
+      ...prevState,
+      seat_class: newSeatClass,
+    }));
   };
 
   // BUAT NAMPILIN INPUT TANGGAL KEPULANGAN
@@ -110,7 +136,10 @@ export default function SearchResult() {
   // BUAT UBAH FORMAT TANGGAL PERGI
   const handleSelectDate = (date) => {
     const formattedDate = format(date, "yyyy-MM-dd");
-    setDeparture_date(formattedDate);
+    setSearch((prevState) => ({
+      ...prevState,
+      departure_date: formattedDate,
+    }));
   };
 
   // FUNGSI UNTUK COUNTER PENUMPANG
@@ -129,7 +158,11 @@ export default function SearchResult() {
       return penumpang?.dewasa + penumpang?.anak + penumpang?.bayi;
     };
 
-    setTotal_passenger(getTotalPenumpang());
+    // FUNGSI UNTUK MEMPERBARUI JUMLAH PENUMPANG
+    setSearch((prevState) => ({
+      ...prevState,
+      total_passenger: getTotalPenumpang(),
+    }));
   }, [penumpang]);
 
   // FUNGSI UNTUK MODAL FILTER URUTAN
@@ -289,9 +322,11 @@ export default function SearchResult() {
 
   // FUNGSI UNTUK SUBMIT HASIL PENCARIAN
   const handleSubmit = (e) => {
-    e?.preventDefault();
+    if (typeof e === "object") {
+      e?.preventDefault();
+    }
 
-    if (!departure_code || !arrival_code) {
+    if (!search?.departure_code || !search?.arrival_code) {
       toast("Harap pilih destinasi Anda!", {
         style: {
           background: "#FF0000",
@@ -309,35 +344,54 @@ export default function SearchResult() {
       return;
     }
 
+    if (search?.departure_code === search?.arrival_code) {
+      toast("Harap pilih destinasi yang berbeda!"),
+        {
+          style: {
+            background: "#FF0000", // Background merah
+            color: "#FFFFFF", // Teks putih
+            borderRadius: "12px", // Rounded-xl
+            fontSize: "14px", // Ukuran font
+            textAlign: "center", // Posisi teks di tengah
+            padding: "10px 20px", // Padding
+            width: "full",
+            maxWidth: "900px",
+          },
+          position: "top-center", // Posisi toast
+          duration: 3000, // Durasi toast
+        };
+      return;
+    }
+
     const departureDate = format(new Date(date[0].startDate), "yyyy-MM-dd");
     const returnDate = format(new Date(date[0].endDate), "yyyy-MM-dd");
 
-    if (isChecked && departureDate === returnDate) {
-      toast("Harap pilih tanggal yang berbeda!", {
-        style: {
-          background: "#FF0000",
-          color: "#FFFFFF", // TEKS PUTIH
-          borderRadius: "12px",
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // TEKS TENGAH
-          padding: "10px 20px", // Padding
-          width: "full",
-          maxWidth: "900px",
-        },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
-      });
-      return;
-    }
+    // if (isChecked && departureDate === returnDate) {
+    //   toast("Harap pilih tanggal yang berbeda!", {
+    //     style: {
+    //       background: "#FF0000",
+    //       color: "#FFFFFF", // TEKS PUTIH
+    //       borderRadius: "12px",
+    //       fontSize: "14px", // Ukuran font
+    //       textAlign: "center", // TEKS TENGAH
+    //       padding: "10px 20px", // Padding
+    //       width: "full",
+    //       maxWidth: "900px",
+    //     },
+    //     position: "top-center", // Posisi toast
+    //     duration: 3000, // Durasi toast
+    //   });
+    //   return;
+    // }
 
     if (return_date && isChecked) {
       dispatch(
         getFlight(
-          typeof e === "object" ? departure_code : arrival_code,
-          typeof e === "object" ? arrival_code : departure_code,
+          typeof e === "object" ? search?.departure_code : search?.arrival_code,
+          typeof e === "object" ? search?.arrival_code : search?.departure_code,
           typeof e === "object" ? departureDate : returnDate,
-          seat_class,
-          total_passenger,
+          search?.seat_class,
+          search?.total_passenger,
           filter,
           currentPage
         )
@@ -346,11 +400,11 @@ export default function SearchResult() {
     } else {
       dispatch(
         getFlight(
-          departure_code,
-          arrival_code,
-          departure_date,
-          seat_class,
-          total_passenger,
+          search?.departure_code,
+          search?.arrival_code,
+          search?.departure_date,
+          search?.seat_class,
+          search?.total_passenger,
           filter,
           currentPage
         )
@@ -361,12 +415,16 @@ export default function SearchResult() {
 
     if (returnDate && isChecked) {
       navigate(
-        `/hasil-pencarian?from=${departure_code}&to=${arrival_code}&departureDate=${departureDate}&returnDate=${returnDate}&class=${seat_class}&passenger=${total_passenger}&adult=${penumpang.dewasa}&child=${penumpang.anak}&infant=${penumpang.bayi}`,
+        `/hasil-pencarian?from=${search?.departure_code}&to=${search?.arrival_code}&departureDate=${departureDate}&returnDate=${returnDate}&class=${search?.seat_class}&passenger=${search?.total_passenger}&adult=${penumpang.dewasa}&child=${penumpang.anak}&infant=${penumpang.bayi}`,
         { replace: true }
       );
       setCurrentPage(1);
       setFilter("");
       setSearchModalOpen(false);
+      // setDeparture_code(search?.departure_code);
+      // setArrival_code(search?.arrival_code);
+      // setSeat_class(search?.seat_class);
+      // setTotal_passenger(search?.total_passenger);
       setDeparture_date(departureDate);
       setReturn_date(returnDate);
       setSelectedDate(
@@ -378,12 +436,16 @@ export default function SearchResult() {
       );
     } else {
       navigate(
-        `/hasil-pencarian?from=${departure_code}&to=${arrival_code}&departureDate=${departure_date}&class=${seat_class}&passenger=${total_passenger}&adult=${penumpang.dewasa}&child=${penumpang.anak}&infant=${penumpang.bayi}`,
+        `/hasil-pencarian?from=${search?.departure_code}&to=${search?.arrival_code}&departureDate=${search?.departure_date}&class=${search?.seat_class}&passenger=${search?.total_passenger}&adult=${penumpang.dewasa}&child=${penumpang.anak}&infant=${penumpang.bayi}`,
         { replace: true }
       );
       setCurrentPage(1);
       setFilter("");
       setSearchModalOpen(false);
+      // setDeparture_code(search?.departure_code);
+      // setArrival_code(search?.arrival_code);
+      // setSeat_class(search?.seat_class);
+      // setTotal_passenger(search?.total_passenger);
       setSelectedDate(
         new Date(departure_date).toLocaleString("id-ID", {
           day: "2-digit",
@@ -441,10 +503,10 @@ export default function SearchResult() {
     }
     if (choosenFlight.length === 1) {
       setSelectedDate(tanggalPulang);
-      setDeparture_date(departure_date);
-      setReturn_date(return_date);
+      // setDeparture_date(departureDate);
+      // setReturn_date(returnDate);
     }
-  }, [from, to, seatClass, passenger, choosenFlight]);
+  }, [choosenFlight]);
 
   // UNTUK PINDAH PAGE JIKA BUTTON PILIH TIKET DI KLIK
   useEffect(() => {
@@ -700,7 +762,7 @@ export default function SearchResult() {
               </div>
               <div className="lg:flex lg:justify-center">
                 <div className="flex justify-between items-center mt-5 rounded-full lg:mx-10 bg-white py-2 px-5 shadow-lg lg:w-10/12">
-                  <div className="flex overflow-hidden whitespace-nowrap">
+                  <div className="flex overflow-auto no-scrollbar whitespace-nowrap">
                     <span className="pr-5">
                       {departure_code} → {arrival_code}
                     </span>
@@ -997,23 +1059,18 @@ export default function SearchResult() {
                             </div>
                           ) : (
                             <>
-                              {detailOpen === flight?.flight_id ? (
-                                <button
-                                  onClick={() =>
-                                    handleDetail(flight?.flight_id)
-                                  }
-                                >
-                                  <TfiArrowCircleUp className="text-3xl text-[#003285]" />
-                                </button>
-                              ) : (
-                                <button
-                                  onClick={() =>
-                                    handleDetail(flight?.flight_id)
-                                  }
-                                >
-                                  <TfiArrowCircleDown className="text-3xl text-[#003285]" />
-                                </button>
-                              )}
+                              <button
+                                onClick={() => handleDetail(flight?.flight_id)}
+                                className="focus:outline-none"
+                              >
+                                <TfiArrowCircleDown
+                                  className={`text-3xl text-[#003285] transition-transform duration-300 ${
+                                    detailOpen === flight?.flight_id
+                                      ? "rotate-180"
+                                      : "rotate-0"
+                                  }`}
+                                />
+                              </button>
                             </>
                           )}
                           {isLoading ? (
@@ -1024,7 +1081,7 @@ export default function SearchResult() {
                                 style: "currency",
                                 currency: "IDR",
                               }).format(flight.price)}
-                              /orang
+                              /org
                             </h5>
                           )}
                           {isLoading ? (
@@ -1036,7 +1093,7 @@ export default function SearchResult() {
                               onClick={() => {
                                 const newFlight = [...choosenFlight, flight];
                                 dispatch(setChoosenFlight(newFlight));
-                                if (return_date && isChecked) {
+                                if (returnDate && isChecked) {
                                   handleSubmit(newFlight?.length);
                                 }
                               }}
@@ -1302,9 +1359,12 @@ export default function SearchResult() {
                         <div className="flex flex-row items-center">
                           <div className="w-full">
                             <AirportInput
-                              value={departure_code}
+                              value={search?.departure_code}
                               onChange={(airportCode) =>
-                                setDeparture_code(airportCode)
+                                setSearch({
+                                  ...search,
+                                  departure_code: airportCode,
+                                })
                               }
                               placeholder="Pilih kota awal"
                               className="block py-2.5 px-0 w-full text-sm text-gray-900 border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2A629A] peer"
@@ -1328,9 +1388,12 @@ export default function SearchResult() {
                       <div className="flex flex-row items-center">
                         <div className="w-full">
                           <AirportInput
-                            value={arrival_code}
+                            value={search?.arrival_code}
                             onChange={(airportCode) =>
-                              setArrival_code(airportCode)
+                              setSearch({
+                                ...search,
+                                arrival_code: airportCode,
+                              })
                             }
                             placeholder="Pilih kota tujuan"
                             className="block py-2.5 px-0 w-full text-sm text-gray-900 border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2A629A] peer"
@@ -1372,7 +1435,7 @@ export default function SearchResult() {
                             </div>
                           ) : (
                             <div>{`${format(
-                              departure_date,
+                              search?.departure_date,
                               "dd/MM/yyyy"
                             )} `}</div>
                           )}
@@ -1409,7 +1472,7 @@ export default function SearchResult() {
                             <FaPerson className="text-xl absolute" />
                             <div className="relative flex gap-2 z-0">
                               <div className="block py-2.5 px-6 w-full text-sm text-gray-900 border-0 border-b-2 border-gray-300">
-                                {total_passenger} Penumpang
+                                {search?.total_passenger} Penumpang
                               </div>
                             </div>
                           </div>
@@ -1427,7 +1490,7 @@ export default function SearchResult() {
                                 className="block py-2.5 px-6 w-full text-sm text-gray-900 border-0 border-b-2 border-gray-300"
                                 onClick={handleSeatModal}
                               >
-                                {seat_class}
+                                {search?.seat_class}
                               </div>
                             </div>
                           </div>
@@ -1960,11 +2023,11 @@ export default function SearchResult() {
                   />
                 ) : (
                   <Calendar
-                    value={departure_date}
+                    value={search?.departure_date}
                     onChange={handleSelectDate}
                     minDate={new Date()}
                     color="#2A629A"
-                    date={departure_date}
+                    date={search?.departure_date}
                   />
                 )}
                 <button

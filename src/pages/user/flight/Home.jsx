@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import bromo from "../../../assets/images/bromo.jpg";
 import Navbar from "../../../assets/components/navigations/navbar/navbar-transparent";
 import NavbarMobile from "../../../assets/components/navigations/navbar/Navbar-mobile";
@@ -14,18 +14,45 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+// ICON
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+
 export default function Home() {
   const isMobile = useMediaQuery({ maxWidth: 767 }); // UNTUK TAMPILAN MOBILE
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // UNTUK TAMPILAN TABLET
 
   const { cheapestFlights, isLoading } = useSelector((state) => state.flight);
   const dispatch = useDispatch();
-  const [airlines, setAirlines] = useState([]);
-  const [selectedAirline, setSelectedAirline] = useState("");
 
   useEffect(() => {
     dispatch(getCheapestFlights());
   }, []);
+
+  function SampleNextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block" }}
+        onClick={onClick}
+      >
+        <IoIosArrowForward style={{ color: "#2A629A", fontSize: "30px" }} />
+      </div>
+    );
+  }
+
+  function SamplePrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block" }}
+        onClick={onClick}
+      >
+        <IoIosArrowBack style={{ color: "#2A629A", fontSize: "30px" }} />
+      </div>
+    );
+  }
 
   const settings = {
     infinite: true,
@@ -34,28 +61,10 @@ export default function Home() {
     slidesToScroll: 1,
     initialSlide: 0,
     autoplay: false,
+    swipeToSlide: true,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
   };
-
-  // Effect untuk menghitung maskapai unik
-  useEffect(() => {
-    const allAirlines = cheapestFlights.map((flight) => flight.airline);
-    const uniqueAirlines = [...new Set(allAirlines)];
-    setAirlines(uniqueAirlines);
-    setSelectedAirline(uniqueAirlines[0]);
-  }, [cheapestFlights]);
-
-  // Effect untuk memfilter penerbangan berdasarkan maskapai yang dipilih
-  const [filteredFlights, setFilteredFlights] = useState([]);
-  useEffect(() => {
-    if (selectedAirline === "") {
-      setFilteredFlights(cheapestFlights);
-    } else {
-      const flightsFiltered = cheapestFlights.filter(
-        (flight) => flight.airline === selectedAirline
-      );
-      setFilteredFlights(flightsFiltered);
-    }
-  }, [selectedAirline, cheapestFlights]);
 
   return (
     <div className="bg-[#FFF0DC]">
@@ -94,71 +103,26 @@ export default function Home() {
               Promo Tiket Pesawat Murah ✈️
             </h2>
 
-            {/* ARILINES SECTION */}
-            {isLoading ? (
-              <div className="flex gap-2 items-center justify-center my-10">
-                <div className="text-white text-xl text-center w-8 h-8 rounded-full bg-[#2A629A] flex items-center justify-center animate-bounce">
-                  M
+            <div className="lg:mx-20">
+              {cheapestFlights.length === 0 ? (
+                <div className="flex flex-col items-center">
+                  <iframe src="https://lottie.host/embed/d3072280-f0c3-4850-9067-359d9d6b5744/V9wwvXaroH.json"></iframe>
+                  <h5 className="text-[#003285]">
+                    Tiket penerbangan tidak ditemukan pada maskapai ini
+                  </h5>
                 </div>
-                <div className="text-white text-xl text-center w-8 h-8 rounded-full bg-[#2A629A] flex items-center justify-center animate-bounce [animation-delay:-.5s]">
-                  e
-                </div>
-                <div className="text-white text-xl text-center w-8 h-8 rounded-full bg-[#2A629A] flex items-center justify-center animate-bounce [animation-delay:-.4s]">
-                  m
-                </div>
-                <div className="text-white text-xl text-center w-8 h-8 rounded-full bg-[#2A629A] flex items-center justify-center animate-bounce [animation-delay:-.3s]">
-                  u
-                </div>
-                <div className="text-white text-xl text-center w-8 h-8 rounded-full bg-[#2A629A] flex items-center justify-center animate-bounce [animation-delay:-.2s]">
-                  a
-                </div>
-                <div className="text-white text-xl text-center w-8 h-8 rounded-full bg-[#2A629A] flex items-center justify-center animate-bounce [animation-delay:-.1s]">
-                  t
-                </div>
-              </div>
-            ) : (
-              <div>
-                <div className="relative flex flex-wrap items-center overflow-x-auto no-scrollbar lg:mx-20">
-                  <div className="whitespace-nowrap h-full">
-                    <div className="flex">
-                      {airlines.map((airline) => (
-                        <button
-                          key={airline}
-                          onClick={() => setSelectedAirline(airline)}
-                          className={`m-2 py-2 px-3 rounded-full border border-[#003285] ${
-                            selectedAirline === airline
-                              ? "bg-[#003285] text-white"
-                              : ""
-                          }`}
-                        >
-                          {airline}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="lg:mx-20">
-                  {filteredFlights.length > 2 ? (
-                    <>
-                      <Slider {...settings}>
-                        {filteredFlights?.map((flight) => (
-                          <div key={flight?.flight_id}>
-                            <Card flight={flight} />
-                          </div>
-                        ))}
-                      </Slider>
-                    </>
-                  ) : (
-                    <div className="flex flex-col items-center">
-                      <iframe src="https://lottie.host/embed/d3072280-f0c3-4850-9067-359d9d6b5744/V9wwvXaroH.json"></iframe>
-                      <h5 className="text-[#003285]">
-                        Tiket penerbangan tidak ditemukan pada maskapai ini
-                      </h5>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
+              ) : (
+                <>
+                  <Slider {...settings}>
+                    {cheapestFlights?.map((flight) => (
+                      <div key={flight?.flight_id}>
+                        <Card flight={flight} />
+                      </div>
+                    ))}
+                  </Slider>
+                </>
+              )}
+            </div>
           </div>
 
           {/* WHY US SECTION */}

@@ -20,7 +20,7 @@ export default function Card({ flight }) {
     );
   };
   return (
-    <div className="p-3">
+    <div className="p-3 flex items-center justify-center">
       <div
         className="w-11/12 rounded-xl bg-white shadow-lg"
         onClick={() =>
@@ -32,8 +32,7 @@ export default function Card({ flight }) {
           )
         }
       >
-        <div className="flex justify-between">
-          <div></div>
+        <div className="flex justify-end">
           <div className="bg-red-500 rounded-t-full rounded-l-full px-2">
             <p className="text-white font-medium">Sekali Jalan</p>
           </div>

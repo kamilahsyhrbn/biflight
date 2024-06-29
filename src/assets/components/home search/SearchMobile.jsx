@@ -99,7 +99,7 @@ export default function SearchMobile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (departure_code === "" || arrival_code === "") {
+    if (!departure_code || !arrival_code) {
       toast("Harap pilih destinasi Anda!"),
         {
           style: {
@@ -160,23 +160,23 @@ export default function SearchMobile() {
     const returnDate = format(new Date(date[0].endDate), "yyyy-MM-dd");
     const singleDate = format(new Date(departure_date), "yyyy-MM-dd");
 
-    if (isChecked && departureDate === returnDate) {
-      toast("Harap pilih tanggal yang berbeda!", {
-        style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
-          maxWidth: "900px",
-        },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
-      });
-      return;
-    }
+    // if (isChecked && departureDate === returnDate) {
+    //   toast("Harap pilih tanggal yang berbeda!", {
+    //     style: {
+    //       background: "#FF0000", // Background merah
+    //       color: "#FFFFFF", // Teks putih
+    //       borderRadius: "12px", // Rounded-xl
+    //       fontSize: "14px", // Ukuran font
+    //       textAlign: "center", // Posisi teks di tengah
+    //       padding: "10px 20px", // Padding
+    //       width: "full",
+    //       maxWidth: "900px",
+    //     },
+    //     position: "top-center", // Posisi toast
+    //     duration: 3000, // Durasi toast
+    //   });
+    //   return;
+    // }
 
     if (isChecked) {
       dispatch(

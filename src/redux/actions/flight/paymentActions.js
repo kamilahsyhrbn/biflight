@@ -97,26 +97,41 @@ export const processPayment =
           duration: 3000, // Durasi toast
         });
       } else if (error?.response?.data?.message === "Kartu anda tidak valid") {
-        toast.error(
-          "Maaf, kartu Anda tidak valid. Mohon masukkan data kartu dengan benar!",
-          {
-            icon: null,
-            style: {
-              background: "#FF0000", // Background merah
-              color: "#FFFFFF", // Teks putih
-              borderRadius: "12px", // Rounded-xl
-              fontSize: "14px", // Ukuran font
-              textAlign: "center", // Posisi teks di tengah
-              padding: "10px 20px", // Padding
-              width: "full",
-              maxWidth: "900px",
-            },
-            position: "top-center", // Posisi toast
-            duration: 3000, // Durasi toast
-          }
-        );
+        toast.error("Maaf, pembayaran gagal. Kartu Anda tidak valid!", {
+          icon: null,
+          style: {
+            background: "#FF0000", // Background merah
+            color: "#FFFFFF", // Teks putih
+            borderRadius: "12px", // Rounded-xl
+            fontSize: "14px", // Ukuran font
+            textAlign: "center", // Posisi teks di tengah
+            padding: "10px 20px", // Padding
+            width: "full",
+            maxWidth: "900px",
+          },
+          position: "top-center", // Posisi toast
+          duration: 3000, // Durasi toast
+        });
+      } else if (
+        error?.response?.data?.message === "Kartu anda sudah kadaluarsa"
+      ) {
+        toast.error("Maaf, pembayaran gagal. Kartu Anda sudah kedaluwarsa!", {
+          icon: null,
+          style: {
+            background: "#FF0000", // Background merah
+            color: "#FFFFFF", // Teks putih
+            borderRadius: "12px", // Rounded-xl
+            fontSize: "14px", // Ukuran font
+            textAlign: "center", // Posisi teks di tengah
+            padding: "10px 20px", // Padding
+            width: "full",
+            maxWidth: "900px",
+          },
+          position: "top-center", // Posisi toast
+          duration: 3000, // Durasi toast
+        });
       } else {
-        toast.error("Pembayaran gagal! Silakan coba lagi.", {
+        toast.error("Maaf, pembayaran gagal! Silakan coba lagi.", {
           icon: null,
           style: {
             background: "#FF0000", // Background merah
@@ -151,65 +166,3 @@ export const resetPaymentState = () => (dispatch) => {
   dispatch(setLoading(false));
   dispatch(setPaymentSuccess(false));
 };
-
-// // Action untuk mencetak tiket
-// export const printTicket = (code) => async (dispatch, getState) => {
-//   const { token } = getState().login;
-//   dispatch(setLoading(true));
-//   try {
-//     const responsePrintTicket = await axios.get(
-//       `https://express-production-3572.up.railway.app/api/v1/transactions/${code}`,
-//       {
-//         headers: {
-//           accept: "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//       }
-//     );
-//     console.log(`Cek print tiket: ', ${code}`);
-
-//     if (responsePrintTicket.status === 200) {
-//       dispatch(setTicketData(responsePrintTicket?.data)); // Simpan data tiket
-//       console.log("Tiket data: ", responsePrintTicket?.data);
-//       toast.success("Tiket berhasil dicetak!", {
-//         icon: null,
-//         style: {
-//           background: "#28A745", // Background hijau
-//           color: "#FFFFFF", // Teks putih
-//           borderRadius: "12px",
-//           fontSize: "14px", // Ukuran font
-//           textAlign: "center", // Posisi teks di tengah
-//           padding: "10px 20px", // Padding
-//           width: "full",
-//           maxWidth: "900px",
-//         },
-//         position: "top-center", // Posisi toast
-//         duration: 3000, // Durasi toast
-//       });
-//       dispatch(setShowConfirmationModal(false)); // Tutup modal konfirmasi sebelumnya (jika ada)
-//       dispatch(setShowSuccessModal(true)); // Tampilkan modal sukses setelah cetak tiket berhasil
-//     }
-//   } catch (error) {
-//     console.log(
-//       "Print ticket error response:",
-//       error.response?.data || error.message
-//     );
-//     toast.error("Gagal mencetak tiket! Silakan coba lagi.", {
-//       icon: null,
-//       style: {
-//         background: "#FF0000", // Background merah
-//         color: "#FFFFFF", // Teks putih
-//         borderRadius: "12px", // Rounded-xl
-//         fontSize: "14px", // Ukuran font
-//         textAlign: "center", // Posisi teks di tengah
-//         padding: "10px 20px", // Padding
-//         width: "full",
-//         maxWidth: "900px",
-//       },
-//       position: "top-center", // Posisi toast
-//       duration: 3000, // Durasi toast
-//     });
-//   } finally {
-//     dispatch(setLoading(false));
-//   }
-// };

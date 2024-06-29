@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Combobox } from "@headlessui/react";
 import airports from "../airports/airportsList";
+import { IoIosClose, IoMdArrowDropdown } from "react-icons/io";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -32,6 +33,12 @@ export default function AirportInput({
     onChange(airport ? airport.iata_code : ""); // Kirim hanya kode ke parent component
   };
 
+  const handleDeleteQuery = () => {
+    setQuery("");
+    setSelectedAirport(null);
+    onChange("");
+  };
+
   // Filter items based on the query
   const filteredItems =
     query === ""
@@ -49,6 +56,23 @@ export default function AirportInput({
           value={query}
           placeholder={placeholder}
         />
+
+        {selectedAirport ? (
+          <button
+            type="button"
+            onClick={handleDeleteQuery}
+            className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"
+          >
+            <IoIosClose className="h-5 w-5 text-gray-400" aria-hidden="true" />
+          </button>
+        ) : (
+          <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
+            <IoMdArrowDropdown
+              className="h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
+          </Combobox.Button>
+        )}
 
         {filteredItems.length > 0 && (
           <Combobox.Options

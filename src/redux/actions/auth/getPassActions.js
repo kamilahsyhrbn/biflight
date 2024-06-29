@@ -15,7 +15,7 @@ export const getForgetPassAction = (email, navigate) => async (dispatch) => {
         },
       }
     );
-    console.log(response);
+    // console.log(response);
     if (response.data.status === true) {
       toast.success(
         "Tautan berhasil dikirim! Cek Email untuk mengatur ulang kata sandi Anda.",
@@ -40,7 +40,7 @@ export const getForgetPassAction = (email, navigate) => async (dispatch) => {
       }, 3000);
     }
   } catch (error) {
-    console.log("error", error);
+    // console.log("error", error);
     if (
       error.response.data.message ===
       "Pengguna tidak ditemukan atau belum diverifikasi"
@@ -125,10 +125,6 @@ export const getUpdatePass =
         return;
       }
 
-      console.log(password1);
-      console.log(password2);
-      console.log(token);
-
       const response = await axios.post(
         `${import.meta.env.VITE_REACT_APP_SERVER}/users/reset-password`,
         {
@@ -145,7 +141,7 @@ export const getUpdatePass =
         }
       );
 
-      console.log(response);
+      // console.log(response);
       if (response.data.status === true) {
         toast.success("Kata sandi Anda berhasil direset.", {
           icon: null,
@@ -167,7 +163,7 @@ export const getUpdatePass =
         }, 3000);
       }
     } catch (error) {
-      console.log("error ", error);
+      // console.log("error ", error);
       if (error?.response?.data?.message === "Password dan token diperlukan") {
         toast.error("Kata sandi Anda tidak terkirim!", {
           icon: null,
