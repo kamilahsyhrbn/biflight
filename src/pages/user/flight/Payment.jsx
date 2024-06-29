@@ -316,107 +316,257 @@ export default function Payment() {
   }, [paymentSuccess, navigate, ticketSelected.booking_code]);
 
   return (
-    <div>
-      {isMobile ? <NavbarMobile /> : <Navbar />}
-      <div
-        className={`flex flex-col ${
-          isTablet
-            ? "items-center justify-center"
-            : "lg:flex-row justify-center items-start lg:items-center"
-        } min-h-screen bg-[#FFF0DC] p-5 relative md:pt-16 pt-16`}
-      >
-        <Toaster reverseOrder={false} />
+    <div className="bg-[#FFF0DC]">
+      <div className="py-5 md:pt-20">
+        {isMobile ? <NavbarMobile /> : <Navbar />}
+        <div className="m-5 md:m-10 md:mt-5">
+          <Toaster reverseOrder={false} />
 
-        {/* Tombol Kembali */}
-        {!isMobile && (
-          <div className="absolute pt-16 top-10 left-10 z-10">
+          {/* Tombol Kembali */}
+          <div className="flex md:justify-between justify-center items-center">
             <div>
-              <Link to="/checkout">
-                <div className="flex font-medium items-center text-[#003285] hover:text-[#40A2E3]">
-                  <IoIosArrowBack className="text-2xl" />
-                  <span className="text-lg">Kembali</span>
-                </div>
-              </Link>
-            </div>
-          </div>
-        )}
-
-        {/* Form Data Pembayaran Tiket */}
-        <div
-          className={`w-full ${
-            isTablet ? "lg:w-2/3 max-w-[750px]" : "lg:w-1/3"
-          } max-w-[500px] rounded-xl p-6 mt-24 bg-white text-center shadow-lg`}
-        >
-          <h1 className="text-[#003285] text-xl font-bold p-2 mb-7">
-            Isi Data Pembayaran
-          </h1>
-          <div className="flex flex-col items-center">
-            <button
-              className={`w-full flex justify-between items-center p-3 font-medium text-base rounded-xl mb-3 ${
-                isDropdownOpen
-                  ? "bg-[#2A629A] hover:bg-[#003285] text-white"
-                  : "bg-gray-200 hover:bg-gray-300 text-black"
-              }`}
-              onClick={() => dispatch(setIsDropdownOpen(!isDropdownOpen))}
-            >
-              Kartu Kredit
-              {isDropdownOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
-            </button>
-            {isDropdownOpen && (
-              <form
-                onSubmit={handleSubmit}
-                className="w-full p-3 rounded-xl mb-3 bg-gray-100 text-left animate__animated animate__slideInUp"
-              >
-                <h2 className="text-[#2A629A] text-md font-semibold mb-7">
-                  Pilih Jenis Kartu Kredit
-                </h2>
-                <div className="flex justify-center items-center space-x-3 mb-7">
-                  <img src={VisaLogo} alt="Visa" className="h-7" />
-                  <img src={MastercardLogo} alt="MasterCard" className="h-7" />
-                  <img src={PayPalLogo} alt="PayPal" className="h-7" />
-                </div>
-                <div className="mt-5">
-                  <label className="block text-left text-[#2A629A] text-sm font-medium mb-1">
-                    Nomor Kartu
-                  </label>
-                  <div
-                    className={`flex items-center p-2 rounded-xl bg-white border focus-within:shadow-lg ${
-                      card_number
-                        ? validateCardNumber(card_number)
-                          ? "focus-within:border-[#2A629A]"
-                          : "focus-within:border-[#FF0000]"
-                        : "focus-within:border-[#2A629A]"
-                    } ${
-                      !validateCardNumber(card_number) && card_number
-                        ? "border-[#FF0000]"
-                        : "border-[#8A8A8A]"
+              {!isMobile && (
+                <div>
+                  <Link
+                    to={`${
+                      ticketSelected?.departure?.departure_time
+                        ? "/checkout"
+                        : "/riwayat-pemesanan"
                     }`}
                   >
-                    <input
-                      className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
-                      type="text"
-                      value={card_number}
-                      onChange={(e) => handleInputChange(e, setCardNumber)}
-                      onKeyPress={handleNumberInput}
-                      placeholder="4111 0000 0000 0000"
-                      maxLength={19} // Menyesuaikan panjang input agar sesuai dengan format kartu kredit yang mengandung spasi
-                    />
-                    {!validateCardNumber(card_number) && card_number && (
-                      <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] flex-shrink-0" />
-                    )}
-                  </div>
-                  {!validateCardNumber(card_number) && card_number && (
-                    <p className="text-[#FF0000] text-xs mt-1 text-left">
-                      Nomor kartu terlalu pendek, minimum 16 angka
-                    </p>
-                  )}
+                    <div className="flex font-medium items-center text-[#003285] hover:text-[#40A2E3]">
+                      <IoIosArrowBack className="text-2xl" />
+                      <span className="text-lg">Kembali</span>
+                    </div>
+                  </Link>
                 </div>
-                <div className="mt-2">
-                  <label className="block text-left text-[#2A629A] text-sm font-medium mb-1">
-                    Nama Pemegang Kartu
-                  </label>
-                  <div
-                    className={`flex items-center p-2 rounded-xl bg-white border focus-within:shadow-lg
+              )}
+            </div>
+            {ticketSelected?.departure?.departure_time ? (
+              <nav>
+                <ol className="inline-flex items-center space-x-1 md:space-x-2">
+                  <li className="inline-flex items-center">
+                    <span class="flex items-center">
+                      <svg
+                        class="w-5 h-5 me-1 text-[#003285]"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                      </svg>
+                    </span>
+                    <span className="inline-flex items-center text-sm font-semibold text-[#003285]">
+                      Isi Data Diri
+                    </span>
+                  </li>
+                  <li>
+                    <div className="flex items-center">
+                      <svg
+                        className="w-3 h-3 text-[#003285] mx-1"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 6 10"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="m1 9 4-4-4-4"
+                        />
+                      </svg>
+                      <span class="flex items-center justify-center w-5 h-5 me-1 ms-1 md:ms-2 text-xs border bg-[#003285] text-white rounded-full shrink-0">
+                        2
+                      </span>
+                      <span className="inline-flex items-center text-sm font-semibold text-[#003285]">
+                        Bayar
+                      </span>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="flex items-center">
+                      <svg
+                        className="w-3 h-3 text-[#003285] mx-1"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 6 10"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="m1 9 4-4-4-4"
+                        />
+                      </svg>
+                      <span class="flex items-center justify-center w-5 h-5 me-1 ms-1 md:ms-2 text-xs border border-gray-500 text-gray-500 rounded-full shrink-0">
+                        3
+                      </span>
+                      <span className="ms-1 text-sm text-gray-500 font-medium">
+                        Selesai
+                      </span>
+                    </div>
+                  </li>
+                </ol>
+              </nav>
+            ) : (
+              <nav>
+                <ol className="inline-flex items-center space-x-1 md:space-x-2">
+                  <li className="inline-flex items-center">
+                    <span class="flex items-center">
+                      <span class="flex items-center justify-center w-5 h-5 me-1 ms-1 md:ms-2 text-xs border bg-[#003285] text-white rounded-full shrink-0">
+                        1
+                      </span>
+                      <span className="inline-flex items-center text-sm font-semibold text-[#003285]">
+                        {isMobile ? "Riwayat" : "Riwayat Pemesanan"}
+                      </span>
+                    </span>
+                  </li>
+                  <li>
+                    <div className="flex items-center">
+                      <svg
+                        className="w-3 h-3 text-[#003285] mx-1"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 6 10"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="m1 9 4-4-4-4"
+                        />
+                      </svg>
+                      <span class="flex items-center justify-center w-5 h-5 me-1 ms-1 md:ms-2 text-xs border bg-[#003285] text-white rounded-full shrink-0">
+                        2
+                      </span>
+                      <span className="inline-flex items-center text-sm font-semibold text-[#003285]">
+                        Bayar
+                      </span>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="flex items-center">
+                      <svg
+                        className="w-3 h-3 text-[#003285] mx-1"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 6 10"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="m1 9 4-4-4-4"
+                        />
+                      </svg>
+                      <span class="flex items-center justify-center w-5 h-5 me-1 ms-1 md:ms-2 text-xs border border-gray-500 text-gray-500 rounded-full shrink-0">
+                        3
+                      </span>
+                      <span className="ms-1 text-sm text-gray-500 font-medium">
+                        Selesai
+                      </span>
+                    </div>
+                  </li>
+                </ol>
+              </nav>
+            )}
+          </div>
+          <div
+            className={`flex flex-col p-5 relative ${
+              isTablet
+                ? "items-center justify-center"
+                : "lg:flex-row justify-center items-start lg:items-center"
+            }`}
+          >
+            {/* Form Data Pembayaran Tiket */}
+            <div
+              className={`w-full ${
+                isTablet ? "lg:w-2/3 max-w-[750px]" : "lg:w-1/3"
+              } max-w-[500px] rounded-xl p-6 bg-white text-center shadow-lg`}
+            >
+              <h1 className="text-[#003285] text-xl font-bold p-2 mb-7">
+                Isi Data Pembayaran
+              </h1>
+              <div className="flex flex-col items-center">
+                <button
+                  className={`w-full flex justify-between items-center p-3 font-medium text-base rounded-xl mb-3 ${
+                    isDropdownOpen
+                      ? "bg-[#2A629A] hover:bg-[#003285] text-white"
+                      : "bg-gray-200 hover:bg-gray-300 text-black"
+                  }`}
+                  onClick={() => dispatch(setIsDropdownOpen(!isDropdownOpen))}
+                >
+                  Kartu Kredit
+                  {isDropdownOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                </button>
+                {isDropdownOpen && (
+                  <form
+                    onSubmit={handleSubmit}
+                    className="w-full p-3 rounded-xl mb-3 bg-gray-100 text-left animate__animated animate__slideInUp"
+                  >
+                    <h2 className="text-[#2A629A] text-md font-semibold mb-7">
+                      Pilih Jenis Kartu Kredit
+                    </h2>
+                    <div className="flex justify-center items-center space-x-3 mb-7">
+                      <img src={VisaLogo} alt="Visa" className="h-7" />
+                      <img
+                        src={MastercardLogo}
+                        alt="MasterCard"
+                        className="h-7"
+                      />
+                      <img src={PayPalLogo} alt="PayPal" className="h-7" />
+                    </div>
+                    <div className="mt-5">
+                      <label className="block text-left text-[#2A629A] text-sm font-medium mb-1">
+                        Nomor Kartu
+                      </label>
+                      <div
+                        className={`flex items-center p-2 rounded-xl bg-white border focus-within:shadow-lg ${
+                          card_number
+                            ? validateCardNumber(card_number)
+                              ? "focus-within:border-[#2A629A]"
+                              : "focus-within:border-[#FF0000]"
+                            : "focus-within:border-[#2A629A]"
+                        } ${
+                          !validateCardNumber(card_number) && card_number
+                            ? "border-[#FF0000]"
+                            : "border-[#8A8A8A]"
+                        }`}
+                      >
+                        <input
+                          className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
+                          type="text"
+                          value={card_number}
+                          onChange={(e) => handleInputChange(e, setCardNumber)}
+                          onKeyPress={handleNumberInput}
+                          placeholder="4111 0000 0000 0000"
+                          maxLength={19} // Menyesuaikan panjang input agar sesuai dengan format kartu kredit yang mengandung spasi
+                        />
+                        {!validateCardNumber(card_number) && card_number && (
+                          <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] flex-shrink-0" />
+                        )}
+                      </div>
+                      {!validateCardNumber(card_number) && card_number && (
+                        <p className="text-[#FF0000] text-xs mt-1 text-left">
+                          Nomor kartu terlalu pendek, minimum 16 angka
+                        </p>
+                      )}
+                    </div>
+                    <div className="mt-2">
+                      <label className="block text-left text-[#2A629A] text-sm font-medium mb-1">
+                        Nama Pemegang Kartu
+                      </label>
+                      <div
+                        className={`flex items-center p-2 rounded-xl bg-white border focus-within:shadow-lg
                     ${
                       card_holder_name
                         ? isCardHolderNameTouched
@@ -438,140 +588,142 @@ export default function Payment() {
                           : "focus-within:border-[#2A629A]"
                         : "focus-within:border-[#FF0000]"
                     }`}
-                  >
-                    <input
-                      className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
-                      type="text"
-                      placeholder="Nama Lengkap"
-                      value={card_holder_name}
-                      onFocus={handleCardHolderNameFocus}
-                      onBlur={handleCardHolderNameBlur}
-                      onChange={handleCardHolderNameChange}
-                    />
-                  </div>
-                  {isCardHolderNameTouched && !card_holder_name && (
-                    <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
-                      <BiErrorCircle className="w-[20px] h-[20px] mr-1 flex-shrink-0" />
-                      <p>Nama pemegang kartu tidak boleh kosong</p>
-                    </div>
-                  )}
-                  {!isCardHolderNameValid &&
-                    card_holder_name &&
-                    card_holder_name.length < 3 && (
-                      <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
-                        <BiErrorCircle className="w-[20px] h-[20px] mr-1 flex-shrink-0" />
-                        <p>Nama terlalu pendek, minimum 3 huruf</p>
+                      >
+                        <input
+                          className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
+                          type="text"
+                          placeholder="Nama Lengkap"
+                          value={card_holder_name}
+                          onFocus={handleCardHolderNameFocus}
+                          onBlur={handleCardHolderNameBlur}
+                          onChange={handleCardHolderNameChange}
+                        />
                       </div>
-                    )}
-                </div>
-                <div className="mt-2 flex gap-2">
-                  <div className="w-1/2">
-                    <label className="block text-left text-[#2A629A] text-sm font-medium mb-1">
-                      CVV
-                    </label>
-                    <div
-                      className={`flex items-center p-2 rounded-xl bg-white border focus-within:shadow-lg ${
-                        cvv
-                          ? validateCvv(cvv)
-                            ? "focus-within:border-[#2A629A]"
-                            : "focus-within:border-[#FF0000]"
-                          : "focus-within:border-[#2A629A]"
-                      } ${
-                        !validateCvv(cvv) && cvv
-                          ? "border-[#FF0000]"
-                          : "border-[#8A8A8A]"
-                      }`}
-                    >
-                      <input
-                        className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
-                        type="text"
-                        value={cvv}
-                        onChange={(e) => handleInputChange(e, setCvv)}
-                        onKeyPress={handleNumberInput}
-                        placeholder="123"
-                        maxLength={4}
-                      />
-                      {!validateCvv(cvv) && cvv && (
-                        <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] ml-2 flex-shrink-0" />
-                      )}
-                    </div>
-                    {!validateCvv(cvv) && cvv && (
-                      <p className="text-[#FF0000] text-xs mt-1 text-left">
-                        CVV berisi 3-4 angka
-                      </p>
-                    )}
-                  </div>
-                  <div className="w-1/2">
-                    <label className="block text-left text-[#2A629A] text-sm font-medium mb-1">
-                      Masa Berlaku
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <select
-                        className="p-2 rounded-xl bg-white border border-[#8A8A8A] focus:shadow-lg focus:border-[#2A629A] text-sm text-[#2A629A] w-1/2 min-w-0"
-                        value={selectedMonth}
-                        onChange={(e) =>
-                          dispatch(setSelectedMonth(e.target.value))
-                        }
-                      >
-                        <option value="" disabled>
-                          Bulan
-                        </option>
-                        {Array.from({ length: 12 }, (_, i) => (
-                          <option
-                            key={i + 1}
-                            value={String(i + 1).padStart(2, "0")}
-                          >
-                            {String(i + 1).padStart(2, "0")}
-                          </option>
-                        ))}
-                      </select>
-                      <select
-                        className="p-2 rounded-xl bg-white border border-[#8A8A8A] focus:shadow-lg focus:border-[#2A629A] text-sm text-[#2A629A] w-1/2 min-w-0"
-                        value={selectedYear}
-                        onChange={(e) =>
-                          dispatch(setSelectedYear(e.target.value))
-                        }
-                      >
-                        <option value="" disabled>
-                          Tahun
-                        </option>
-                        {generateYearOptions().map((year) => (
-                          <option key={year} value={year}>
-                            {year}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    {!validateExpiryDate(
-                      `${selectedMonth}/${selectedYear.toString().slice(2)}`
-                    ) &&
-                      (selectedMonth || selectedYear) && (
+                      {isCardHolderNameTouched && !card_holder_name && (
                         <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
-                          <BiErrorCircle className="w-[20px] h-[20px] mr-1.5 flex-shrink-0" />
-                          <p>Mohon isi kedua kolom di atas</p>
+                          <BiErrorCircle className="w-[20px] h-[20px] mr-1 flex-shrink-0" />
+                          <p>Nama pemegang kartu tidak boleh kosong</p>
                         </div>
                       )}
-                  </div>
-                </div>
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full p-3 rounded-xl bg-[#2A629A] text-white text-base font-medium mt-3 transition-colors duration-300 hover:bg-[#003285] active:bg-[#003285]"
-                >
-                  {isLoading ? "Memproses Pembayaran..." : "Bayar"}
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
+                      {!isCardHolderNameValid &&
+                        card_holder_name &&
+                        card_holder_name.length < 3 && (
+                          <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
+                            <BiErrorCircle className="w-[20px] h-[20px] mr-1 flex-shrink-0" />
+                            <p>Nama terlalu pendek, minimum 3 huruf</p>
+                          </div>
+                        )}
+                    </div>
+                    <div className="mt-2 flex gap-2">
+                      <div className="w-1/2">
+                        <label className="block text-left text-[#2A629A] text-sm font-medium mb-1">
+                          CVV
+                        </label>
+                        <div
+                          className={`flex items-center p-2 rounded-xl bg-white border focus-within:shadow-lg ${
+                            cvv
+                              ? validateCvv(cvv)
+                                ? "focus-within:border-[#2A629A]"
+                                : "focus-within:border-[#FF0000]"
+                              : "focus-within:border-[#2A629A]"
+                          } ${
+                            !validateCvv(cvv) && cvv
+                              ? "border-[#FF0000]"
+                              : "border-[#8A8A8A]"
+                          }`}
+                        >
+                          <input
+                            className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
+                            type="text"
+                            value={cvv}
+                            onChange={(e) => handleInputChange(e, setCvv)}
+                            onKeyPress={handleNumberInput}
+                            placeholder="123"
+                            maxLength={4}
+                          />
+                          {!validateCvv(cvv) && cvv && (
+                            <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] ml-2 flex-shrink-0" />
+                          )}
+                        </div>
+                        {!validateCvv(cvv) && cvv && (
+                          <p className="text-[#FF0000] text-xs mt-1 text-left">
+                            CVV berisi 3-4 angka
+                          </p>
+                        )}
+                      </div>
+                      <div className="w-1/2">
+                        <label className="block text-left text-[#2A629A] text-sm font-medium mb-1">
+                          Masa Berlaku
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <select
+                            className="p-2 rounded-xl bg-white border border-[#8A8A8A] focus:shadow-lg focus:border-[#2A629A] text-sm text-[#2A629A] w-1/2 min-w-0"
+                            value={selectedMonth}
+                            onChange={(e) =>
+                              dispatch(setSelectedMonth(e.target.value))
+                            }
+                          >
+                            <option value="" disabled>
+                              Bulan
+                            </option>
+                            {Array.from({ length: 12 }, (_, i) => (
+                              <option
+                                key={i + 1}
+                                value={String(i + 1).padStart(2, "0")}
+                              >
+                                {String(i + 1).padStart(2, "0")}
+                              </option>
+                            ))}
+                          </select>
+                          <select
+                            className="p-2 rounded-xl bg-white border border-[#8A8A8A] focus:shadow-lg focus:border-[#2A629A] text-sm text-[#2A629A] w-1/2 min-w-0"
+                            value={selectedYear}
+                            onChange={(e) =>
+                              dispatch(setSelectedYear(e.target.value))
+                            }
+                          >
+                            <option value="" disabled>
+                              Tahun
+                            </option>
+                            {generateYearOptions().map((year) => (
+                              <option key={year} value={year}>
+                                {year}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        {!validateExpiryDate(
+                          `${selectedMonth}/${selectedYear.toString().slice(2)}`
+                        ) &&
+                          (selectedMonth || selectedYear) && (
+                            <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
+                              <BiErrorCircle className="w-[20px] h-[20px] mr-1.5 flex-shrink-0" />
+                              <p>Mohon isi kedua kolom di atas</p>
+                            </div>
+                          )}
+                      </div>
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      className="w-full p-3 rounded-xl bg-[#2A629A] text-white text-base font-medium mt-3 transition-colors duration-300 hover:bg-[#003285] active:bg-[#003285]"
+                    >
+                      {isLoading ? "Memproses Pembayaran..." : "Bayar"}
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
 
-        {/* Format Pemesanan Tiket */}
-        <div
-          className={`w-full ${
-            isTablet ? "lg:w-2/3 max-w-[750px]" : "lg:w-3/3"
-          } max-w-[500px] lg:ml-10 lg:mt-0`}
-        >
-          <BookingSummary />
+            {/* Format Pemesanan Tiket */}
+            <div
+              className={`w-full ${
+                isTablet ? "lg:w-2/3 max-w-[750px]" : "lg:w-3/3"
+              } max-w-[500px] lg:ml-10 lg:mt-0`}
+            >
+              <BookingSummary />
+            </div>
+          </div>
         </div>
       </div>
       {isMobile ? "" : <BtnScrollTop />}

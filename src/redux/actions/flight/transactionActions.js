@@ -116,7 +116,7 @@ export const printTransactions = (id) => async (dispatch, getState) => {
 
 // Action untuk membatalkan transaksi
 export const cancelTransactions =
-  (bookingCode, navigate) => async (dispatch, getState) => {
+  (bookingCode) => async (dispatch, getState) => {
     const { token } = getState().login;
     try {
       const response = await axios.put(

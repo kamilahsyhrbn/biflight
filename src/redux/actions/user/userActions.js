@@ -233,3 +233,41 @@ export const addPassword =
       }
     }
   };
+
+export const deleteUser = (email, navigate) => async (dispatch) => {
+  try {
+    const response = await axios(
+      `${import.meta.env.VITE_REACT_APP_SERVER}/users/delete-user/${email}`
+    );
+    console.log("response delete", response);
+    toast("Berhasil menghapus akun Anda, Sampai jumpa!", {
+      style: {
+        background: "#28A745", // Background hijau
+        color: "#FFFFFF", // Teks putih
+        borderRadius: "12px",
+        fontSize: "14px", // Ukuran font
+        textAlign: "center", // Posisi teks di tengah
+        padding: "10px 20px", // Padding
+        width: "full",
+        maxWidth: "900px",
+      },
+      position: "top-center", // Posisi toast
+      duration: 3000, // Durasi toast
+    });
+    navigate("/");
+  } catch (error) {
+    console.log("error", error);
+    toast("Terjadi kesalahan!", {
+      style: {
+        background: "#FF0000",
+        color: "#FFFFFF", // TEKS PUTIH
+        borderRadius: "12px",
+        fontSize: "14px", // Ukuran font
+        textAlign: "center", // TEKS TENGAH
+        padding: "10px 20px", // Padding
+        width: "full",
+        maxWidth: "900px",
+      },
+    });
+  }
+};

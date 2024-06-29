@@ -654,46 +654,35 @@ export default function SearchResult() {
   return (
     <div className="bg-[#FFF0DC] ">
       {isMobile ? (
-        <div className="w-full">
-          <div
-            style={{
-              backgroundImage: `url(${background})`,
-              backgroundSize: "cover",
-              backgroundPosition: "bottom",
-            }}
-            className="w-full h-full"
-          >
-            <div className="flex flex-col justify-center items-center py-3">
-              <h5 className="font-medium text-lg">
-                {departure_code} → {arrival_code}
-              </h5>
+        <div className="flex flex-col justify-center items-center bg-[#2A629A] text-white py-3 rounded-b-3xl">
+          <h5 className="font-medium text-lg">
+            {departure_code} → {arrival_code}
+          </h5>
 
-              <span className="text-sm">
-                {new Date(departure_date).toLocaleString("id-ID", {
+          <span className="text-sm">
+            {new Date(departure_date).toLocaleString("id-ID", {
+              weekday: "long",
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+            })}
+            {returnDate
+              ? ` - ${new Date(return_date).toLocaleString("id-ID", {
                   weekday: "long",
                   day: "2-digit",
                   month: "long",
                   year: "numeric",
-                })}
-                {returnDate
-                  ? ` - ${new Date(return_date).toLocaleString("id-ID", {
-                      weekday: "long",
-                      day: "2-digit",
-                      month: "long",
-                      year: "numeric",
-                    })}`
-                  : ""}
-              </span>
+                })}`
+              : ""}
+          </span>
 
-              <span className="text-sm flex items-center">
-                {seat_class} - {total_passenger} penumpang{" "}
-                <RiSearchLine
-                  className="ml-2 text-lg"
-                  onClick={handleSearchModal}
-                />
-              </span>
-            </div>
-          </div>
+          <span className="text-sm flex items-center">
+            {seat_class} • {total_passenger} penumpang{" "}
+            <RiSearchLine
+              className="ml-2 text-lg"
+              onClick={handleSearchModal}
+            />
+          </span>
         </div>
       ) : (
         ""
@@ -707,7 +696,7 @@ export default function SearchResult() {
           ) : (
             <>
               <nav className="flex mb-5">
-                <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                <ol className="inline-flex items-center space-x-1 md:space-x-2">
                   <li className="inline-flex items-center">
                     <a
                       href="/"
@@ -719,7 +708,7 @@ export default function SearchResult() {
                   <li>
                     <div className="flex items-center">
                       <svg
-                        className="rtl:rotate-180 w-3 h-3 text-[#003285] mx-1"
+                        className="w-3 h-3 text-[#003285] mx-1"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

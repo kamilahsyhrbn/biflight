@@ -293,19 +293,91 @@ export default function TicketCheckout() {
             sebelum tiket kamu hangus!
           </div>
 
-          {/* Menampilkan modal untuk kembali */}
           <div
-            className={`lg:w-1/12 ${
-              isMobile ? "pt-6" : isTablet ? "pt-20" : isLaptop ? "pt-20" : ""
+            className={`flex justify-between ${
+              isMobile
+                ? "pt-6 flex-col"
+                : isTablet
+                ? "pt-20 items-center"
+                : isLaptop
+                ? "pt-20 items-center"
+                : ""
             }`}
           >
-            <div
-              className="flex font-medium items-center text-[#003285] hover:text-[#40A2E3] cursor-pointer"
-              onClick={() => setOpenModal(true)}
-            >
-              <IoIosArrowBack className="text-3xl" />
-              <h6 className="text-lg">Kembali</h6>
+            {/* Menampilkan modal untuk kembali */}
+            <div className="lg:w-1/12">
+              <div
+                className="flex font-medium items-center text-[#003285] hover:text-[#40A2E3] cursor-pointer"
+                onClick={() => setOpenModal(true)}
+              >
+                <IoIosArrowBack className="text-3xl" />
+                <h6 className="text-lg">Kembali</h6>
+              </div>
             </div>
+
+            {/* STEPPER */}
+            <nav className={`${isMobile ? "mx-5 mt-1" : ""}`}>
+              <ol className="inline-flex items-center space-x-1 md:space-x-2">
+                <li className="inline-flex items-center">
+                  <span class="flex items-center justify-center w-5 h-5 me-1 text-xs border bg-[#003285] text-white rounded-full shrink-0">
+                    1
+                  </span>
+                  <span className="inline-flex items-center text-sm font-semibold text-[#003285]">
+                    Isi Data Diri
+                  </span>
+                </li>
+                <li>
+                  <div className="flex items-center">
+                    <svg
+                      className="w-3 h-3 text-[#003285] mx-1"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 6 10"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m1 9 4-4-4-4"
+                      />
+                    </svg>
+                    <span class="flex items-center justify-center w-5 h-5 me-1 md:ms-2 text-xs border border-gray-500 text-gray-500 rounded-full shrink-0">
+                      2
+                    </span>
+                    <span className="ms-1 text-sm text-gray-500 font-medium">
+                      Bayar
+                    </span>
+                  </div>
+                </li>
+                <li>
+                  <div className="flex items-center">
+                    <svg
+                      className="w-3 h-3 text-gray-500 mx-1"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 6 10"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m1 9 4-4-4-4"
+                      />
+                    </svg>
+                    <span class="flex items-center justify-center w-5 h-5 me-1 md:ms-2 text-xs border border-gray-500 text-gray-500 rounded-full shrink-0">
+                      3
+                    </span>
+                    <span className="ms-1 text-sm text-gray-500 font-medium">
+                      Selesai
+                    </span>
+                  </div>
+                </li>
+              </ol>
+            </nav>
           </div>
 
           {/* Tombol Kembali */}
@@ -578,7 +650,7 @@ export default function TicketCheckout() {
                             handleDateChange(index, "valid_until", date)
                           }
                           className="w-full p-2 border border-[#8A8A8A] rounded-xl focus-within:border-[#2A629A] text-sm focus:outline-none text-[#2A629A]"
-                          placeholder="01-01-2001"
+                          placeholder="01-01-2045"
                           required
                           options={{
                             minDate: new Date(),

@@ -148,11 +148,11 @@ export default function NavbarTransparent() {
                                 <IoMdNotifications className="text-white bg-[#40A2E3] rounded-full text-2xl p-1" />
                               </div>
                               <div className="w-full ps-3">
-                                <div className="text-gray-500 text-xs mb-1.5 flex justify-between">
+                                <div className="text-gray-500 text-xs">
                                   {notif?.title}
-                                  <div className="text-xs text-[#40A2E3]">
-                                    {notif?.created_at}
-                                  </div>
+                                </div>
+                                <div className="text-xs text-[#40A2E3] mb-1.5">
+                                  {notif?.created_at}
                                 </div>
                                 <div className="text-sm mb-1.5">
                                   {notif?.description}
