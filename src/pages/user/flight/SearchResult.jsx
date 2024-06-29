@@ -114,8 +114,11 @@ export default function SearchResult() {
 
   // BUAT NUKER POSISI DARI DESTINASI AWAL-DESTINASI TUJUAN
   const handleRotateClick = () => {
-    setDeparture_code(arrival_code);
-    setArrival_code(departure_code);
+    setSearch((prevState) => ({
+      ...prevState,
+      departure_code: search?.arrival_code,
+      arrival_code: search?.departure_code,
+    }));
   };
 
   // BUAT INPUT KELAS PENERBANGAN
@@ -320,7 +323,7 @@ export default function SearchResult() {
     setDateModalOpen(!dateModalOpen);
   };
 
-  // FUNGSI UNTUK SUBMIT HASIL PENCARIAN
+  // FUNGSI UNTUK SUBMIT UBAH PENCARIAN
   const handleSubmit = (e) => {
     if (typeof e === "object") {
       e?.preventDefault();
@@ -366,24 +369,6 @@ export default function SearchResult() {
     const departureDate = format(new Date(date[0].startDate), "yyyy-MM-dd");
     const returnDate = format(new Date(date[0].endDate), "yyyy-MM-dd");
 
-    // if (isChecked && departureDate === returnDate) {
-    //   toast("Harap pilih tanggal yang berbeda!", {
-    //     style: {
-    //       background: "#FF0000",
-    //       color: "#FFFFFF", // TEKS PUTIH
-    //       borderRadius: "12px",
-    //       fontSize: "14px", // Ukuran font
-    //       textAlign: "center", // TEKS TENGAH
-    //       padding: "10px 20px", // Padding
-    //       width: "full",
-    //       maxWidth: "900px",
-    //     },
-    //     position: "top-center", // Posisi toast
-    //     duration: 3000, // Durasi toast
-    //   });
-    //   return;
-    // }
-
     if (return_date && isChecked) {
       dispatch(
         getFlight(
@@ -415,16 +400,16 @@ export default function SearchResult() {
 
     if (returnDate && isChecked) {
       navigate(
-        `/hasil-pencarian?from=${search?.departure_code}&to=${search?.arrival_code}&departureDate=${departureDate}&returnDate=${returnDate}&class=${search?.seat_class}&passenger=${search?.total_passenger}&adult=${penumpang.dewasa}&child=${penumpang.anak}&infant=${penumpang.bayi}`,
+        `/hasil-pencarian?from=${departure_code}&to=${arrival_code}&departureDate=${departureDate}&returnDate=${returnDate}&class=${seat_class}&passenger=${total_passenger}&adult=${penumpang.dewasa}&child=${penumpang.anak}&infant=${penumpang.bayi}`,
         { replace: true }
       );
       setCurrentPage(1);
       setFilter("");
       setSearchModalOpen(false);
-      // setDeparture_code(search?.departure_code);
-      // setArrival_code(search?.arrival_code);
-      // setSeat_class(search?.seat_class);
-      // setTotal_passenger(search?.total_passenger);
+      setDeparture_code(search?.departure_code);
+      setArrival_code(search?.arrival_code);
+      setSeat_class(search?.seat_class);
+      setTotal_passenger(search?.total_passenger);
       setDeparture_date(departureDate);
       setReturn_date(returnDate);
       setSelectedDate(
@@ -436,16 +421,16 @@ export default function SearchResult() {
       );
     } else {
       navigate(
-        `/hasil-pencarian?from=${search?.departure_code}&to=${search?.arrival_code}&departureDate=${search?.departure_date}&class=${search?.seat_class}&passenger=${search?.total_passenger}&adult=${penumpang.dewasa}&child=${penumpang.anak}&infant=${penumpang.bayi}`,
+        `/hasil-pencarian?from=${departure_code}&to=${arrival_code}&departureDate=${departure_date}&class=${seat_class}&passenger=${total_passenger}&adult=${penumpang.dewasa}&child=${penumpang.anak}&infant=${penumpang.bayi}`,
         { replace: true }
       );
       setCurrentPage(1);
       setFilter("");
       setSearchModalOpen(false);
-      // setDeparture_code(search?.departure_code);
-      // setArrival_code(search?.arrival_code);
-      // setSeat_class(search?.seat_class);
-      // setTotal_passenger(search?.total_passenger);
+      setDeparture_code(search?.departure_code);
+      setArrival_code(search?.arrival_code);
+      setSeat_class(search?.seat_class);
+      setTotal_passenger(search?.total_passenger);
       setSelectedDate(
         new Date(departure_date).toLocaleString("id-ID", {
           day: "2-digit",
@@ -503,8 +488,6 @@ export default function SearchResult() {
     }
     if (choosenFlight.length === 1) {
       setSelectedDate(tanggalPulang);
-      // setDeparture_date(departureDate);
-      // setReturn_date(returnDate);
     }
   }, [choosenFlight]);
 
@@ -532,7 +515,6 @@ export default function SearchResult() {
     const firstTicket = choosenFlight?.slice(1);
     dispatch(setChoosenFlight(firstTicket));
     setIsDrawerOpen(false);
-    setReturn_date(return_date);
   };
 
   // FUNGSI UNTUK MENGHAPUS TIKET KEDUA YANG DIPILIH
@@ -1093,9 +1075,6 @@ export default function SearchResult() {
                               onClick={() => {
                                 const newFlight = [...choosenFlight, flight];
                                 dispatch(setChoosenFlight(newFlight));
-                                if (returnDate && isChecked) {
-                                  handleSubmit(newFlight?.length);
-                                }
                               }}
                             >
                               <div className="flex items-center font-medium">
