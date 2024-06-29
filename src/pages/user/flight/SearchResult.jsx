@@ -431,6 +431,7 @@ export default function SearchResult() {
       setArrival_code(search?.arrival_code);
       setSeat_class(search?.seat_class);
       setTotal_passenger(search?.total_passenger);
+      setDeparture_date(search?.departure_date);
       setSelectedDate(
         new Date(departure_date).toLocaleString("id-ID", {
           day: "2-digit",
