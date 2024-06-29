@@ -400,7 +400,7 @@ export default function SearchResult() {
 
     if (returnDate && isChecked) {
       navigate(
-        `/hasil-pencarian?from=${departure_code}&to=${arrival_code}&departureDate=${departureDate}&returnDate=${returnDate}&class=${seat_class}&passenger=${total_passenger}&adult=${penumpang.dewasa}&child=${penumpang.anak}&infant=${penumpang.bayi}`,
+        `/hasil-pencarian?from=${search?.departure_code}&to=${search?.arrival_code}&departureDate=${departureDate}&returnDate=${returnDate}&class=${search?.seat_class}&passenger=${search?.total_passenger}&adult=${penumpang.dewasa}&child=${penumpang.anak}&infant=${penumpang.bayi}`,
         { replace: true }
       );
       setCurrentPage(1);
@@ -421,7 +421,7 @@ export default function SearchResult() {
       );
     } else {
       navigate(
-        `/hasil-pencarian?from=${departure_code}&to=${arrival_code}&departureDate=${departure_date}&class=${seat_class}&passenger=${total_passenger}&adult=${penumpang.dewasa}&child=${penumpang.anak}&infant=${penumpang.bayi}`,
+        `/hasil-pencarian?from=${search?.departure_code}&to=${search?.arrival_code}&departureDate=${search?.departure_date}&class=${search?.seat_class}&passenger=${search?.total_passenger}&adult=${penumpang.dewasa}&child=${penumpang.anak}&infant=${penumpang.bayi}`,
         { replace: true }
       );
       setCurrentPage(1);
