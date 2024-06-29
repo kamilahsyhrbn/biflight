@@ -136,13 +136,6 @@ export default function VerifyOTP() {
 
   return (
     <div>
-      {/* <style>
-        {`
-          body, html {
-            overflow: hidden;
-          }
-          `}
-      </style> */}
       <div
         style={{
           backgroundImage: `url(${backgroundImage})`,
@@ -168,12 +161,12 @@ export default function VerifyOTP() {
               onClick={() => navigate("/register")}
             />
             <div className="max-w-[550px] w-full mx-auto flex flex-col items-center mt-5">
-              <h1 className="text-[#003285] text-2xl font-bold text-center w-full mb-8">
+              <h1 className="text-[#003285] text-2xl font-bold text-center w-full mt-3 mb-8">
                 Verifikasi Email Anda
               </h1>
-              <h2 className="text-[#2A629A] text-l mb-5 text-center text-sm font-medium">
-                Masukkan 6 Digit Kode OTP yang Dikirim ke{" "}
-                <span className="font-bold mt-2 text-[#40A2E3]">
+              <h2 className="text-[#8A8A8A] text-l mb-5 text-center text-sm font-medium">
+                Masukkan 6 Digit Kode OTP yang Dikirim ke <br />
+                <span className="font-bold text-[#2A629A]">
                   {email && censorEmail(email)}
                 </span>
               </h2>
@@ -207,7 +200,7 @@ export default function VerifyOTP() {
                   ) : (
                     <span
                       onClick={handleResendOtp}
-                      className="cursor-pointer text-[#40A2E3] text-sm underline font-medium"
+                      className="cursor-pointer text-[#40A2E3] text-sm hover:underline font-medium"
                     >
                       Kirim Ulang Kode OTP
                     </span>

@@ -14,6 +14,7 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange, Calendar } from "react-date-range";
 import { format } from "date-fns";
+import background from "../../../assets/images/otp.png";
 
 // ICON
 import { RiSearchLine } from "react-icons/ri";
@@ -29,7 +30,6 @@ import {
   FaChildDress,
 } from "react-icons/fa6";
 import { BiSolidPlaneAlt } from "react-icons/bi";
-import { HiMiniArrowDownCircle } from "react-icons/hi2";
 
 export default function SearchResult() {
   const { flights, pages, choosenFlight, isLoading } = useSelector(
@@ -609,35 +609,46 @@ export default function SearchResult() {
   return (
     <div className="bg-[#FFF0DC] ">
       {isMobile ? (
-        <div className="flex flex-col justify-center items-center bg-[#2A629A] text-white py-3 rounded-b-3xl">
-          <h5 className="font-medium text-lg">
-            {departure_code} → {arrival_code}
-          </h5>
+        <div className="w-full">
+          <div
+            style={{
+              backgroundImage: `url(${background})`,
+              backgroundSize: "cover",
+              backgroundPosition: "bottom",
+            }}
+            className="w-full h-full"
+          >
+            <div className="flex flex-col justify-center items-center py-3">
+              <h5 className="font-medium text-lg">
+                {departure_code} → {arrival_code}
+              </h5>
 
-          <span className="text-sm">
-            {new Date(departure_date).toLocaleString("id-ID", {
-              weekday: "long",
-              day: "2-digit",
-              month: "long",
-              year: "numeric",
-            })}
-            {returnDate
-              ? ` - ${new Date(return_date).toLocaleString("id-ID", {
+              <span className="text-sm">
+                {new Date(departure_date).toLocaleString("id-ID", {
                   weekday: "long",
                   day: "2-digit",
                   month: "long",
                   year: "numeric",
-                })}`
-              : ""}
-          </span>
+                })}
+                {returnDate
+                  ? ` - ${new Date(return_date).toLocaleString("id-ID", {
+                      weekday: "long",
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    })}`
+                  : ""}
+              </span>
 
-          <span className="text-sm flex items-center">
-            {seat_class} • {total_passenger} penumpang{" "}
-            <HiMiniArrowDownCircle
-              className="ml-2 text-xl"
-              onClick={handleSearchModal}
-            />
-          </span>
+              <span className="text-sm flex items-center">
+                {seat_class} - {total_passenger} penumpang{" "}
+                <RiSearchLine
+                  className="ml-2 text-lg"
+                  onClick={handleSearchModal}
+                />
+              </span>
+            </div>
+          </div>
         </div>
       ) : (
         ""

@@ -643,12 +643,12 @@ export default function Register() {
                       />
                       {showConfirmPassword ? (
                         <FiEye
-                          className="w-[17px] h-[17px] text-[#6B7280] cursor-pointer flex-shrink-0"
+                          className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
                           onClick={toggleConfirmPasswordVisibility}
                         />
                       ) : (
                         <FiEyeOff
-                          className="w-[17px] h-[17px] text-[#6B7280] cursor-pointer flex-shrink-0"
+                          className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
                           onClick={toggleConfirmPasswordVisibility}
                         />
                       )}

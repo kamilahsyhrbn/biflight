@@ -295,7 +295,9 @@ export default function TicketCheckout() {
 
           {/* Menampilkan modal untuk kembali */}
           <div
-            className={`lg:w-1/12 ${isMobile ? "pt-6" : isTablet ? "pt-20" : isLaptop ? "pt-20" : ""}`}
+            className={`lg:w-1/12 ${
+              isMobile ? "pt-6" : isTablet ? "pt-20" : isLaptop ? "pt-20" : ""
+            }`}
           >
             <div
               className="flex font-medium items-center text-[#003285] hover:text-[#40A2E3] cursor-pointer"
@@ -599,17 +601,21 @@ export default function TicketCheckout() {
               </div>
 
               {/* Order Summary */}
-              <div className={`col-span-1 ${isMobile ? "mx-auto w-full ms-3" : isTablet ? "col-span-2"  : ""}`}>
+              <div
+                className={`col-span-1 ${
+                  isMobile
+                    ? "mx-auto w-full ms-3"
+                    : isTablet
+                    ? "col-span-2"
+                    : ""
+                }`}
+              >
                 <OrderSummary />
                 {isDataSaved && (
                   <button
                     onClick={handleLanjutPembayaran}
                     className={`w-full inline-flex justify-center rounded-xl border-0 shadow-sm py-3 bg-[#28A745] font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-0" 
-                      ${
-                        isTablet
-                          ? ""
-                          : ""
-                      }`}
+                      ${isTablet ? "" : ""}`}
                   >
                     Lanjut Bayar
                   </button>

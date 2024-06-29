@@ -1,11 +1,10 @@
 import React from "react";
 import gif from "../images/plane.gif";
-import { Toaster } from "react-hot-toast";
 // BUAT NYIMPEN AJA SEMBARI NUNGGU API NYA AKU TARO SINI
 export default function Loader() {
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-[#FFF0DC]">
-      {/* <Toaster />
+      {/* 
       <div className="w-80">
         <img src={gif} className="" alt="" />
       </div>

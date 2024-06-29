@@ -23,10 +23,17 @@ const ForgotPassword = () => {
   const [isPasswordTouched, setIsPasswordTouched] = useState(false);
 
   const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get("token").replace(/ /g, "+");
+  const token = queryParams.get("token")?.replace(/ /g, "+");
+
+  //   const tokenParam = queryParams.get("token");
+
+  // // Periksa apakah tokenParam ada sebelum melakukan operasi replace
+  // const token = tokenParam ? tokenParam.replace(/ /g, "+") : null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // console.log("password:", password);
+    // console.log("Confirm password:", confirmPassword);
     if (password !== confirmPassword) {
       toast.error("Kata sandi yang Anda masukkan tidak cocok!", {
         icon: null,
