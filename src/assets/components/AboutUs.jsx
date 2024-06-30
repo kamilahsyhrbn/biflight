@@ -121,7 +121,7 @@ export default function AboutUs() {
             <div className="flex flex-col justify-center p-6 mx-auto w-full shadow-md rounded-xl sm:px-12  dark:text-gray-800 bg-indigo-100 transform transition-transform duration-300 hover:scale-105">
               <img
                 src={mirzaImage}
-                alt=""
+                alt="foto mirza"
                 className="object-cover border-4 border-white rounded-full h-24 w-24 md:h-32 md:w-32 mx-auto"
               />
               <div className="space-y-4 text-center divide-y dark:divide-gray-300">
@@ -191,7 +191,7 @@ export default function AboutUs() {
             <div className="flex flex-col justify-center w-full p-6 mx-auto shadow-md rounded-xl sm:px-12  dark:text-gray-800 bg-indigo-100 transform transition-transform duration-300 hover:scale-105">
               <img
                 src={zahidImage}
-                alt=""
+                alt="foto zahid"
                 className="object-cover border-4 border-white rounded-full h-24 w-24 md:h-32 md:w-32 mx-auto"
               />
               <div className="space-y-4 text-center divide-y dark:divide-gray-300">
@@ -259,7 +259,7 @@ export default function AboutUs() {
             <div className="flex flex-col justify-center w-full p-6 mx-auto shadow-md rounded-xl sm:px-12  dark:text-gray-800 bg-indigo-100 transform transition-transform duration-300 hover:scale-105">
               <img
                 src={putriImage}
-                alt=""
+                alt="foto putri"
                 className="object-cover border-4 border-white rounded-full h-24 w-24 md:h-32 md:w-32 mx-auto"
               />
               <div className="space-y-4 text-center divide-y dark:divide-gray-300">
@@ -329,7 +329,7 @@ export default function AboutUs() {
             <div className="flex flex-col justify-center w-full p-6 mx-auto shadow-md rounded-xl sm:px-12 dark:text-gray-800 bg-indigo-100 transform transition-transform duration-300 hover:scale-105">
               <img
                 src={milaImage}
-                alt=""
+                alt="foto mila"
                 className="object-cover border-4 border-white rounded-full h-24 w-24 md:h-32 md:w-32 mx-auto"
               />
               <div className="space-y-4 text-center divide-y dark:divide-gray-300">
@@ -397,7 +397,7 @@ export default function AboutUs() {
             <div className="flex flex-col justify-center w-full p-6 mx-auto shadow-md rounded-xl sm:px-12 dark:text-gray-800 bg-indigo-100 transform transition-transform duration-300 hover:scale-105">
               <img
                 src={ekaImage}
-                alt=""
+                alt="foto eka"
                 className="object-cover border-4 border-white rounded-full h-24 w-24 md:h-32 md:w-32 mx-auto"
               />
               <div className="space-y-4 text-center divide-y dark:divide-gray-300">
@@ -464,7 +464,7 @@ export default function AboutUs() {
             <div className="flex flex-col justify-center w-full p-6 mx-auto shadow-md rounded-xl sm:px-12 dark:text-gray-800 bg-indigo-100 transform transition-transform duration-300 hover:scale-105">
               <img
                 src={shelaImage}
-                alt=""
+                alt="foto shela"
                 className="object-cover border-4 border-white rounded-full h-24 w-24 md:h-32 md:w-32 mx-auto"
               />
               <div className="space-y-4 text-center divide-y dark:divide-gray-300">

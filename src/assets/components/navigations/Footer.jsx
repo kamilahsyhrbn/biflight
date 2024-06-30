@@ -14,7 +14,7 @@ export default function footer() {
                 <img
                   src={Logo}
                   className="h-20 me-3 rounded-full"
-                  alt="FlowBite Logo"
+                  alt="BiFlight Logo"
                 />
                 <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
                   BiFlight
@@ -67,11 +67,12 @@ export default function footer() {
           <div className="flex items-center justify-center">
             <span className="text-sm text-center text-gray-200">
               © 2024{" "}
-              <a href="/" className="hover:underline">
+              <a
+                href="/"
+                className="hover:underline mr-1"
+                aria-label="Halaman Beranda"
+              >
                 BiFlight
-              </a>
-              <a href="/" className="hover:underline">
-                {" "}
               </a>
               | Seluruh Hak Cipta Dilindungi.
             </span>

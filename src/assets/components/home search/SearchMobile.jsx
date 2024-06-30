@@ -277,6 +277,7 @@ export default function SearchMobile() {
                   <div className="mt-10">
                     <button
                       type="button"
+                      id="rotateAirport"
                       className="bg-[#003285] text-white p-3 rounded-full "
                       onClick={handleRotateClick}
                     >
@@ -304,10 +305,14 @@ export default function SearchMobile() {
                   <h5 className="text-[#2A629A] text-sm font-medium mr-3.5">
                     Pulang-Pergi?
                   </h5>
-                  <label className="relative inline-flex items-center cursor-pointer">
+                  <label
+                    htmlFor="toggle"
+                    className="relative inline-flex items-center cursor-pointer"
+                  >
                     <input
                       type="checkbox"
                       value=""
+                      id="toggle"
                       className="sr-only peer"
                       onChange={handleToggleChange}
                     />
@@ -398,6 +403,7 @@ export default function SearchMobile() {
                 </div>
                 <button
                   type="submit"
+                  id="searchFlights"
                   className="w-full p-4 bg-[#2A629A] text-white rounded-lg transition-colors duration-300 hover:bg-[#003285]"
                   onClick={handleSubmit}
                 >
@@ -426,6 +432,8 @@ export default function SearchMobile() {
                 Pilih kelas penerbangan
               </h3>
               <button
+                type="button"
+                id="closeSeatModal"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center"
                 onClick={handleSeatModal}
               >
@@ -514,7 +522,7 @@ export default function SearchMobile() {
                     type="radio"
                     id="frClass"
                     name="kelas"
-                    value="First Class"
+                    value="First"
                     className="hidden peer"
                     onChange={handleSeat}
                   />
@@ -523,14 +531,14 @@ export default function SearchMobile() {
                     className="inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:bg-[#2A629A] peer-checked:text-white hover:text-gray-900 hover:bg-[#EEF5FF]"
                   >
                     <div className="block">
-                      <div className="w-full text-lg font-semibold">
-                        First Class
-                      </div>
+                      <div className="w-full text-lg font-semibold">First</div>
                     </div>
                   </label>
                 </li>
               </ul>
               <button
+                type="button"
+                id="saveSeatModal"
                 className="text-white inline-flex w-full justify-center bg-[#2A629A] transition-colors duration-300 hover:bg-[#003285] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 onClick={handleSeatModal}
               >
@@ -558,6 +566,8 @@ export default function SearchMobile() {
                 Pilih Jumlah Penumpang
               </h3>
               <button
+                type="button"
+                id="closePassengerModal"
                 onClick={handlePassengerModal}
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
               >
@@ -592,6 +602,8 @@ export default function SearchMobile() {
                 </div>
                 <div className="flex gap-5 items-center">
                   <button
+                    type="button"
+                    id="decreaseAdult"
                     className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
                     disabled={penumpang?.dewasa <= 1}
                     onClick={() => handlePenumpang("dewasa", "d")}
@@ -602,6 +614,8 @@ export default function SearchMobile() {
                     {penumpang?.dewasa}
                   </span>
                   <button
+                    type="button"
+                    id="increaseAdult"
                     className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
                     onClick={() => handlePenumpang("dewasa", "i")}
                   >
@@ -620,6 +634,8 @@ export default function SearchMobile() {
                 </div>
                 <div className="flex gap-5 items-center">
                   <button
+                    type="button"
+                    id="decreaseChild"
                     className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
                     disabled={penumpang?.anak === 0}
                     onClick={() => handlePenumpang("anak", "d")}
@@ -630,6 +646,8 @@ export default function SearchMobile() {
                     {penumpang?.anak}
                   </span>
                   <button
+                    type="button"
+                    id="increaseChild"
                     className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
                     onClick={() => handlePenumpang("anak", "i")}
                   >
@@ -649,6 +667,8 @@ export default function SearchMobile() {
                 </div>
                 <div className="flex gap-5 items-center">
                   <button
+                    type="button"
+                    id="decreaseBaby"
                     className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
                     disabled={penumpang?.bayi === 0}
                     onClick={() => handlePenumpang("bayi", "d")}
@@ -659,6 +679,8 @@ export default function SearchMobile() {
                     {penumpang?.bayi}
                   </span>
                   <button
+                    type="button"
+                    id="increaseBaby"
                     className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
                     onClick={() => handlePenumpang("bayi", "i")}
                   >
@@ -670,6 +692,8 @@ export default function SearchMobile() {
 
             <div className="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b ">
               <button
+                type="button"
+                id="savePassengers"
                 onClick={handlePassengerModal}
                 className="text-white bg-[#2A629A] transition-colors duration-300 hover:bg-[#003285] font-medium rounded-lg text-sm px-5 py-2.5 text-center "
               >
@@ -700,6 +724,8 @@ export default function SearchMobile() {
                 Pilih tanggal penerbangan
               </h3>
               <button
+                type="button"
+                id="closeDateModal"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center"
                 onClick={handleDateModal}
               >
@@ -747,6 +773,8 @@ export default function SearchMobile() {
                 />
               )}
               <button
+                type="button"
+                id="saveDate"
                 className="text-white inline-flex w-full justify-center bg-[#2A629A] transition-colors duration-300 hover:bg-[#003285] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 onClick={handleDateModal}
               >

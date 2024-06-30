@@ -1764,7 +1764,7 @@ export default function SearchResult() {
                       type="radio"
                       id="frClass"
                       name="kelas"
-                      value="First Class"
+                      value="First"
                       className="hidden peer"
                       onChange={handleSeat}
                     />
@@ -1774,7 +1774,7 @@ export default function SearchResult() {
                     >
                       <div className="block">
                         <div className="w-full text-lg font-semibold">
-                          First Class
+                          First
                         </div>
                       </div>
                     </label>
@@ -2189,7 +2189,13 @@ export default function SearchResult() {
 
           <div
             className={`w-full ${isMobile ? "pb-16" : ""} ${
-              returnDate ? (isTablet ? "fixed bottom-0" : "") : "fixed bottom-0"
+              returnDate
+                ? isMobile
+                  ? "mb-5"
+                  : "fixed bottom-0"
+                : isMobile
+                ? "mb-5"
+                : "fixed bottom-0"
             }`}
           >
             <hr />

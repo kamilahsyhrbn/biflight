@@ -22,7 +22,6 @@ import {
   removeAllFromRecentSearch,
   removeFromRecentSearch,
 } from "../../../redux/reducers/flight/transactionReducers";
-import Loader from "../../../assets/components/Loader";
 
 //ICON
 import { IoIosArrowBack, IoMdCheckmark } from "react-icons/io";
@@ -38,17 +37,13 @@ const filter = [
   { id: 4, status: "Batal" },
 ];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function OrderHistory() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
 
-  const { transactions, isLoading } = useSelector((state) => state.transaction);
+  const { transactions } = useSelector((state) => state.transaction);
 
   const { profile } = useSelector((state) => state.user);
   const email = profile?.email;
@@ -262,7 +257,8 @@ export default function OrderHistory() {
                   Riwayat Pemesanan
                 </h5>
               </div>
-              {/* BUTTON FILTER TANGGAL DAN PENCARIAN*/}
+
+              {/* BUTTON FILTER STATUS TRANSAKSI*/}
               <div className="flex items-center">
                 <div className="flex items-center">
                   <Listbox value={selectedFilter} onChange={setSelectedFilter}>
@@ -294,36 +290,39 @@ export default function OrderHistory() {
                                 <Listbox.Option
                                   key={filtered.id}
                                   className={({ active }) =>
-                                    classNames(
+                                    `${
                                       active
                                         ? "text-white bg-[#2A629A]"
-                                        : "text-gray-900",
-                                      "cursor-default select-none relative py-2 pl-3 pr-9"
-                                    )
+                                        : "text-gray-900"
+                                    }
+                                      cursor-default select-none relative py-2 pl-3 pr-9
+                                    `
                                   }
                                   value={filtered}
                                 >
                                   {({ selectedFilter, active }) => (
                                     <>
                                       <span
-                                        className={classNames(
-                                          selectedFilter
-                                            ? "font-semibold"
-                                            : "font-normal",
-                                          "block whitespace-nowrap"
-                                        )}
+                                        className={`
+                                          ${
+                                            selectedFilter
+                                              ? "font-semibold"
+                                              : "font-normal"
+                                          }
+                                          block whitespace-nowrap
+                                        `}
                                       >
                                         {filtered.status}
                                       </span>
 
                                       {selectedFilter ? (
                                         <span
-                                          className={classNames(
-                                            active
-                                              ? "text-white"
-                                              : "text-[#2A629A]",
-                                            "absolute inset-y-0 right-0 flex items-center pr-4"
-                                          )}
+                                          className={`
+                                      ${
+                                        active ? "text-white" : "text-[#2A629A]"
+                                      }
+                                      absolute inset-y-0 right-0 flex items-center pr-4
+                                    `}
                                         >
                                           <IoMdCheckmark
                                             className="h-5 w-5"
@@ -895,7 +894,9 @@ export default function OrderHistory() {
                             {selectedTicket?.total_baby !== 0 && (
                               <p>{selectedTicket?.total_baby} Bayi</p>
                             )}
-                            <p>Pajak</p>
+                            <p>Total Sebelum Pajak</p>
+                            <p>Pajak (10%)</p>
+                            <p>Total Setelah Pajak</p>
                           </div>
                           <div>
                             {selectedTicket?.total_adult !== 0 && (
@@ -985,13 +986,25 @@ export default function OrderHistory() {
                               {new Intl.NumberFormat("id-ID", {
                                 style: "currency",
                                 currency: "IDR",
+                              }).format(selectedTicket?.total_before_tax)}
+                            </p>
+                            <p>
+                              {new Intl.NumberFormat("id-ID", {
+                                style: "currency",
+                                currency: "IDR",
                               }).format(selectedTicket?.tax)}
+                            </p>
+                            <p>
+                              {new Intl.NumberFormat("id-ID", {
+                                style: "currency",
+                                currency: "IDR",
+                              }).format(selectedTicket?.total_price)}
                             </p>
                           </div>
                         </div>
                       </div>
                       <div className="flex justify-between font-semibold text-xl text-[#003285]">
-                        <h5>Total</h5>
+                        <h5>Total Harga</h5>
                         <h5>
                           {new Intl.NumberFormat("id-ID", {
                             style: "currency",

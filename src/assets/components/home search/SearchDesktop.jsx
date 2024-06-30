@@ -163,24 +163,6 @@ export default function SearchDesktop() {
     const returnDate = format(new Date(date[0].endDate), "yyyy-MM-dd");
     const singleDate = format(new Date(departure_date), "yyyy-MM-dd");
 
-    // if (isChecked === true && departureDate === returnDate) {
-    //   toast("Harap pilih tanggal yang berbeda!", {
-    //     style: {
-    //       background: "#FF0000", // Background merah
-    //       color: "#FFFFFF", // Teks putih
-    //       borderRadius: "12px", // Rounded-xl
-    //       fontSize: "14px", // Ukuran font
-    //       textAlign: "center", // Posisi teks di tengah
-    //       padding: "10px 20px", // Padding
-    //       width: "full",
-    //       maxWidth: "900px",
-    //     },
-    //     position: "top-center", // Posisi toast
-    //     duration: 3000, // Durasi toast
-    //   });
-    //   return;
-    // }
-
     if (isChecked) {
       dispatch(
         getFlight(
@@ -294,6 +276,7 @@ export default function SearchDesktop() {
                         </div>
                         <button
                           type="button"
+                          id="rotateAirport"
                           className="bg-[#003285] text-white p-3 rounded-full  mt-3 md:mt-0"
                           onClick={handleRotateClick}
                         >
@@ -389,10 +372,14 @@ export default function SearchDesktop() {
                         </div>
 
                         {/* TOGGLE TANGGAL PULANG */}
-                        <label className="flex items-center cursor-pointer">
+                        <label
+                          htmlFor="toggle"
+                          className="flex items-center cursor-pointer"
+                        >
                           <input
                             type="checkbox"
                             value=""
+                            id="toggle"
                             className="sr-only peer"
                             onChange={handleToggleChange}
                           />
@@ -429,6 +416,7 @@ export default function SearchDesktop() {
                   </div>
                   <div className="bg-[#2A629A] rounded-b-xl shadow-xl text-white font-medium text-center transition-colors duration-300 hover:bg-[#003285]">
                     <button
+                      id="searchFlights"
                       type="submit"
                       className="w-full p-4"
                       onClick={handleSubmit}
@@ -460,6 +448,8 @@ export default function SearchDesktop() {
                 Pilih kelas penerbangan
               </h3>
               <button
+                type="button"
+                id="closeSeatModal"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center"
                 onClick={handleSeatModal}
               >
@@ -548,7 +538,7 @@ export default function SearchDesktop() {
                     type="radio"
                     id="frClass"
                     name="kelas"
-                    value="First Class"
+                    value="First"
                     className="hidden peer"
                     onChange={handleSeat}
                   />
@@ -557,14 +547,14 @@ export default function SearchDesktop() {
                     className="inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:bg-[#2A629A] peer-checked:text-white hover:text-gray-900 hover:bg-[#EEF5FF]"
                   >
                     <div className="block">
-                      <div className="w-full text-lg font-semibold">
-                        First Class
-                      </div>
+                      <div className="w-full text-lg font-semibold">First</div>
                     </div>
                   </label>
                 </li>
               </ul>
               <button
+                type="button"
+                id="saveSeatModal"
                 className="text-white inline-flex w-full justify-center bg-[#2A629A] transition-colors duration-300 hover:bg-[#003285] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 onClick={handleSeatModal}
               >
@@ -591,6 +581,8 @@ export default function SearchDesktop() {
                 Pilih Jumlah Penumpang
               </h3>
               <button
+                type="button"
+                id="closePassengerModal"
                 onClick={handlePassengerModal}
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
               >
@@ -625,6 +617,8 @@ export default function SearchDesktop() {
                 </div>
                 <div className="flex gap-5 items-center">
                   <button
+                    type="button"
+                    id="decreaseAdult"
                     className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
                     disabled={penumpang?.dewasa <= 1}
                     onClick={() => handlePenumpang("dewasa", "d")}
@@ -635,6 +629,8 @@ export default function SearchDesktop() {
                     {penumpang?.dewasa}
                   </span>
                   <button
+                    type="button"
+                    id="increaseAdult"
                     className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
                     onClick={() => handlePenumpang("dewasa", "i")}
                   >
@@ -653,6 +649,8 @@ export default function SearchDesktop() {
                 </div>
                 <div className="flex gap-5 items-center">
                   <button
+                    type="button"
+                    id="decreaseChildren"
                     className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
                     disabled={penumpang?.anak === 0}
                     onClick={() => handlePenumpang("anak", "d")}
@@ -663,6 +661,8 @@ export default function SearchDesktop() {
                     {penumpang?.anak}
                   </span>
                   <button
+                    type="button"
+                    id="increaseChildren"
                     className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
                     onClick={() => handlePenumpang("anak", "i")}
                   >
@@ -682,6 +682,8 @@ export default function SearchDesktop() {
                 </div>
                 <div className="flex gap-5 items-center">
                   <button
+                    type="button"
+                    id="decreaseInfant"
                     className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
                     disabled={penumpang?.bayi === 0}
                     onClick={() => handlePenumpang("bayi", "d")}
@@ -692,6 +694,8 @@ export default function SearchDesktop() {
                     {penumpang?.bayi}
                   </span>
                   <button
+                    type="button"
+                    id="increaseInfant"
                     className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
                     onClick={() => handlePenumpang("bayi", "i")}
                   >
@@ -703,6 +707,8 @@ export default function SearchDesktop() {
 
             <div className="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b ">
               <button
+                type="button"
+                id="savePassengers"
                 onClick={handlePassengerModal}
                 className="text-white bg-[#2A629A] transition-colors duration-300 hover:bg-[#003285] font-medium rounded-lg text-sm px-5 py-2.5 text-center "
               >
@@ -732,6 +738,8 @@ export default function SearchDesktop() {
                 Pilih tanggal penerbangan
               </h3>
               <button
+                type="button"
+                id="closeDateModal"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center"
                 onClick={handleDateModal}
               >
@@ -765,8 +773,8 @@ export default function SearchDesktop() {
                     setDate([item.selection]);
                   }}
                   moveRangeOnFirstSelection={false}
-                  months={isMobile ? 1 : 2}
-                  direction={isMobile ? "vertical" : "horizontal'"}
+                  months={2}
+                  direction="horizontal"
                   ranges={date}
                   minDate={new Date()}
                   rangeColors={["#2A629A", "#3472b0", "#003285"]}
@@ -781,6 +789,8 @@ export default function SearchDesktop() {
                 />
               )}
               <button
+                type="button"
+                id="saveDate"
                 className="text-white inline-flex w-full justify-center bg-[#2A629A] transition-colors duration-300 hover:bg-[#003285] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 onClick={handleDateModal}
               >

@@ -29,10 +29,6 @@ const filter = [
   { id: 3, status: "Dibaca" },
 ];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function Notification() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [selected, setSelected] = useState(filter[0]);
@@ -116,32 +112,37 @@ export default function Notification() {
                           <Listbox.Option
                             key={filtered.id}
                             className={({ active }) =>
-                              classNames(
+                              `${
                                 active
                                   ? "text-white bg-[#2A629A]"
-                                  : "text-gray-900",
-                                "cursor-default select-none relative py-2 pl-3 pr-9"
-                              )
+                                  : "text-gray-900"
+                              }
+                              cursor-default select-none relative py-2 pl-3 pr-9
+                            `
                             }
                             value={filtered}
                           >
                             {({ selected, active }) => (
                               <>
                                 <span
-                                  className={classNames(
-                                    selected ? "font-semibold" : "font-normal",
-                                    "block whitespace-nowrap"
-                                  )}
+                                  className={`
+                                    ${
+                                      selected ? "font-semibold" : "font-normal"
+                                    }
+                                    block whitespace-nowrap
+                                  `}
                                 >
                                   {filtered.status}
                                 </span>
 
                                 {selected ? (
                                   <span
-                                    className={classNames(
-                                      active ? "text-white" : "text-[#2A629A]",
-                                      "absolute inset-y-0 right-0 flex items-center pr-4"
-                                    )}
+                                    className={`
+                                      ${
+                                        active ? "text-white" : "text-[#2A629A]"
+                                      }
+                                      absolute inset-y-0 right-0 flex items-center pr-4
+                                    `}
                                   >
                                     <IoMdCheckmark
                                       className="h-5 w-5"

@@ -32,6 +32,7 @@ export default function Home() {
     const { className, style, onClick } = props;
     return (
       <div
+        id="nextArrow"
         className={className}
         style={{ ...style, display: "block" }}
         onClick={onClick}
@@ -45,6 +46,7 @@ export default function Home() {
     const { className, style, onClick } = props;
     return (
       <div
+        id="prevArrow"
         className={className}
         style={{ ...style, display: "block" }}
         onClick={onClick}
@@ -81,7 +83,8 @@ export default function Home() {
               <div className="w-[500px] shadow-xl rounded-xl">
                 <img
                   src={bromo}
-                  className="h-[300px] w-full object-cover rounded-xl "
+                  className="h-[300px] w-full object-cover rounded-xl"
+                  alt="Gunung Bromo"
                 />
               </div>
             </div>
