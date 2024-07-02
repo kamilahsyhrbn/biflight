@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import Modal from "react-modal";
+import { format } from "date-fns";
+import idLocale from "date-fns/locale/id";
 import { IoIosArrowBack, IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { BiErrorCircle } from "react-icons/bi";
 import { RxCrossCircled } from "react-icons/rx";
@@ -87,32 +89,6 @@ export default function Payment() {
     setTimeUpModal(false);
     setTimeLeft(0);
   };
-
-  // FUNGSI UNTUK MEMBUAT TENGGAT PEMBAYARAN TIKET
-  const getFormattedDate = () => {
-    if (!ticketSelected?.transaction_date) {
-      const today = new Date();
-      today.setDate(today.getDate() + 3);
-      return today.toLocaleString("id-ID", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      });
-    } else {
-      const dateString = ticketSelected.transaction_date;
-      const [datePart, timePart] = dateString.split(", ");
-      const date = new Date(`${datePart} ${timePart}`);
-      date.setDate(date.getDate() + 3);
-
-      return date.toLocaleString("id-ID", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      });
-    }
-  };
-
-  const formattedDate = getFormattedDate();
 
   // Fungsi untuk membersihkan state ketika komponen di-refresh
   useEffect(() => {
@@ -393,55 +369,15 @@ export default function Payment() {
                 isMobile ? "top-0" : ""
               }`}
             >
-              Selesaikan Pembayaran Anda Sebelum {formattedDate}
+              Selesaikan Pembayaran Anda Sebelum{" "}
+              {format(
+                new Date(ticketSelected?.expired_at),
+                "d MMMM yyyy HH:mm",
+                { locale: idLocale }
+              )}{" "}
+              WIB
             </div>
           </div>
-
-          {/* Waktu Sisa */}
-          {/* <div className="flex justify-center">
-            <div
-              className={`fixed bg-[#FF0000] text-white text-base font-medium py-2.5 px-4 text-center w-full z-10 ${
-                isMobile ? "top-0" : ""
-              }`}
-            >
-              Waktu Tersisa untuk Pembayaran: {formatTime(timeLeft)}
-            </div>
-          </div> */}
-
-          {/* Menampilkan Modal Jika Waktu Telah Habis */}
-          {/* <Modal
-            isOpen={timeUpModal}
-            onRequestClose={closeTimeUpModal}
-            contentLabel="Waktu Habis"
-            className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50"
-            overlayClassName="custom-overlay"
-          >
-            <div
-              className={`relative w-full max-w-[90%] ${
-                isTablet ? "md:max-w-[50%]" : "md:max-w-[50%] lg:max-w-[30%]"
-              } max-h-full animate__animated animate__zoomIn mx-4`}
-            >
-              <div className="relative bg-white rounded-lg shadow">
-                <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-                  <HiOutlineExclamationCircle className="mx-auto w-24 h-24 text-[#FF0000]" />
-                </div>
-                <div className="p-4 md:p-5 space-y-4">
-                  <h3 className="text-base text-center font-normal text-[#8A8A8A]">
-                    Sesi Anda telah habis! <br /> Silakan melakukan proses
-                    kembali.
-                  </h3>
-                </div>
-                <div className="flex justify-center p-4 md:p-5 border-t border-gray-200 rounded-b">
-                  <button
-                    className="text-white bg-[#2A629A] hover:bg-[#003285] font-medium rounded-lg text-sm px-5 py-2 text-center"
-                    onClick={closeTimeUpModal}
-                  >
-                    Kembali Isi Data Diri
-                  </button>
-                </div>
-              </div>
-            </div>
-          </Modal> */}
 
           {/* Tombol Kembali */}
           <div className="flex md:justify-between justify-center items-center pt-16">
@@ -847,6 +783,7 @@ export default function Payment() {
           </div>
         </div>
       </div>
+
       {isMobile ? "" : <BtnScrollTop />}
       <Footer />
     </div>

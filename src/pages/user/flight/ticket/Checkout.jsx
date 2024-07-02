@@ -176,7 +176,6 @@ export default function TicketCheckout() {
     }
   }, [ticket]);
 
-  console.log("passengerDetails: ", passengerDetails);
   // }, [passengers]);
 
   const handleLanjutPembayaran = () => {
@@ -402,14 +401,15 @@ export default function TicketCheckout() {
             className="custom-modal"
             overlayClassName="custom-overlay"
           >
-            <div className="text-center">
-              <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <div className="text-center flex flex-col items-center">
+              {/* <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" /> */}
+              <iframe src="https://lottie.host/embed/43cf72cb-f4cc-4491-a218-05d127d73ce1/RhKDgbsfaS.json"></iframe>
               <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                 Apakah kamu yakin ingin keluar?
               </h3>
               <div className="flex justify-center gap-4">
                 <button
-                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                  className="bg-[#FF0000] hover:bg-red-700 text-white px-4 py-2 rounded"
                   onClick={() => {
                     setOpenModal(false);
                     window.location.href = "/";

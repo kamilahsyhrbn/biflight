@@ -76,6 +76,7 @@ export const printTransactions = (id) => async (dispatch, getState) => {
       if (location.pathname === "/print-ticket/:booking_code") {
         dispatch(setShowConfirmationModal(false));
         dispatch(setShowSuccessModal(true)); // Tampilkan modal sukses setelah cetak tiket berhasil
+        dispatch(setLoading(false));
       } else {
         toast("Tiket berhasil dikirim ke Email Anda!", {
           style: {

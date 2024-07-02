@@ -12,6 +12,7 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
+import idLocale from "date-fns/locale/id";
 import {
   cancelTransactions,
   getTransactions,
@@ -30,6 +31,7 @@ import { IoFilter, IoLocationSharp } from "react-icons/io5";
 import { HiOutlineSelector } from "react-icons/hi";
 import { RiSearchLine } from "react-icons/ri";
 import { setTicketSelected } from "../../../redux/reducers/ticket/ticketReducers";
+import { setPassengerDetails } from "../../../redux/reducers/flight/bookingReducers";
 
 const filter = [
   { id: 1, status: "Semua" },
@@ -90,25 +92,6 @@ export default function OrderHistory() {
       remainingMinutes > 1 ? "" : ""
     }`;
   }
-
-  const getFormattedDate = () => {
-    if (!selectedTicket?.transaction_date) {
-      return null;
-    }
-    if (selectedTicket.status === "BELUM DIBAYAR") {
-      const dateString = selectedTicket.transaction_date;
-      const [datePart, timePart] = dateString.split(", ");
-      const date = new Date(`${datePart} ${timePart}`);
-      date.setDate(date.getDate() + 3);
-      return date.toLocaleString("id-ID", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      });
-    }
-  };
-
-  const formattedDate = getFormattedDate();
 
   // FUNGSI UNTUK MENAMPILKAN DETAIL TIKET PENERBANGAN
   const handleSelectTicket = (transaction) => {
@@ -259,58 +242,69 @@ export default function OrderHistory() {
     if (selectedTicket) {
       dispatch(setTicketSelected(selectedTicket));
       navigate(`/payment/${selectedTicket?.booking_code}`);
+      dispatch(setPassengerDetails());
     }
   };
 
   useEffect(() => {
-    if (formattedDate) {
+    if (selectedTicket?.status === "BELUM DIBAYAR") {
       setIsBannerShow(true);
     } else {
       setIsBannerShow(false);
     }
-  }, [formattedDate]);
+  }, [selectedTicket]);
 
   return (
     <div className="bg-[#FFF0DC] py-5 md:py-0">
       <div>
         {isMobile ? <NavbarMobile /> : <Navbar />}
         <Toaster />
-        <div
-          className={`fixed flex bg-[#FF0000] text-white py-2 px-4 text-center w-full z-10 transition-transform duration-300 ease-in-out ${
-            isMobile ? "top-0" : " mt-7"
-          } ${isBannerShow ? "translate-y-0" : "-translate-y-full"}`}
-        >
-          <div className="flex items-center mx-auto">
-            <p className="flex items-center text-base font-medium text-white">
-              <span>Selesaikan Pembayaran Anda Sebelum {formattedDate}</span>
-            </p>
-          </div>
-          <div className="flex items-center">
-            <button
-              data-dismiss-target="#sticky-banner"
-              type="button"
-              className="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-white hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 dark:hover:bg-gray-600 dark:hover:text-white"
-              onClick={() => setIsBannerShow(false)}
-            >
-              <svg
-                className="w-3 h-3"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 14 14"
+        {selectedTicket?.status === "BELUM DIBAYAR" && (
+          <div
+            className={`fixed flex bg-[#FF0000] text-white py-2 px-4 text-center w-full z-10 transition-transform duration-300 ease-in-out ${
+              isMobile ? "top-0" : " mt-7"
+            } ${isBannerShow ? "translate-y-0" : "-translate-y-full"}`}
+          >
+            <div className="flex items-center mx-auto">
+              <p className="flex items-center text-base font-medium text-white">
+                <span>
+                  Selesaikan Pembayaran Anda Sebelum{" "}
+                  {format(
+                    new Date(selectedTicket?.expired_at),
+                    "d MMMM yyyy HH:mm",
+                    { locale: idLocale }
+                  )}{" "}
+                  WIB
+                </span>
+              </p>
+            </div>
+            <div className="flex items-center">
+              <button
+                data-dismiss-target="#sticky-banner"
+                type="button"
+                className="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-white hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5"
+                onClick={() => setIsBannerShow(false)}
               >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                />
-              </svg>
-              <span className="sr-only">Close banner</span>
-            </button>
+                <svg
+                  className="w-3 h-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 14 14"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                  />
+                </svg>
+                <span className="sr-only">Close banner</span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
         <div className="m-5 mt-10 md:m-10 md:py-20">
           {/* BACK BUTTON AND TOASTER */}
           <div>
@@ -1468,13 +1462,13 @@ export default function OrderHistory() {
                 <button
                   onClick={handleConfirmModalToggle} // MENUTUP MODAL
                   type="button"
-                  className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-[#003285] focus:z-10 focus:ring-4 focus:ring-gray-100 "
+                  className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-[#003285] focus:z-10 focus:ring- "
                 >
                   Batal
                 </button>
                 <button
                   onClick={handleRemoveAll}
-                  className="text-white ms-3 bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                  className="text-white ms-3 bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-0 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
                 >
                   Ya
                 </button>
@@ -1497,7 +1491,7 @@ export default function OrderHistory() {
             <div className="relative bg-white rounded-lg shadow">
               <button
                 type="button"
-                className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center mt-1"
                 onClick={handleCancelModalToggle} // MENUTUP MODAL
               >
                 <svg
@@ -1516,24 +1510,27 @@ export default function OrderHistory() {
                   />
                 </svg>
               </button>
-              <div className="p-4 md:p-5 text-center">
-                <h3 className="mb-5 text-lg font-normal text-gray-500">
+              <div className="p-4 md:p-5 text-center flex flex-col items-center">
+                <h3 className="text-lg font-normal text-gray-500">
                   Apakah Anda yakin ingin membatalkan pesanan tiket penerbangan
                   ini?
                 </h3>
-                <button
-                  onClick={handleCancelModalToggle} // MENUTUP MODAL
-                  type="button"
-                  className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-[#003285] focus:z-10 focus:ring-4 focus:ring-gray-100 "
-                >
-                  Kembali
-                </button>
-                <button
-                  onClick={handleCancelTransactions}
-                  className="text-white ms-3 bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
-                >
-                  Ya
-                </button>
+                <iframe src="https://lottie.host/embed/43cf72cb-f4cc-4491-a218-05d127d73ce1/RhKDgbsfaS.json"></iframe>
+                <div className="flex items-center">
+                  <button
+                    onClick={handleCancelModalToggle} // MENUTUP MODAL
+                    type="button"
+                    className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-[#003285] focus:z-10 focus:ring-0"
+                  >
+                    Kembali
+                  </button>
+                  <button
+                    onClick={handleCancelTransactions}
+                    className="text-white ms-3 bg-red-600 hover:bg-red-800 focus:ring-0 focus:outline-none font-medium rounded-lg text-sm inline-flex items-center px-9 py-2.5 text-center"
+                  >
+                    Ya
+                  </button>
+                </div>
               </div>
             </div>
           </div>

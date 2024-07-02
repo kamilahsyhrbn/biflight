@@ -14,7 +14,6 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange, Calendar } from "react-date-range";
 import { format } from "date-fns";
-import background from "../../../assets/images/otp.png";
 
 // ICON
 import { RiSearchLine } from "react-icons/ri";

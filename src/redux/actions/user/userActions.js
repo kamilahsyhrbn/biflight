@@ -184,7 +184,7 @@ export const addPassword =
       );
       // console.log("response add password", response);
       if (response.status === 200) {
-        toast(response?.data?.message, {
+        toast("Berhasil membuat kata sandi Anda!", {
           style: {
             background: "#28A745", // Background hijau
             color: "#FFFFFF", // Teks putih
