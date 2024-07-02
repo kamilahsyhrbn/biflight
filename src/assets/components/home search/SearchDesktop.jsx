@@ -27,7 +27,6 @@ import { useMediaQuery } from "react-responsive";
 export default function SearchDesktop() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const [isChecked, setIsChecked] = useState(false); // TOGGLE TANGGAL KEPULANGAN
   const [seatModalOpen, setSeatModalOpen] = useState(false); // MODAL KELAS PENERBANGAN
@@ -171,7 +170,8 @@ export default function SearchDesktop() {
           departureDate,
           seat_class,
           total_passenger,
-          filter
+          filter,
+          1
         )
       );
     } else {
@@ -182,7 +182,8 @@ export default function SearchDesktop() {
           singleDate,
           seat_class,
           total_passenger,
-          filter
+          filter,
+          1
         )
       );
     }

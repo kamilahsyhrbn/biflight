@@ -608,33 +608,35 @@ export default function SearchResult() {
 
   // UNTUK MENJALANKAN FUNGSI GET FLIGHT SAAT GANTI PAGE ATAU FILTER
   useEffect(() => {
-    if (choosenFlight?.length === 0) {
-      dispatch(
-        getFlight(
-          departure_code,
-          arrival_code,
-          departure_date,
-          seat_class,
-          total_passenger,
-          filter,
-          currentPage
-        )
-      );
-    }
-
-    if (returnDate) {
-      if (choosenFlight?.length === 1) {
+    if (flights?.length > 0) {
+      if (choosenFlight?.length === 0) {
         dispatch(
           getFlight(
-            arrival_code,
             departure_code,
-            return_date,
+            arrival_code,
+            departure_date,
             seat_class,
             total_passenger,
             filter,
             currentPage
           )
         );
+      }
+
+      if (returnDate) {
+        if (choosenFlight?.length === 1) {
+          dispatch(
+            getFlight(
+              arrival_code,
+              departure_code,
+              return_date,
+              seat_class,
+              total_passenger,
+              filter,
+              currentPage
+            )
+          );
+        }
       }
     }
 
@@ -653,6 +655,9 @@ export default function SearchResult() {
 
   return (
     <div className="bg-[#FFF0DC] ">
+      <div>
+        <Toaster />
+      </div>
       {isMobile ? (
         <div className="flex flex-col justify-center items-center bg-[#2A629A] text-white py-3 rounded-b-3xl">
           <h5 className="font-medium text-lg">
@@ -729,9 +734,7 @@ export default function SearchResult() {
                   </li>
                 </ol>
               </nav>
-              <div>
-                <Toaster />
-              </div>
+
               <div className="lg:flex lg:justify-center">
                 <div className="flex justify-between items-center mt-5 rounded-full lg:mx-10 bg-white py-2 px-5 shadow-lg lg:w-10/12">
                   <div className="flex overflow-auto no-scrollbar whitespace-nowrap">
@@ -1237,20 +1240,80 @@ export default function SearchResult() {
                       </svg>
                     </button>
                   </li>
-                  {[...Array(pages)].map((_, index) => (
-                    <li key={index}>
-                      <button
-                        onClick={() => goToPage(index + 1)}
-                        className={`flex items-center justify-center px-4 h-10 leading-tight ${
-                          currentPage === index + 1
-                            ? "text-[#003285] border border-[#2A629A] bg-blue-50"
-                            : "text-gray-500 bg-white border border-gray-300"
-                        } hover:bg-gray-100 hover:text-gray-700`}
-                      >
-                        {index + 1}
-                      </button>
-                    </li>
-                  ))}
+
+                  {[...Array(pages)].map((_, index) => {
+                    const startPage = currentPage - 3;
+                    const endPage = currentPage + 1;
+
+                    if (pages > 4) {
+                      if (index < 4 && currentPage <= 2) {
+                        return (
+                          <li key={index}>
+                            <button
+                              onClick={() => goToPage(index + 1)}
+                              className={`flex items-center justify-center px-4 h-10 leading-tight ${
+                                currentPage === index + 1
+                                  ? "text-[#003285] border border-[#2A629A] bg-blue-50"
+                                  : "text-gray-500 bg-white border border-gray-300"
+                              } hover:bg-gray-100 hover:text-gray-700`}
+                            >
+                              {index + 1}
+                            </button>
+                          </li>
+                        );
+                      } else if (
+                        index >= startPage &&
+                        index < endPage &&
+                        currentPage > 2
+                      ) {
+                        return (
+                          <li key={index}>
+                            <button
+                              onClick={() => goToPage(index + 1)}
+                              className={`flex items-center justify-center px-4 h-10 leading-tight ${
+                                currentPage === index + 1
+                                  ? "text-[#003285] border border-[#2A629A] bg-blue-50"
+                                  : "text-gray-500 bg-white border border-gray-300"
+                              } hover:bg-gray-100 hover:text-gray-700`}
+                            >
+                              {index + 1}
+                            </button>
+                          </li>
+                        );
+                      } else if (
+                        (index === 4 && currentPage <= 2) ||
+                        (index === endPage && currentPage > 2)
+                      ) {
+                        return (
+                          <li
+                            onClick={goToNextPage}
+                            key={index}
+                            className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                          >
+                            ...
+                          </li>
+                        );
+                      } else {
+                        return null;
+                      }
+                    } else {
+                      return (
+                        <li key={index}>
+                          <button
+                            onClick={() => goToPage(index + 1)}
+                            className={`flex items-center justify-center px-4 h-10 leading-tight ${
+                              currentPage === index + 1
+                                ? "text-[#003285] border border-[#2A629A] bg-blue-50"
+                                : "text-gray-500 bg-white border border-gray-300"
+                            } hover:bg-gray-100 hover:text-gray-700`}
+                          >
+                            {index + 1}
+                          </button>
+                        </li>
+                      );
+                    }
+                  })}
+
                   <li>
                     <button
                       onClick={goToNextPage}
@@ -2187,17 +2250,7 @@ export default function SearchResult() {
             })}
           </div>
 
-          <div
-            className={`w-full ${isMobile ? "pb-16" : ""} ${
-              returnDate
-                ? isMobile
-                  ? "mb-5"
-                  : "fixed bottom-0"
-                : isMobile
-                ? "mb-5"
-                : "fixed bottom-0"
-            }`}
-          >
+          <div className={`w-full ${isMobile ? "pb-16 mb-5" : ""} `}>
             <hr />
             <div className="p-4">
               <button

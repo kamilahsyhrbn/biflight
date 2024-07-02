@@ -1,6 +1,5 @@
 import React from "react";
-import gif from "../images/plane.gif";
-// BUAT NYIMPEN AJA SEMBARI NUNGGU API NYA AKU TARO SINI
+
 export default function Loader() {
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-[#FFF0DC]">

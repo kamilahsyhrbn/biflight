@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import bromo from "../../../assets/images/bromo.jpg";
 import Navbar from "../../../assets/components/navigations/navbar/navbar-transparent";
 import NavbarMobile from "../../../assets/components/navigations/navbar/Navbar-mobile";
@@ -9,20 +9,35 @@ import SearchMobile from "../../../assets/components/home search/SearchMobile";
 import SearchDesktop from "../../../assets/components/home search/SearchDesktop";
 import Card from "../../../assets/components/Card";
 import { useDispatch, useSelector } from "react-redux";
-import { getCheapestFlights } from "../../../redux/actions/flight/flightActions";
+import {
+  getCheapestFlights,
+  getFlight,
+} from "../../../redux/actions/flight/flightActions";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { FaPerson, FaBaby, FaChildDress } from "react-icons/fa6";
 
 // ICON
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { setChoosenFlight } from "../../../redux/reducers/flight/flightReducers";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const isMobile = useMediaQuery({ maxWidth: 767 }); // UNTUK TAMPILAN MOBILE
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // UNTUK TAMPILAN TABLET
 
-  const { cheapestFlights, isLoading } = useSelector((state) => state.flight);
+  const { cheapestFlights } = useSelector((state) => state.flight);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [selectedFlight, setSelectedFlight] = useState(null);
+  const [passengerModalOpen, setPassengerModalOpen] = useState(false); // MODAL JUMLAH PENUMPANG
+  const [total_passenger, setTotal_passenger] = useState(1);
+  const [penumpang, setPenumpang] = useState({
+    dewasa: 1,
+    anak: 0,
+    bayi: 0,
+  });
 
   useEffect(() => {
     dispatch(getCheapestFlights());
@@ -68,13 +83,66 @@ export default function Home() {
     prevArrow: <SamplePrevArrow />,
   };
 
+  // MODAL JUMLAH PENUMPANG
+  const handlePassengerModal = (flight) => {
+    setSelectedFlight(flight);
+    setPassengerModalOpen(!passengerModalOpen);
+  };
+
+  // BUAT COUNTER JUMLAH PENUMPANG
+  const handlePenumpang = (name, operation) => {
+    setPenumpang((prev) => {
+      return {
+        ...prev,
+        [name]: operation === "i" ? penumpang[name] + 1 : penumpang[name] - 1,
+      };
+    });
+  };
+
+  // BUAT JUMLAHIN TOTAL PENUMPANG
+  useEffect(() => {
+    const getTotalPenumpang = () => {
+      return penumpang?.dewasa + penumpang?.anak + penumpang?.bayi;
+    };
+
+    setTotal_passenger(getTotalPenumpang());
+  }, [penumpang]);
+
+  // JIKA BUTTON CARI DI KLIK, AKAN DIRECT KE HALAMAN HASIL PENCARIAN
+  const handleClick = () => {
+    if (!selectedFlight) return;
+
+    const {
+      departure,
+      arrival,
+      flight_date,
+      class: seat_class,
+    } = selectedFlight;
+
+    dispatch(
+      getFlight(
+        departure.airport_code,
+        arrival.airport_code,
+        flight_date,
+        seat_class,
+        total_passenger,
+        "",
+        1
+      )
+    );
+    dispatch(setChoosenFlight([]));
+    navigate(
+      `/hasil-pencarian?from=${departure.airport_code}&to=${arrival.airport_code}&departureDate=${flight_date}&class=${seat_class}&passenger=${total_passenger}&adult=${penumpang.dewasa}&child=${penumpang.anak}&infant=${penumpang.bayi}`,
+      { replace: true }
+    );
+    handlePassengerModal();
+  };
+
   return (
     <div className="bg-[#FFF0DC]">
       {isMobile ? <NavbarMobile /> : <Navbar />}
-
       {/* HEADER SECTION */}
       {isMobile ? <SearchMobile /> : <SearchDesktop />}
-
       {/* BODY SECTION */}
       <div className="p-10 pt-36 md:pt-12 ">
         <div className="pt-64 md:pt-52 pb-12 ">
@@ -110,8 +178,8 @@ export default function Home() {
               {cheapestFlights.length === 0 ? (
                 <div className="flex flex-col items-center">
                   <iframe src="https://lottie.host/embed/d3072280-f0c3-4850-9067-359d9d6b5744/V9wwvXaroH.json"></iframe>
-                  <h5 className="text-[#003285]">
-                    Tiket penerbangan tidak ditemukan pada maskapai ini
+                  <h5 className="text-[#003285] text-center">
+                    Tiket penerbangan tidak ditemukan
                   </h5>
                 </div>
               ) : (
@@ -119,7 +187,10 @@ export default function Home() {
                   <Slider {...settings}>
                     {cheapestFlights?.map((flight) => (
                       <div key={flight?.flight_id}>
-                        <Card flight={flight} />
+                        <Card
+                          flight={flight}
+                          onClick={() => handlePassengerModal(flight)}
+                        />
                       </div>
                     ))}
                   </Slider>
@@ -642,6 +713,161 @@ export default function Home() {
               Nikmati kemudahan dan kenyamanan dalam memesan tiket pesawat murah
               untuk penerbangan domestik.
             </p>
+          </div>
+        </div>
+      </div>
+
+      {/* MODAL PILIH JUMLAH PENUMPANG */}
+      <div
+        className={`fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50 overflow-y-scroll transition-opacity duration-300  ${
+          passengerModalOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <div
+          className={`relative p-4 w-full lg:w-2/5 max-w-2xl max-h-full transform transition-transform duration-300 ease-in-out ${
+            passengerModalOpen ? "translate-y-0" : "-translate-y-full"
+          }`}
+        >
+          <div className="relative bg-white rounded-lg shadow">
+            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+              <h3 className="text-xl font-semibold text-gray-900">
+                Pilih Jumlah Penumpang
+              </h3>
+              <button
+                type="button"
+                id="closePassengerModal"
+                onClick={handlePassengerModal}
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+              >
+                <svg
+                  className="w-3 h-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 14 14"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div className="p-4 md:p-5 space-y-4">
+              <div className="flex justify-between items-center">
+                <div className="flex flex-col">
+                  <span className="flex items-center mb-1">
+                    <FaPerson className="text-xl mr-1" />
+                    Dewasa
+                  </span>
+                  <span className="text-sm text-slate-500">
+                    (12 tahun keatas)
+                  </span>
+                </div>
+                <div className="flex gap-5 items-center">
+                  <button
+                    type="button"
+                    id="decreaseAdult"
+                    className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
+                    disabled={penumpang?.dewasa <= 1}
+                    onClick={() => handlePenumpang("dewasa", "d")}
+                  >
+                    -
+                  </button>
+                  <span className="border-b-2 border-[#2A629A] px-3 pb-1">
+                    {penumpang?.dewasa}
+                  </span>
+                  <button
+                    type="button"
+                    id="increaseAdult"
+                    className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
+                    onClick={() => handlePenumpang("dewasa", "i")}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center my-3">
+                <div className="flex flex-col">
+                  <span className="flex items-center mb-1">
+                    <FaChildDress className="text-xl mr-1" />
+                    Anak
+                  </span>
+                  <span className="text-sm text-slate-500">(2 - 11 tahun)</span>
+                </div>
+                <div className="flex gap-5 items-center">
+                  <button
+                    type="button"
+                    id="decreaseChild"
+                    className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
+                    disabled={penumpang?.anak === 0}
+                    onClick={() => handlePenumpang("anak", "d")}
+                  >
+                    -
+                  </button>
+                  <span className="border-b-2 border-[#2A629A] px-3 pb-1">
+                    {penumpang?.anak}
+                  </span>
+                  <button
+                    type="button"
+                    id="increaseChild"
+                    className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
+                    onClick={() => handlePenumpang("anak", "i")}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+              <div className="flex justify-between items-center">
+                <div className="flex flex-col">
+                  <span className="flex items-center mb-1">
+                    <FaBaby className="text-xl mr-1" />
+                    Bayi
+                  </span>
+                  <span className="text-sm text-slate-500">
+                    (Dibawah 2 tahun)
+                  </span>
+                </div>
+                <div className="flex gap-5 items-center">
+                  <button
+                    type="button"
+                    id="decreaseBaby"
+                    className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
+                    disabled={penumpang?.bayi === 0}
+                    onClick={() => handlePenumpang("bayi", "d")}
+                  >
+                    -
+                  </button>
+                  <span className="border-b-2 border-[#2A629A] px-3 pb-1">
+                    {penumpang?.bayi}
+                  </span>
+                  <button
+                    type="button"
+                    id="increaseBaby"
+                    className="border-2 border-[#2A629A] px-3 py-1 rounded-lg"
+                    onClick={() => handlePenumpang("bayi", "i")}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b ">
+              <button
+                type="submit"
+                id="searchFlights"
+                onClick={handleClick}
+                className="text-white bg-[#2A629A] transition-colors duration-300 hover:bg-[#003285] font-medium rounded-lg text-sm px-5 py-2.5 text-center "
+              >
+                Cari
+              </button>
+            </div>
           </div>
         </div>
       </div>

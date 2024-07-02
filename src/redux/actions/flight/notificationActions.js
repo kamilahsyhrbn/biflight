@@ -10,6 +10,7 @@ import { setIsLoggedIn, setToken } from "../../reducers/auth/loginReducers";
 export const getNotification = () => async (dispatch, getState) => {
   const { token } = getState().login;
   dispatch(setIsLoading(true));
+
   try {
     const response = await axios.get(
       `${import.meta.env.VITE_REACT_APP_SERVER}/notifications`,
@@ -26,6 +27,8 @@ export const getNotification = () => async (dispatch, getState) => {
     }
   } catch (error) {
     // console.log(error);
+    dispatch(setNotifikasi([]));
+    dispatch(setIsLoading(false));
     if (error?.response?.status === 403) {
       dispatch(setToken(null));
       dispatch(setIsLoggedIn(false));

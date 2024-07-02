@@ -22,6 +22,7 @@ import {
   removeAllFromRecentSearch,
   removeFromRecentSearch,
 } from "../../../redux/reducers/flight/transactionReducers";
+import Loader from "../../../assets/components/Loader";
 
 //ICON
 import { IoIosArrowBack, IoMdCheckmark } from "react-icons/io";
@@ -43,7 +44,7 @@ export default function OrderHistory() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
 
-  const { transactions } = useSelector((state) => state.transaction);
+  const { transactions, isLoading } = useSelector((state) => state.transaction);
 
   const { profile } = useSelector((state) => state.user);
   const email = profile?.email;
@@ -58,6 +59,7 @@ export default function OrderHistory() {
   const [isSearchDateOpen, setIsSearchDateOpen] = useState(false); // MODAL PENCARIAN BERDASARKAN TANGGAL TRANSAKSI
   const [confirmModalOpen, setConfirmModalOpen] = useState(false); // MODAL KONFIRMASI HAPUS RIWAYAT PENCARIAN KODE PENERBANGAN
   const [cancelModalOpen, setCancelModalOpen] = useState(false); // MODAL KONFIRMASI MEMBATALKAN PEMESANAN TIKET PENERBANGAN
+  const [isBannerShow, setIsBannerShow] = useState(false);
   const [searchButton, setSearchButton] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState([]);
   const [query, setQuery] = useState("");
@@ -89,6 +91,25 @@ export default function OrderHistory() {
     }`;
   }
 
+  const getFormattedDate = () => {
+    if (!selectedTicket?.transaction_date) {
+      return null;
+    }
+    if (selectedTicket.status === "BELUM DIBAYAR") {
+      const dateString = selectedTicket.transaction_date;
+      const [datePart, timePart] = dateString.split(", ");
+      const date = new Date(`${datePart} ${timePart}`);
+      date.setDate(date.getDate() + 3);
+      return date.toLocaleString("id-ID", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      });
+    }
+  };
+
+  const formattedDate = getFormattedDate();
+
   // FUNGSI UNTUK MENAMPILKAN DETAIL TIKET PENERBANGAN
   const handleSelectTicket = (transaction) => {
     setSelectedTicket(transaction);
@@ -97,6 +118,12 @@ export default function OrderHistory() {
       top: 0,
       behavior: "smooth",
     });
+
+    if (transaction?.status === "BELUM DIBAYAR") {
+      setIsBannerShow(true);
+    } else {
+      setIsBannerShow(false);
+    }
   };
 
   // FUNGSI UNTUK MENAMPILKAN RIWAYAT PEMESANAN TIKET BERDASARKAN FILTER
@@ -235,14 +262,58 @@ export default function OrderHistory() {
     }
   };
 
+  useEffect(() => {
+    if (formattedDate) {
+      setIsBannerShow(true);
+    } else {
+      setIsBannerShow(false);
+    }
+  }, [formattedDate]);
+
   return (
     <div className="bg-[#FFF0DC] py-5 md:py-0">
       <div>
         {isMobile ? <NavbarMobile /> : <Navbar />}
-        <div className="m-5 md:m-10 md:py-20">
+        <Toaster />
+        <div
+          className={`fixed flex bg-[#FF0000] text-white py-2 px-4 text-center w-full z-10 transition-transform duration-300 ease-in-out ${
+            isMobile ? "top-0" : " mt-7"
+          } ${isBannerShow ? "translate-y-0" : "-translate-y-full"}`}
+        >
+          <div className="flex items-center mx-auto">
+            <p className="flex items-center text-base font-medium text-white">
+              <span>Selesaikan Pembayaran Anda Sebelum {formattedDate}</span>
+            </p>
+          </div>
+          <div className="flex items-center">
+            <button
+              data-dismiss-target="#sticky-banner"
+              type="button"
+              className="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-white hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 dark:hover:bg-gray-600 dark:hover:text-white"
+              onClick={() => setIsBannerShow(false)}
+            >
+              <svg
+                className="w-3 h-3"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 14"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                />
+              </svg>
+              <span className="sr-only">Close banner</span>
+            </button>
+          </div>
+        </div>
+        <div className="m-5 mt-10 md:m-10 md:py-20">
           {/* BACK BUTTON AND TOASTER */}
           <div>
-            <Toaster />
             <div className="flex flex-col md:flex-row items-center gap-3 md:gap-0 mb-6">
               <div className={`${isMobile ? "hidden" : "lg:w-1/12"}`}>
                 <Link to="/">
@@ -425,370 +496,289 @@ export default function OrderHistory() {
             </div>
           ) : (
             // JIKA ADA RIWAYAT PEMESANAN
-            <div className="flex flex-col-reverse lg:flex-row justify-center gap-14 overflow-hidden">
-              <div>
-                {filteredTransactions
-                  ?.sort((a, b) => b.transaction_id - a.transaction_id)
-                  .map((transaction) => (
-                    <div
-                      className={`${
-                        selectedTicket?.transaction_id ===
-                        transaction?.transaction_id
-                          ? " border-[#003285] border-2"
-                          : ""
-                      }
+            <>
+              {isLoading ? (
+                <div className="flex justify-center">
+                  <Loader />
+                </div>
+              ) : (
+                <div className="flex flex-col-reverse lg:flex-row justify-center gap-14 overflow-hidden">
+                  <div>
+                    {filteredTransactions
+                      ?.sort((a, b) => b.transaction_id - a.transaction_id)
+                      .map((transaction) => (
+                        <div
+                          className={`${
+                            selectedTicket?.transaction_id ===
+                            transaction?.transaction_id
+                              ? " border-[#003285] border-2"
+                              : ""
+                          }
                   bg-white shadow-lg p-6 rounded-xl my-3`}
-                      key={transaction?.transaction_id}
-                      onClick={() => handleSelectTicket(transaction)}
-                    >
-                      <div className="flex justify-between items-center">
-                        {transaction?.return_flight ? (
-                          <div>
-                            <span className="bg-[#40A2E3] text-white py-2 px-4 rounded-full">
-                              Pulang-Pergi
-                            </span>
-                          </div>
-                        ) : (
-                          <div>
-                            <span className="bg-[#2A629A] text-white py-2 px-4 rounded-full">
-                              Sekali Jalan
-                            </span>
-                          </div>
-                        )}
-                        {transaction?.status === "BERHASIL" && (
-                          <span className="bg-[#28A745] text-white py-2 px-4 rounded-full">
-                            {transaction?.status}
-                          </span>
-                        )}
-                        {transaction?.status === "BELUM DIBAYAR" && (
-                          <span className="bg-[#FF0000] text-white py-2 px-4 rounded-full">
-                            {transaction?.status}
-                          </span>
-                        )}
-                        {transaction?.status === "BATAL" && (
-                          <span className="bg-[#8A8A8A] text-white py-2 px-4 rounded-full">
-                            {transaction?.status}
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex flex-col mt-6 gap-4">
-                        <div className="flex justify-between items-center gap-0">
-                          <div className="flex">
-                            <IoLocationSharp className="text-2xl font-extrabold text-[#003285]" />
-                            <div>
-                              <h5 className="text-xl font-medium">
-                                {transaction?.departure_flight?.departure_city}
-                              </h5>
-                              <div className="flex flex-col">
-                                <time className="text-sm">
-                                  {new Date(
-                                    transaction?.departure_flight?.flight_date
-                                  ).toLocaleString("id-ID", {
-                                    day: "2-digit",
-                                    month: "long",
-                                    year: "numeric",
-                                  })}
-                                </time>
-                                <time className="text-sm">
-                                  {
-                                    transaction?.departure_flight
-                                      ?.departure_time
-                                  }
-                                </time>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="border-b-2 border-[#003285] lg:w-[35vh] md:w-[35vh]  text-center text-sm">
-                            <time>
-                              {formatDuration(
-                                transaction?.departure_flight?.duration
-                              )}
-                            </time>
-                          </div>
-                          <div className="flex">
-                            <IoLocationSharp className="text-2xl font-extrabold text-[#003285]" />
-                            <div>
-                              <h5 className="text-xl font-medium">
-                                {transaction?.departure_flight?.arrival_city}
-                              </h5>
-                              <div className="flex flex-col">
-                                <time className="text-sm">
-                                  {new Date(
-                                    transaction?.departure_flight?.flight_date
-                                  ).toLocaleString("id-ID", {
-                                    day: "2-digit",
-                                    month: "long",
-                                    year: "numeric",
-                                  })}
-                                </time>
-                                <time className="text-sm">
-                                  {transaction?.departure_flight?.arrival_time}
-                                </time>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {/* JIKA TIKET PULANG-PERGI */}
-                        {transaction?.return_flight && (
-                          <div className="flex justify-between items-center gap-3">
-                            <div className="flex">
-                              <IoLocationSharp className="text-2xl font-extrabold text-[#003285]" />
+                          key={transaction?.transaction_id}
+                          onClick={() => handleSelectTicket(transaction)}
+                        >
+                          <div className="flex justify-between items-center">
+                            {transaction?.return_flight ? (
                               <div>
-                                <h5 className="text-xl font-medium">
-                                  {transaction?.return_flight?.departure_city}
-                                </h5>
-                                <div className="flex flex-col">
-                                  <time className="text-sm">
-                                    {new Date(
-                                      transaction?.return_flight?.flight_date
-                                    ).toLocaleString("id-ID", {
-                                      day: "2-digit",
-                                      month: "long",
-                                      year: "numeric",
-                                    })}
-                                  </time>
-                                  <time className="text-sm">
-                                    {transaction?.return_flight?.departure_time}
-                                  </time>
+                                <span className="bg-[#40A2E3] text-white py-2 px-4 rounded-full">
+                                  Pulang-Pergi
+                                </span>
+                              </div>
+                            ) : (
+                              <div>
+                                <span className="bg-[#2A629A] text-white py-2 px-4 rounded-full">
+                                  Sekali Jalan
+                                </span>
+                              </div>
+                            )}
+                            {transaction?.status === "BERHASIL" && (
+                              <span className="bg-[#28A745] text-white py-2 px-4 rounded-full">
+                                {transaction?.status}
+                              </span>
+                            )}
+                            {transaction?.status === "BELUM DIBAYAR" && (
+                              <span className="bg-[#FF0000] text-white py-2 px-4 rounded-full">
+                                {transaction?.status}
+                              </span>
+                            )}
+                            {transaction?.status === "BATAL" && (
+                              <span className="bg-[#8A8A8A] text-white py-2 px-4 rounded-full">
+                                {transaction?.status}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex flex-col mt-6 gap-4">
+                            <div className="flex justify-between items-center gap-0">
+                              <div className="flex">
+                                <IoLocationSharp className="text-2xl font-extrabold text-[#003285]" />
+                                <div>
+                                  <h5 className="text-xl font-medium">
+                                    {
+                                      transaction?.departure_flight
+                                        ?.departure_city
+                                    }
+                                  </h5>
+                                  <div className="flex flex-col">
+                                    <time className="text-sm">
+                                      {new Date(
+                                        transaction?.departure_flight?.flight_date
+                                      ).toLocaleString("id-ID", {
+                                        day: "2-digit",
+                                        month: "long",
+                                        year: "numeric",
+                                      })}
+                                    </time>
+                                    <time className="text-sm">
+                                      {
+                                        transaction?.departure_flight
+                                          ?.departure_time
+                                      }
+                                    </time>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="border-b-2 border-[#003285] lg:w-[35vh] md:w-[35vh]  text-center text-sm">
+                                <time>
+                                  {formatDuration(
+                                    transaction?.departure_flight?.duration
+                                  )}
+                                </time>
+                              </div>
+                              <div className="flex">
+                                <IoLocationSharp className="text-2xl font-extrabold text-[#003285]" />
+                                <div>
+                                  <h5 className="text-xl font-medium">
+                                    {
+                                      transaction?.departure_flight
+                                        ?.arrival_city
+                                    }
+                                  </h5>
+                                  <div className="flex flex-col">
+                                    <time className="text-sm">
+                                      {new Date(
+                                        transaction?.departure_flight?.flight_date
+                                      ).toLocaleString("id-ID", {
+                                        day: "2-digit",
+                                        month: "long",
+                                        year: "numeric",
+                                      })}
+                                    </time>
+                                    <time className="text-sm">
+                                      {
+                                        transaction?.departure_flight
+                                          ?.arrival_time
+                                      }
+                                    </time>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                            <div className="border-b-2 border-[#003285] lg:w-[35vh] md:w-[35vh] text-center text-sm">
-                              <time>
-                                {formatDuration(
-                                  transaction?.return_flight?.duration
-                                )}
-                              </time>
-                            </div>
-                            <div className="flex">
-                              <IoLocationSharp className="text-2xl font-extrabold text-[#003285]" />
-                              <div>
-                                <h5 className="text-xl font-medium">
-                                  {transaction?.return_flight?.arrival_city}
-                                </h5>
-                                <div className="flex flex-col">
-                                  <time className="text-sm">
-                                    {new Date(
-                                      transaction?.return_flight?.flight_date
-                                    ).toLocaleString("id-ID", {
-                                      day: "2-digit",
-                                      month: "long",
-                                      year: "numeric",
-                                    })}
-                                  </time>
-                                  <time className="text-sm">
-                                    {transaction?.return_flight?.arrival_time}
+                            {/* JIKA TIKET PULANG-PERGI */}
+                            {transaction?.return_flight && (
+                              <div className="flex justify-between items-center gap-3">
+                                <div className="flex">
+                                  <IoLocationSharp className="text-2xl font-extrabold text-[#003285]" />
+                                  <div>
+                                    <h5 className="text-xl font-medium">
+                                      {
+                                        transaction?.return_flight
+                                          ?.departure_city
+                                      }
+                                    </h5>
+                                    <div className="flex flex-col">
+                                      <time className="text-sm">
+                                        {new Date(
+                                          transaction?.return_flight?.flight_date
+                                        ).toLocaleString("id-ID", {
+                                          day: "2-digit",
+                                          month: "long",
+                                          year: "numeric",
+                                        })}
+                                      </time>
+                                      <time className="text-sm">
+                                        {
+                                          transaction?.return_flight
+                                            ?.departure_time
+                                        }
+                                      </time>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="border-b-2 border-[#003285] lg:w-[35vh] md:w-[35vh] text-center text-sm">
+                                  <time>
+                                    {formatDuration(
+                                      transaction?.return_flight?.duration
+                                    )}
                                   </time>
                                 </div>
+                                <div className="flex">
+                                  <IoLocationSharp className="text-2xl font-extrabold text-[#003285]" />
+                                  <div>
+                                    <h5 className="text-xl font-medium">
+                                      {transaction?.return_flight?.arrival_city}
+                                    </h5>
+                                    <div className="flex flex-col">
+                                      <time className="text-sm">
+                                        {new Date(
+                                          transaction?.return_flight?.flight_date
+                                        ).toLocaleString("id-ID", {
+                                          day: "2-digit",
+                                          month: "long",
+                                          year: "numeric",
+                                        })}
+                                      </time>
+                                      <time className="text-sm">
+                                        {
+                                          transaction?.return_flight
+                                            ?.arrival_time
+                                        }
+                                      </time>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        )}
-                        <hr />
-                        <div className="flex flex-col md:flex-row justify-between md:items-center">
-                          <div className="flex flex-col">
-                            <h5 className="font-medium">Nomor Penerbangan:</h5>
-                            <p>{transaction?.booking_code}</p>
-                          </div>
-                          <div className="flex flex-col">
-                            <h5 className="font-medium">Class:</h5>
-                            <p>
-                              {transaction?.departure_flight?.class}{" "}
-                              {transaction?.return_flight?.class
-                                ? `/ ${transaction?.return_flight?.class}`
-                                : ""}
-                            </p>
-                          </div>
-                          <h4 className="text-lg font-semibold text-[#003285]">
-                            {new Intl.NumberFormat("id-ID", {
-                              style: "currency",
-                              currency: "IDR",
-                            }).format(transaction?.total_price)}
-                          </h4>
-                        </div>
-                        <hr />
-                        <div className="flex">
-                          <p className="font-medium">Tanggal Pemesanan: </p>
-                          <time className="ml-2">
-                            {transaction?.transaction_date}
-                          </time>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-
-              <div className="lg:w-2/5">
-                {/* CARD DETAIL TIKET */}
-                <div className="bg-white shadow-lg p-6 rounded-xl my-3">
-                  {selectedTicket.length === 0 ? (
-                    <div>
-                      <h4 className="text-[#003285] font-semibold text-center">
-                        Silahkan pilih tiket yang ingin Anda lihat detailnya
-                      </h4>
-                    </div>
-                  ) : (
-                    <div>
-                      <div className="flex justify-between items-center gap-3 mb-2">
-                        <h4 className="text-xl text-[#003285] font-semibold">
-                          Detail Pesanan
-                        </h4>
-                        {selectedTicket?.status === "BERHASIL" && (
-                          <span className="bg-[#28A745] text-white py-2 px-4 rounded-full text-sm">
-                            {selectedTicket?.status}
-                          </span>
-                        )}
-                        {selectedTicket?.status === "BELUM DIBAYAR" && (
-                          <span className="bg-[#FF0000] text-white py-2 px-4 rounded-full text-sm">
-                            {selectedTicket?.status}
-                          </span>
-                        )}
-                        {selectedTicket?.status === "BATAL" && (
-                          <span className="bg-[#8A8A8A] text-white py-2 px-4 rounded-full text-sm">
-                            {selectedTicket?.status}
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex justify-between items-center my-4">
-                        <div className="">
-                          <h5>Tanggal Pemesanan: </h5>
-                          <p className="text-[#003285] font-semibold">
-                            <time>{selectedTicket?.transaction_date}</time>
-                          </p>
-                        </div>
-                        <div className="">
-                          <h5>Nomor Penerbangan: </h5>
-                          <p className="text-[#003285] font-semibold">
-                            {selectedTicket?.booking_code}
-                          </p>
-                        </div>
-                      </div>
-                      {selectedTicket?.return_flight && (
-                        <div className="flex mb-4">
-                          <h5 className="font-medium py-1 px-3 rounded-lg bg-[#86B6F6] text-white">
-                            Pergi:
-                          </h5>
-                        </div>
-                      )}
-                      <div className="flex flex-row gap-3">
-                        <div className="flex flex-col justify-between items-center">
-                          <div className="flex flex-col text-center mt-1.5">
-                            <time className="mb-1 text-lg font-semibold leading-none">
-                              {selectedTicket?.departure_flight?.departure_time}
-                            </time>
-                            <div className="text-sm">
-                              {new Date(
-                                selectedTicket?.departure_flight?.flight_date
-                              ).toLocaleString("id-ID", {
-                                day: "2-digit",
-                                month: "long",
-                                year: "numeric",
-                              })}
-                            </div>
-                          </div>
-                          <div className="flex-grow"></div>
-                          <div className="flex items-center justify-center">
-                            <span className="text-sm">
-                              {formatDuration(
-                                selectedTicket?.departure_flight?.duration
-                              )}
-                            </span>
-                          </div>
-                          <div className="flex-grow"></div>
-                          <div className="flex flex-col text-center mt-1.5">
-                            <time className="mb-1 text-lg font-semibold leading-none">
-                              {selectedTicket?.departure_flight?.arrival_time}
-                            </time>
-                            <div className="text-sm">
-                              {new Date(
-                                selectedTicket?.departure_flight?.flight_date
-                              ).toLocaleString("id-ID", {
-                                day: "2-digit",
-                                month: "long",
-                                year: "numeric",
-                              })}
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <ol className="relative border-s border-gray-200">
-                            <li className="mb-5 ms-4">
-                              <div className="absolute w-3 h-3 bg-[#2A629A] rounded-full mt-1.5 -start-1.5 border border-white"></div>
-                              <h3 className="text-lg font-semibold">
-                                {
-                                  selectedTicket?.departure_flight
-                                    ?.departure_airport
-                                }
-                              </h3>
-                              <p className="mb-4 text-sm">
-                                {
-                                  selectedTicket?.departure_flight
-                                    ?.departure_terminal
-                                }
-                              </p>
-                            </li>
-                            <li className="mb-5 ms-4 flex flex-col gap-1">
-                              <div className="flex items-center">
+                            )}
+                            <hr />
+                            <div className="flex flex-col md:flex-row justify-between md:items-center">
+                              <div className="flex flex-col">
+                                <h5 className="font-medium">
+                                  Nomor Penerbangan:
+                                </h5>
+                                <p>{transaction?.booking_code}</p>
+                              </div>
+                              <div className="flex flex-col">
+                                <h5 className="font-medium">Class:</h5>
                                 <p>
-                                  {selectedTicket?.departure_flight?.airline}
+                                  {transaction?.departure_flight?.class}{" "}
+                                  {transaction?.return_flight?.class
+                                    ? `/ ${transaction?.return_flight?.class}`
+                                    : ""}
                                 </p>
                               </div>
-                              {selectedTicket?.passengers?.map(
-                                (passenger, i) => {
-                                  const index = i + 1;
-                                  return (
-                                    <div key={passenger?.passenger_id}>
-                                      <h5 className="text-[#003285]">
-                                        Penumpang {index}: {passenger?.title}{" "}
-                                        {passenger?.name}
-                                      </h5>
-                                      <p>ID: {passenger?.passenger_id}</p>
-                                    </div>
-                                  );
-                                }
-                              )}
-                            </li>
-                            <li className="ms-4">
-                              <div className="absolute w-3 h-3 bg-[#2A629A] rounded-full mt-1.5 -start-1.5 border border-white"></div>
-                              <h3 className="text-lg font-semibold">
-                                {
-                                  selectedTicket?.departure_flight
-                                    ?.arrival_airport
-                                }
-                              </h3>
-                            </li>
-                          </ol>
-                          <div className="ms-4">
-                            <p className="text-sm">
-                              {
-                                selectedTicket?.departure_flight
-                                  ?.arrival_terminal
-                              }
-                            </p>
+                              <h4 className="text-lg font-semibold text-[#003285]">
+                                {new Intl.NumberFormat("id-ID", {
+                                  style: "currency",
+                                  currency: "IDR",
+                                }).format(transaction?.total_price)}
+                              </h4>
+                            </div>
+                            <hr />
+                            <div className="flex">
+                              <p className="font-medium">Tanggal Pemesanan: </p>
+                              <time className="ml-2">
+                                {transaction?.transaction_date}
+                              </time>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      ))}
+                  </div>
 
-                      {/* JIKA PULANG-PERGI */}
-                      {selectedTicket?.return_flight && (
+                  <div className="lg:w-2/5">
+                    {/* CARD DETAIL TIKET */}
+                    <div className="bg-white shadow-lg p-6 rounded-xl my-3">
+                      {selectedTicket.length === 0 ? (
                         <div>
-                          <div className="flex my-4">
-                            <h5 className="font-medium py-1 px-3 rounded-lg bg-[#86B6F6] text-white">
-                              Pulang:
-                            </h5>
+                          <h4 className="text-[#003285] font-semibold text-center">
+                            Silahkan pilih tiket yang ingin Anda lihat detailnya
+                          </h4>
+                        </div>
+                      ) : (
+                        <div>
+                          <div className="flex justify-between items-center gap-3 mb-2">
+                            <h4 className="text-xl text-[#003285] font-semibold">
+                              Detail Pesanan
+                            </h4>
+                            {selectedTicket?.status === "BERHASIL" && (
+                              <span className="bg-[#28A745] text-white py-2 px-4 rounded-full text-sm">
+                                {selectedTicket?.status}
+                              </span>
+                            )}
+                            {selectedTicket?.status === "BELUM DIBAYAR" && (
+                              <span className="bg-[#FF0000] text-white py-2 px-4 rounded-full text-sm">
+                                {selectedTicket?.status}
+                              </span>
+                            )}
+                            {selectedTicket?.status === "BATAL" && (
+                              <span className="bg-[#8A8A8A] text-white py-2 px-4 rounded-full text-sm">
+                                {selectedTicket?.status}
+                              </span>
+                            )}
                           </div>
+                          <div className="flex justify-between items-center my-4">
+                            <div className="">
+                              <h5>Tanggal Pemesanan: </h5>
+                              <p className="text-[#003285] font-semibold">
+                                <time>{selectedTicket?.transaction_date}</time>
+                              </p>
+                            </div>
+                            <div className="">
+                              <h5>Nomor Penerbangan: </h5>
+                              <p className="text-[#003285] font-semibold">
+                                {selectedTicket?.booking_code}
+                              </p>
+                            </div>
+                          </div>
+                          {selectedTicket?.return_flight && (
+                            <div className="flex mb-4">
+                              <h5 className="font-medium py-0.5 px-5 rounded-lg bg-[#86B6F6] text-white">
+                                Pergi
+                              </h5>
+                            </div>
+                          )}
                           <div className="flex flex-row gap-3">
                             <div className="flex flex-col justify-between items-center">
                               <div className="flex flex-col text-center mt-1.5">
                                 <time className="mb-1 text-lg font-semibold leading-none">
                                   {
-                                    selectedTicket?.return_flight
+                                    selectedTicket?.departure_flight
                                       ?.departure_time
                                   }
                                 </time>
                                 <div className="text-sm">
                                   {new Date(
-                                    selectedTicket?.return_flight?.flight_date
+                                    selectedTicket?.departure_flight?.flight_date
                                   ).toLocaleString("id-ID", {
                                     day: "2-digit",
                                     month: "long",
@@ -800,18 +790,21 @@ export default function OrderHistory() {
                               <div className="flex items-center justify-center">
                                 <span className="text-sm">
                                   {formatDuration(
-                                    selectedTicket?.return_flight?.duration
+                                    selectedTicket?.departure_flight?.duration
                                   )}
                                 </span>
                               </div>
                               <div className="flex-grow"></div>
                               <div className="flex flex-col text-center mt-1.5">
                                 <time className="mb-1 text-lg font-semibold leading-none">
-                                  {selectedTicket?.return_flight?.arrival_time}
+                                  {
+                                    selectedTicket?.departure_flight
+                                      ?.arrival_time
+                                  }
                                 </time>
                                 <div className="text-sm">
                                   {new Date(
-                                    selectedTicket?.return_flight?.flight_date
+                                    selectedTicket?.departure_flight?.flight_date
                                   ).toLocaleString("id-ID", {
                                     day: "2-digit",
                                     month: "long",
@@ -826,13 +819,13 @@ export default function OrderHistory() {
                                   <div className="absolute w-3 h-3 bg-[#2A629A] rounded-full mt-1.5 -start-1.5 border border-white"></div>
                                   <h3 className="text-lg font-semibold">
                                     {
-                                      selectedTicket?.return_flight
+                                      selectedTicket?.departure_flight
                                         ?.departure_airport
                                     }
                                   </h3>
                                   <p className="mb-4 text-sm">
                                     {
-                                      selectedTicket?.return_flight
+                                      selectedTicket?.departure_flight
                                         ?.departure_terminal
                                     }
                                   </p>
@@ -840,7 +833,10 @@ export default function OrderHistory() {
                                 <li className="mb-5 ms-4 flex flex-col gap-1">
                                   <div className="flex items-center">
                                     <p>
-                                      {selectedTicket?.return_flight?.airline}
+                                      {
+                                        selectedTicket?.departure_flight
+                                          ?.airline
+                                      }
                                     </p>
                                   </div>
                                   {selectedTicket?.passengers?.map(
@@ -862,7 +858,7 @@ export default function OrderHistory() {
                                   <div className="absolute w-3 h-3 bg-[#2A629A] rounded-full mt-1.5 -start-1.5 border border-white"></div>
                                   <h3 className="text-lg font-semibold">
                                     {
-                                      selectedTicket?.return_flight
+                                      selectedTicket?.departure_flight
                                         ?.arrival_airport
                                     }
                                   </h3>
@@ -871,182 +867,307 @@ export default function OrderHistory() {
                               <div className="ms-4">
                                 <p className="text-sm">
                                   {
-                                    selectedTicket?.return_flight
+                                    selectedTicket?.departure_flight
                                       ?.arrival_terminal
                                   }
                                 </p>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      )}
 
-                      <div className="my-4 py-3 border-y-2">
-                        <h5 className="font-semibold ">Rincian Harga</h5>
-                        <div className="flex justify-between">
-                          <div>
-                            {selectedTicket?.total_adult !== 0 && (
-                              <p>{selectedTicket?.total_adult} Dewasa</p>
-                            )}
-                            {selectedTicket?.total_children !== 0 && (
-                              <p>{selectedTicket?.total_children} Anak</p>
-                            )}
-                            {selectedTicket?.total_baby !== 0 && (
-                              <p>{selectedTicket?.total_baby} Bayi</p>
-                            )}
-                            <p>Total Sebelum Pajak</p>
-                            <p>Pajak (10%)</p>
-                            <p>Total Setelah Pajak</p>
-                          </div>
-                          <div>
-                            {selectedTicket?.total_adult !== 0 && (
-                              <div>
-                                {selectedTicket?.return_flight ? (
-                                  <p>
-                                    {new Intl.NumberFormat("id-ID", {
-                                      style: "currency",
-                                      currency: "IDR",
-                                    }).format(
-                                      selectedTicket?.total_adult *
-                                        (selectedTicket?.departure_flight
-                                          ?.price +
-                                          selectedTicket?.return_flight?.price)
-                                    )}
-                                  </p>
-                                ) : (
-                                  <p>
-                                    {new Intl.NumberFormat("id-ID", {
-                                      style: "currency",
-                                      currency: "IDR",
-                                    }).format(
-                                      selectedTicket?.total_adult *
-                                        selectedTicket?.departure_flight?.price
-                                    )}
-                                  </p>
-                                )}
+                          {/* JIKA PULANG-PERGI */}
+                          {selectedTicket?.return_flight && (
+                            <div>
+                              <div className="flex my-4">
+                                <h5 className="font-medium py-0.5 px-3 rounded-lg bg-[#86B6F6] text-white">
+                                  Pulang
+                                </h5>
                               </div>
-                            )}
-                            {selectedTicket?.total_children !== 0 && (
-                              <div>
-                                {selectedTicket?.return_flight ? (
-                                  <p>
-                                    {new Intl.NumberFormat("id-ID", {
-                                      style: "currency",
-                                      currency: "IDR",
-                                    }).format(
-                                      selectedTicket?.total_children *
-                                        (selectedTicket?.departure_flight
-                                          ?.price +
-                                          selectedTicket?.return_flight?.price)
-                                    )}
-                                  </p>
-                                ) : (
-                                  <p>
-                                    {new Intl.NumberFormat("id-ID", {
-                                      style: "currency",
-                                      currency: "IDR",
-                                    }).format(
-                                      selectedTicket?.total_children *
-                                        selectedTicket?.departure_flight?.price
-                                    )}
-                                  </p>
-                                )}
-                              </div>
-                            )}
-                            {selectedTicket?.total_baby !== 0 && (
-                              <div>
-                                {selectedTicket?.return_flight ? (
-                                  <p>
-                                    {new Intl.NumberFormat("id-ID", {
-                                      style: "currency",
-                                      currency: "IDR",
-                                    }).format(
-                                      selectedTicket?.total_baby *
-                                        (selectedTicket?.departure_flight
-                                          ?.baby_price +
+                              <div className="flex flex-row gap-3">
+                                <div className="flex flex-col justify-between items-center">
+                                  <div className="flex flex-col text-center mt-1.5">
+                                    <time className="mb-1 text-lg font-semibold leading-none">
+                                      {
+                                        selectedTicket?.return_flight
+                                          ?.departure_time
+                                      }
+                                    </time>
+                                    <div className="text-sm">
+                                      {new Date(
+                                        selectedTicket?.return_flight?.flight_date
+                                      ).toLocaleString("id-ID", {
+                                        day: "2-digit",
+                                        month: "long",
+                                        year: "numeric",
+                                      })}
+                                    </div>
+                                  </div>
+                                  <div className="flex-grow"></div>
+                                  <div className="flex items-center justify-center">
+                                    <span className="text-sm">
+                                      {formatDuration(
+                                        selectedTicket?.return_flight?.duration
+                                      )}
+                                    </span>
+                                  </div>
+                                  <div className="flex-grow"></div>
+                                  <div className="flex flex-col text-center mt-1.5">
+                                    <time className="mb-1 text-lg font-semibold leading-none">
+                                      {
+                                        selectedTicket?.return_flight
+                                          ?.arrival_time
+                                      }
+                                    </time>
+                                    <div className="text-sm">
+                                      {new Date(
+                                        selectedTicket?.return_flight?.flight_date
+                                      ).toLocaleString("id-ID", {
+                                        day: "2-digit",
+                                        month: "long",
+                                        year: "numeric",
+                                      })}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div>
+                                  <ol className="relative border-s border-gray-200">
+                                    <li className="mb-5 ms-4">
+                                      <div className="absolute w-3 h-3 bg-[#2A629A] rounded-full mt-1.5 -start-1.5 border border-white"></div>
+                                      <h3 className="text-lg font-semibold">
+                                        {
                                           selectedTicket?.return_flight
-                                            ?.baby_price)
-                                    )}
-                                  </p>
-                                ) : (
-                                  <p>
-                                    {new Intl.NumberFormat("id-ID", {
-                                      style: "currency",
-                                      currency: "IDR",
-                                    }).format(
-                                      selectedTicket?.total_baby *
-                                        selectedTicket?.departure_flight
-                                          ?.baby_price
-                                    )}
-                                  </p>
-                                )}
+                                            ?.departure_airport
+                                        }
+                                      </h3>
+                                      <p className="mb-4 text-sm">
+                                        {
+                                          selectedTicket?.return_flight
+                                            ?.departure_terminal
+                                        }
+                                      </p>
+                                    </li>
+                                    <li className="mb-5 ms-4 flex flex-col gap-1">
+                                      <div className="flex items-center">
+                                        <p>
+                                          {
+                                            selectedTicket?.return_flight
+                                              ?.airline
+                                          }
+                                        </p>
+                                      </div>
+                                      {selectedTicket?.passengers?.map(
+                                        (passenger, i) => {
+                                          const index = i + 1;
+                                          return (
+                                            <div key={passenger?.passenger_id}>
+                                              <h5 className="text-[#003285]">
+                                                Penumpang {index}:{" "}
+                                                {passenger?.title}{" "}
+                                                {passenger?.name}
+                                              </h5>
+                                              <p>
+                                                ID: {passenger?.passenger_id}
+                                              </p>
+                                            </div>
+                                          );
+                                        }
+                                      )}
+                                    </li>
+                                    <li className="ms-4">
+                                      <div className="absolute w-3 h-3 bg-[#2A629A] rounded-full mt-1.5 -start-1.5 border border-white"></div>
+                                      <h3 className="text-lg font-semibold">
+                                        {
+                                          selectedTicket?.return_flight
+                                            ?.arrival_airport
+                                        }
+                                      </h3>
+                                    </li>
+                                  </ol>
+                                  <div className="ms-4">
+                                    <p className="text-sm">
+                                      {
+                                        selectedTicket?.return_flight
+                                          ?.arrival_terminal
+                                      }
+                                    </p>
+                                  </div>
+                                </div>
                               </div>
-                            )}
-                            <p>
-                              {new Intl.NumberFormat("id-ID", {
-                                style: "currency",
-                                currency: "IDR",
-                              }).format(selectedTicket?.total_before_tax)}
-                            </p>
-                            <p>
-                              {new Intl.NumberFormat("id-ID", {
-                                style: "currency",
-                                currency: "IDR",
-                              }).format(selectedTicket?.tax)}
-                            </p>
-                            <p>
+                            </div>
+                          )}
+
+                          <div className="my-4 py-3 border-y-2">
+                            <h5 className="font-semibold ">Rincian Harga</h5>
+                            <div className="flex justify-between">
+                              <div>
+                                {selectedTicket?.total_adult !== 0 && (
+                                  <p>{selectedTicket?.total_adult} Dewasa</p>
+                                )}
+                                {selectedTicket?.total_children !== 0 && (
+                                  <p>{selectedTicket?.total_children} Anak</p>
+                                )}
+                                {selectedTicket?.total_baby !== 0 && (
+                                  <p>{selectedTicket?.total_baby} Bayi</p>
+                                )}
+                                <p>Total Sebelum Pajak</p>
+                                <p>Pajak (10%)</p>
+                                <p>Total Setelah Pajak</p>
+                              </div>
+                              <div>
+                                {selectedTicket?.total_adult !== 0 && (
+                                  <div>
+                                    {selectedTicket?.return_flight ? (
+                                      <p>
+                                        {new Intl.NumberFormat("id-ID", {
+                                          style: "currency",
+                                          currency: "IDR",
+                                        }).format(
+                                          selectedTicket?.total_adult *
+                                            (selectedTicket?.departure_flight
+                                              ?.price +
+                                              selectedTicket?.return_flight
+                                                ?.price)
+                                        )}
+                                      </p>
+                                    ) : (
+                                      <p>
+                                        {new Intl.NumberFormat("id-ID", {
+                                          style: "currency",
+                                          currency: "IDR",
+                                        }).format(
+                                          selectedTicket?.total_adult *
+                                            selectedTicket?.departure_flight
+                                              ?.price
+                                        )}
+                                      </p>
+                                    )}
+                                  </div>
+                                )}
+                                {selectedTicket?.total_children !== 0 && (
+                                  <div>
+                                    {selectedTicket?.return_flight ? (
+                                      <p>
+                                        {new Intl.NumberFormat("id-ID", {
+                                          style: "currency",
+                                          currency: "IDR",
+                                        }).format(
+                                          selectedTicket?.total_children *
+                                            (selectedTicket?.departure_flight
+                                              ?.price +
+                                              selectedTicket?.return_flight
+                                                ?.price)
+                                        )}
+                                      </p>
+                                    ) : (
+                                      <p>
+                                        {new Intl.NumberFormat("id-ID", {
+                                          style: "currency",
+                                          currency: "IDR",
+                                        }).format(
+                                          selectedTicket?.total_children *
+                                            selectedTicket?.departure_flight
+                                              ?.price
+                                        )}
+                                      </p>
+                                    )}
+                                  </div>
+                                )}
+                                {selectedTicket?.total_baby !== 0 && (
+                                  <div>
+                                    {selectedTicket?.return_flight ? (
+                                      <p>
+                                        {new Intl.NumberFormat("id-ID", {
+                                          style: "currency",
+                                          currency: "IDR",
+                                        }).format(
+                                          selectedTicket?.total_baby *
+                                            (selectedTicket?.departure_flight
+                                              ?.baby_price +
+                                              selectedTicket?.return_flight
+                                                ?.baby_price)
+                                        )}
+                                      </p>
+                                    ) : (
+                                      <p>
+                                        {new Intl.NumberFormat("id-ID", {
+                                          style: "currency",
+                                          currency: "IDR",
+                                        }).format(
+                                          selectedTicket?.total_baby *
+                                            selectedTicket?.departure_flight
+                                              ?.baby_price
+                                        )}
+                                      </p>
+                                    )}
+                                  </div>
+                                )}
+                                <p>
+                                  {new Intl.NumberFormat("id-ID", {
+                                    style: "currency",
+                                    currency: "IDR",
+                                  }).format(selectedTicket?.total_before_tax)}
+                                </p>
+                                <p>
+                                  {new Intl.NumberFormat("id-ID", {
+                                    style: "currency",
+                                    currency: "IDR",
+                                  }).format(selectedTicket?.tax)}
+                                </p>
+                                <p>
+                                  {new Intl.NumberFormat("id-ID", {
+                                    style: "currency",
+                                    currency: "IDR",
+                                  }).format(selectedTicket?.total_price)}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex justify-between font-semibold text-xl text-[#003285]">
+                            <h5>Total Harga</h5>
+                            <h5>
                               {new Intl.NumberFormat("id-ID", {
                                 style: "currency",
                                 currency: "IDR",
                               }).format(selectedTicket?.total_price)}
-                            </p>
+                            </h5>
                           </div>
                         </div>
-                      </div>
-                      <div className="flex justify-between font-semibold text-xl text-[#003285]">
-                        <h5>Total Harga</h5>
-                        <h5>
-                          {new Intl.NumberFormat("id-ID", {
-                            style: "currency",
-                            currency: "IDR",
-                          }).format(selectedTicket?.total_price)}
-                        </h5>
-                      </div>
+                      )}
                     </div>
-                  )}
-                </div>
-                <div className="w-full">
-                  {selectedTicket?.status === "BERHASIL" && (
-                    <button
-                      onClick={() =>
-                        dispatch(
-                          printTransactions(selectedTicket?.booking_code)
-                        )
-                      }
-                      className="mt-4 w-full inline-flex justify-center rounded-xl border-0 shadow-sm py-3 bg-[#2A629A] font-medium text-white hover:bg-[#003285] focus:outline-none focus:ring-0"
-                    >
-                      Cetak Tiket
-                    </button>
-                  )}
-                  {selectedTicket?.status === "BELUM DIBAYAR" && (
-                    <div>
-                      <button
-                        onClick={handlePayment}
-                        className="mt-4 w-full inline-flex justify-center rounded-xl border-0 shadow-sm py-3 bg-[#28A745] font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-0"
-                      >
-                        Lanjut Bayar
-                      </button>
-                      <button
-                        onClick={handleCancelModalToggle}
-                        className="mt-4 w-full inline-flex justify-center rounded-xl border-0 shadow-sm py-3 bg-[#FF0000] font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-0"
-                      >
-                        Batalkan Pemesanan
-                      </button>
+                    <div className="w-full">
+                      {selectedTicket?.status === "BERHASIL" && (
+                        <button
+                          onClick={() =>
+                            dispatch(
+                              printTransactions(selectedTicket?.booking_code)
+                            )
+                          }
+                          className="mt-4 w-full inline-flex justify-center rounded-xl border-0 shadow-sm py-3 bg-[#2A629A] font-medium text-white hover:bg-[#003285] focus:outline-none focus:ring-0"
+                        >
+                          Cetak Tiket
+                        </button>
+                      )}
+                      {selectedTicket?.status === "BELUM DIBAYAR" && (
+                        <div>
+                          <button
+                            onClick={handlePayment}
+                            className="mt-4 w-full inline-flex justify-center rounded-xl border-0 shadow-sm py-3 bg-[#28A745] font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-0"
+                          >
+                            Lanjut Bayar
+                          </button>
+                          <button
+                            onClick={handleCancelModalToggle}
+                            className="mt-4 w-full inline-flex justify-center rounded-xl border-0 shadow-sm py-3 bg-[#FF0000] font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-0"
+                          >
+                            Batalkan Pemesanan
+                          </button>
+                        </div>
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
-              </div>
-            </div>
+              )}
+            </>
           )}
         </div>
 

@@ -40,14 +40,14 @@ export default function Login() {
 
   // Mengatur ulang state login ke nilai awal atau kosong
   useEffect(() => {
-    return () => {
-      dispatch(setEmail(""));
-      dispatch(setPassword(""));
-      dispatch(setShowPassword(false));
-      dispatch(setPasswordTouched(false));
-      dispatch(clearError());
-    };
-  }, [dispatch]);
+    // return () => {
+    dispatch(setEmail(""));
+    dispatch(setPassword(""));
+    dispatch(setShowPassword(false));
+    dispatch(setPasswordTouched(false));
+    dispatch(clearError());
+    // };
+  }, []);
 
   // Fungsi untuk menangani perubahan input email
   const handleEmailChange = (event) => {

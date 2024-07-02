@@ -344,16 +344,18 @@ export default function sideMenu() {
                       }}
                       className="py-3 px-4"
                     >
-                      {captchaCode.split("").map((char, index) => (
-                        <span
-                          key={index}
-                          className={`${
-                            index % 2 === 0 ? "top-0" : "top-2"
-                          } text-2xl font-bold relative `}
-                        >
-                          {char}
-                        </span>
-                      ))}
+                      <div className="relative select-none">
+                        {captchaCode.split("").map((char, index) => (
+                          <span
+                            key={index}
+                            className={`${
+                              index % 2 === 0 ? "top-0" : "top-2"
+                            } text-2xl font-bold relative`}
+                          >
+                            {char}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                     <button
                       className="ml-4 text-sm font-bold text-gray-600 hover:text-gray-900"
@@ -367,7 +369,7 @@ export default function sideMenu() {
                       className={`flex items-center p-2 rounded-xl border border-black focus-within:shadow-lg w-10/12 mx-auto
                     ${
                       userInput && isValid
-                        ? "focus-within:border-[#2A629A] border-[#8A8A8A]"
+                        ? "focus-within:border-[#28A745] border-[#8A8A8A]"
                         : ""
                     }
                     ${

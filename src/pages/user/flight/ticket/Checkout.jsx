@@ -32,7 +32,6 @@ export default function TicketCheckout() {
   const orderSummaryRef = useRef(null);
   const { choosenFlight } = useSelector((state) => state.flight);
 
-  const { token } = useSelector((state) => state.login);
   const [isChecked, setIsChecked] = useState(false);
   const [minutes, setMinutes] = useState(15);
   const [seconds, setSeconds] = useState(0);
@@ -319,7 +318,7 @@ export default function TicketCheckout() {
             <nav className={`${isMobile ? "mx-5 mt-1" : ""}`}>
               <ol className="inline-flex items-center space-x-1 md:space-x-2">
                 <li className="inline-flex items-center">
-                  <span class="flex items-center justify-center w-5 h-5 me-1 text-xs border bg-[#003285] text-white rounded-full shrink-0">
+                  <span className="flex items-center justify-center w-5 h-5 me-1 text-xs border bg-[#003285] text-white rounded-full shrink-0">
                     1
                   </span>
                   <span className="inline-flex items-center text-sm font-semibold text-[#003285]">
@@ -343,7 +342,7 @@ export default function TicketCheckout() {
                         d="m1 9 4-4-4-4"
                       />
                     </svg>
-                    <span class="flex items-center justify-center w-5 h-5 me-1 md:ms-2 text-xs border border-gray-500 text-gray-500 rounded-full shrink-0">
+                    <span className="flex items-center justify-center w-5 h-5 me-1 md:ms-2 text-xs border border-gray-500 text-gray-500 rounded-full shrink-0">
                       2
                     </span>
                     <span className="ms-1 text-sm text-gray-500 font-medium">
@@ -368,7 +367,7 @@ export default function TicketCheckout() {
                         d="m1 9 4-4-4-4"
                       />
                     </svg>
-                    <span class="flex items-center justify-center w-5 h-5 me-1 md:ms-2 text-xs border border-gray-500 text-gray-500 rounded-full shrink-0">
+                    <span className="flex items-center justify-center w-5 h-5 me-1 md:ms-2 text-xs border border-gray-500 text-gray-500 rounded-full shrink-0">
                       3
                     </span>
                     <span className="ms-1 text-sm text-gray-500 font-medium">
@@ -592,7 +591,7 @@ export default function TicketCheckout() {
                           placeholder="01-01-2001"
                           required
                           options={{
-                            maxDate: new Date(),
+                            // maxDate: new Date(),
                             dateFormat: "d-m-Y",
                           }}
                         />
@@ -653,7 +652,7 @@ export default function TicketCheckout() {
                           placeholder="01-01-2045"
                           required
                           options={{
-                            minDate: new Date(),
+                            // minDate: new Date(),
                             dateFormat: "d-m-Y",
                           }}
                         />
@@ -684,13 +683,20 @@ export default function TicketCheckout() {
               >
                 <OrderSummary />
                 {isDataSaved && (
-                  <button
-                    onClick={handleLanjutPembayaran}
-                    className={`w-full inline-flex justify-center rounded-xl border-0 shadow-sm py-3 bg-[#28A745] font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-0" 
-                      ${isTablet ? "" : ""}`}
-                  >
-                    Lanjut Bayar
-                  </button>
+                  <>
+                    <button
+                      onClick={handleLanjutPembayaran}
+                      className="w-full inline-flex justify-center rounded-xl border-0 shadow-sm py-3 bg-[#28A745] font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-0"
+                    >
+                      Lanjut Bayar
+                    </button>
+                    <button
+                      onClick={() => navigate("/riwayat-pemesanan")}
+                      className="w-full inline-flex justify-center rounded-xl border-0 shadow-sm mt-3 py-3 bg-[#2A629A] font-medium text-white hover:bg-[#003285] focus:outline-none focus:ring-0"
+                    >
+                      Bayar Nanti
+                    </button>
+                  </>
                 )}
               </div>
             </div>

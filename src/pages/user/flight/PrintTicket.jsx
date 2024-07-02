@@ -72,9 +72,9 @@ export default function PrintTicket() {
           >
             <ol className="inline-flex items-center space-x-1 md:space-x-2">
               <li className="inline-flex items-center">
-                <span class="flex items-center">
+                <span className="flex items-center">
                   <svg
-                    class="w-5 h-5 me-1 text-[#003285]"
+                    className="w-5 h-5 me-1 text-[#003285]"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="currentColor"
@@ -104,9 +104,9 @@ export default function PrintTicket() {
                       d="m1 9 4-4-4-4"
                     />
                   </svg>
-                  <span class="flex items-center ml-1">
+                  <span className="flex items-center ml-1">
                     <svg
-                      class="w-5 h-5 me-1 text-[#003285]"
+                      className="w-5 h-5 me-1 text-[#003285]"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="currentColor"
@@ -137,9 +137,9 @@ export default function PrintTicket() {
                       d="m1 9 4-4-4-4"
                     />
                   </svg>
-                  <span class="flex items-center ml-1">
+                  <span className="flex items-center ml-1">
                     <svg
-                      class="w-5 h-5 me-1 text-[#003285]"
+                      className="w-5 h-5 me-1 text-[#003285]"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="currentColor"
@@ -163,8 +163,8 @@ export default function PrintTicket() {
           >
             <ol className="inline-flex items-center space-x-1 md:space-x-2">
               <li className="inline-flex items-center">
-                <span class="flex items-center">
-                  <span class="flex items-center justify-center w-5 h-5 me-1 ms-1 md:ms-2 text-xs border bg-[#003285] text-white rounded-full shrink-0">
+                <span className="flex items-center">
+                  <span className="flex items-center justify-center w-5 h-5 me-1 ms-1 md:ms-2 text-xs border bg-[#003285] text-white rounded-full shrink-0">
                     1
                   </span>
                   <span className="inline-flex items-center text-sm font-semibold text-[#003285]">
@@ -189,7 +189,7 @@ export default function PrintTicket() {
                       d="m1 9 4-4-4-4"
                     />
                   </svg>
-                  <span class="flex items-center justify-center w-5 h-5 me-1 ms-1 md:ms-2 text-xs border bg-[#003285] text-white rounded-full shrink-0">
+                  <span className="flex items-center justify-center w-5 h-5 me-1 ms-1 md:ms-2 text-xs border bg-[#003285] text-white rounded-full shrink-0">
                     2
                   </span>
                   <span className="inline-flex items-center text-sm font-semibold text-[#003285]">
@@ -214,7 +214,7 @@ export default function PrintTicket() {
                       d="m1 9 4-4-4-4"
                     />
                   </svg>
-                  <span class="flex items-center justify-center w-5 h-5 me-1 ms-1 md:ms-2 text-xs border bg-[#003285] text-white rounded-full shrink-0">
+                  <span className="flex items-center justify-center w-5 h-5 me-1 ms-1 md:ms-2 text-xs border bg-[#003285] text-white rounded-full shrink-0">
                     3
                   </span>
                   <span className="inline-flex items-center text-sm font-semibold text-[#003285]">

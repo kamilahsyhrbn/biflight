@@ -54,9 +54,9 @@ export default function BookingSummary() {
   );
 
   return (
-    <div className="max-w-[750px] w-full mx-auto bg-white mt-24 rounded-xl shadow-lg mb-5 relative">
+    <div className="max-w-[750px] w-full mx-auto bg-white mt-10 rounded-xl shadow-lg mb-5 relative">
       {/* Komponen Format Pemesanan Tiket */}
-      <h1 className="text-lg font-semibold mb-3 bg-[#2A629A] text-white rounded-t-xl shadow-md px-4 py-3 flex items-center relative z-10">
+      <h1 className="text-lg font-semibold mb-3 bg-[#2A629A] text-white rounded-t-xl shadow-md px-4 py-3 flex items-center relative">
         <FaMoneyCheck className="w-7 h-7 mr-3" />
         Format Pemesanan Tiket
       </h1>
@@ -131,6 +131,16 @@ export default function BookingSummary() {
                         ticketSelected?.departure_flight?.airline}
                     </p>
                   </div>
+                  {/* Menambahkan detail penumpang */}
+                  {ticketSelected?.passengers?.map((passenger, index) => (
+                    <div key={passenger.passenger_id}>
+                      <h5 className="text-[#003285]">
+                        Penumpang {index + 1}: {passenger.title}{" "}
+                        {passenger.name}
+                      </h5>
+                      <p>ID: {passenger.passenger_id}</p>
+                    </div>
+                  ))}
                 </li>
                 <li className="ms-4">
                   <div className="absolute w-3 h-3 bg-[#2A629A] rounded-full mt-1.5 -start-1.5 border border-white"></div>
@@ -211,6 +221,16 @@ export default function BookingSummary() {
                             ticketSelected?.return_flight?.airline}
                         </p>
                       </div>
+                      {/* Menambahkan detail penumpang */}
+                      {ticketSelected?.passengers?.map((passenger, index) => (
+                        <div key={passenger.passenger_id}>
+                          <h5 className="text-[#003285]">
+                            Penumpang {index + 1}: {passenger.title}{" "}
+                            {passenger.name}
+                          </h5>
+                          <p>ID: {passenger.passenger_id}</p>
+                        </div>
+                      ))}
                     </li>
                     <li className="ms-4">
                       <div className="absolute w-3 h-3 bg-[#2A629A] rounded-full mt-1.5 -start-1.5 border border-white"></div>

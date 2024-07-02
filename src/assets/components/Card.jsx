@@ -1,37 +1,9 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { getFlight } from "../../redux/actions/flight/flightActions";
-import { useNavigate } from "react-router-dom";
-import { setChoosenFlight } from "../../redux/reducers/flight/flightReducers";
 
-export default function Card({ flight }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  // JIKA KARTU DI KLIK, AKAN DIRECT KE HALAMAN HASIL PENCARIAN
-  const handleClick = (departure_code, arrival_code, date, seat_class) => {
-    dispatch(
-      getFlight(departure_code, arrival_code, date, seat_class, 1, "", 1)
-    );
-    dispatch(setChoosenFlight([]));
-    navigate(
-      `/hasil-pencarian?from=${departure_code}&to=${arrival_code}&departureDate=${date}&class=${seat_class}&passenger=1&adult=1&child=0&infant=0`,
-      { replace: true }
-    );
-  };
+export default function Card({ flight, onClick }) {
   return (
     <div className="p-3 flex items-center justify-center">
-      <div
-        className="w-11/12 rounded-xl bg-white shadow-lg"
-        onClick={() =>
-          handleClick(
-            flight?.departure?.airport_code,
-            flight?.arrival?.airport_code,
-            flight?.flight_date,
-            flight?.class
-          )
-        }
-      >
+      <div className="w-11/12 rounded-xl bg-white shadow-lg" onClick={onClick}>
         <div className="flex justify-end">
           <div className="bg-[#2A629A] rounded-tr-xl rounded-bl-xl px-2 py-1">
             <p className="text-white font-medium">Sekali Jalan</p>

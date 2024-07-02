@@ -160,24 +160,6 @@ export default function SearchMobile() {
     const returnDate = format(new Date(date[0].endDate), "yyyy-MM-dd");
     const singleDate = format(new Date(departure_date), "yyyy-MM-dd");
 
-    // if (isChecked && departureDate === returnDate) {
-    //   toast("Harap pilih tanggal yang berbeda!", {
-    //     style: {
-    //       background: "#FF0000", // Background merah
-    //       color: "#FFFFFF", // Teks putih
-    //       borderRadius: "12px", // Rounded-xl
-    //       fontSize: "14px", // Ukuran font
-    //       textAlign: "center", // Posisi teks di tengah
-    //       padding: "10px 20px", // Padding
-    //       width: "full",
-    //       maxWidth: "900px",
-    //     },
-    //     position: "top-center", // Posisi toast
-    //     duration: 3000, // Durasi toast
-    //   });
-    //   return;
-    // }
-
     if (isChecked) {
       dispatch(
         getFlight(
@@ -186,7 +168,8 @@ export default function SearchMobile() {
           departureDate,
           seat_class,
           total_passenger,
-          filter
+          filter,
+          1
         )
       );
     } else {
@@ -197,12 +180,11 @@ export default function SearchMobile() {
           singleDate,
           seat_class,
           total_passenger,
-          filter
+          filter,
+          1
         )
       );
     }
-
-    dispatch(setChoosenFlight([]));
 
     dispatch(setChoosenFlight([]));
 

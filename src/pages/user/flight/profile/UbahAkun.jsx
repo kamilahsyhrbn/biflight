@@ -245,7 +245,7 @@ export default function UbahAkun() {
                           <span className="text-sm text-[#2A629A]">+62</span>
                         </div>
                         <input
-                          className="flex-grow bg-transparent border-none focus:outline-none text-sm pl-2"
+                          className="flex-grow bg-transparent border-none focus:outline-none text-sm pl-2 min-w-0"
                           type="text"
                           placeholder="8123456789"
                           value={phone_number}
@@ -255,16 +255,16 @@ export default function UbahAkun() {
                         {phone_number &&
                           phone_number.length >= 8 &&
                           phone_number.length < 14 && (
-                            <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] mr-2" />
+                            <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] mr-2 flex-shrink-0" />
                           )}
                         {phone_number && phone_number.length < 8 && (
-                          <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] mr-2.5" />
+                          <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] mr-2.5 flex-shrink-0" />
                         )}
                         {phone_number && phone_number.length >= 14 && (
-                          <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] mr-2.5" />
+                          <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] mr-2.5 flex-shrink-0" />
                         )}
                         {!phone_number && (
-                          <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] mr-2.5" />
+                          <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] mr-2.5 flex-shrink-0" />
                         )}
                       </div>
                       {phone_number && phone_number.length < 8 && (

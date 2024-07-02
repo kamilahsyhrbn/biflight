@@ -15,6 +15,7 @@ import { setIsLoggedIn, setToken } from "../../reducers/auth/loginReducers";
 export const getTransactions = (lt, gte, q) => async (dispatch, getState) => {
   const { token } = getState().login;
   dispatch(setIsLoading(true));
+
   try {
     const response = await axios.get(
       `${
@@ -51,6 +52,7 @@ export const getTransactions = (lt, gte, q) => async (dispatch, getState) => {
       });
     }
     dispatch(setIsLoading(false));
+    dispatch(setTransactions([]));
   }
 };
 
@@ -58,6 +60,7 @@ export const getTransactions = (lt, gte, q) => async (dispatch, getState) => {
 export const printTransactions = (id) => async (dispatch, getState) => {
   const { token } = getState().login;
   dispatch(setLoading(true));
+  dispatch(setShowSuccessModal(false));
   try {
     const response = await axios.get(
       `${import.meta.env.VITE_REACT_APP_SERVER}/transactions/${id}`,
@@ -69,7 +72,7 @@ export const printTransactions = (id) => async (dispatch, getState) => {
       }
     );
     // console.log("response print", response);
-    if (response?.status === 200) {
+    if (response?.status === 202) {
       if (location.pathname === "/print-ticket/:booking_code") {
         dispatch(setShowConfirmationModal(false));
         dispatch(setShowSuccessModal(true)); // Tampilkan modal sukses setelah cetak tiket berhasil
