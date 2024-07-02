@@ -4,9 +4,11 @@ import { FaMoneyCheck } from "react-icons/fa";
 
 export default function BookingSummary() {
   const { ticketSelected } = useSelector((state) => state.ticket); // Mengambil data tiketSelected dari state ticket
+  const { passengerDetails } = useSelector((state) => state.booking); // Mengambil data passengerDetails dari state booking
   const isRoundTrip = ticketSelected?.return || ticketSelected?.return_flight; // Memeriksa apakah penerbangan pulang-pergi
 
-  // console.log("ticketSelected: ", ticketSelected);
+  console.log("ticketSelected: ", ticketSelected);
+  console.log("passengerDetails: ", passengerDetails);
 
   // Mengembalikan null jika tidak ada tiket yang dipilih
   if (!ticketSelected) {
@@ -69,6 +71,7 @@ export default function BookingSummary() {
             </p>
           </div>
 
+          {/* Menampilkan tiket jika pengguna hanya pergi saja */}
           {!isRoundTrip ? null : (
             <div className="flex mb-4">
               <h5 className="font-medium bg-[#86B6F6] rounded-lg text-white px-5 py-0.5 mt-3">
@@ -132,13 +135,13 @@ export default function BookingSummary() {
                     </p>
                   </div>
                   {/* Menambahkan detail penumpang */}
-                  {ticketSelected?.passengers?.map((passenger, index) => (
-                    <div key={passenger.passenger_id}>
+                  {passengerDetails?.map((passenger, index) => (
+                    <div key={passenger?.passenger_id}>
                       <h5 className="text-[#003285]">
-                        Penumpang {index + 1}: {passenger.title}{" "}
-                        {passenger.name}
+                        Penumpang {index + 1}: {passenger?.title}{" "}
+                        {passenger?.name}
                       </h5>
-                      <p>ID: {passenger.passenger_id}</p>
+                      <p>ID: {passenger?.passenger_id}</p>
                     </div>
                   ))}
                 </li>
@@ -159,6 +162,7 @@ export default function BookingSummary() {
             </div>
           </div>
 
+          {/* Menampilkan tiket jika pengguna pulang-pergi */}
           {isRoundTrip && (
             <div>
               <div className="flex my-4">
@@ -222,13 +226,13 @@ export default function BookingSummary() {
                         </p>
                       </div>
                       {/* Menambahkan detail penumpang */}
-                      {ticketSelected?.passengers?.map((passenger, index) => (
-                        <div key={passenger.passenger_id}>
+                      {passengerDetails?.map((passenger, index) => (
+                        <div key={passenger?.passenger_id}>
                           <h5 className="text-[#003285]">
-                            Penumpang {index + 1}: {passenger.title}{" "}
-                            {passenger.name}
+                            Penumpang {index + 1}: {passenger?.title}{" "}
+                            {passenger?.name}
                           </h5>
-                          <p>ID: {passenger.passenger_id}</p>
+                          <p>ID: {passenger?.passenger_id}</p>
                         </div>
                       ))}
                     </li>

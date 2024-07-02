@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import Flatpickr from "react-flatpickr";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import "flatpickr/dist/themes/material_blue.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { getTicket } from "../../../../redux/actions/ticket/ticketActions";
 import OrderSummary from "./OrderSummary";
@@ -17,6 +18,7 @@ import { useMediaQuery } from "react-responsive";
 import BtnScrollTop from "../../../../assets/components/BtnScrollUp";
 import { setChoosenFlight } from "../../../../redux/reducers/flight/flightReducers";
 import { setTicketSelected } from "../../../../redux/reducers/ticket/ticketReducers";
+import { setPassengerDetails } from "../../../../redux/reducers/flight/bookingReducers";
 
 export default function TicketCheckout() {
   const dispatch = useDispatch();
@@ -32,6 +34,7 @@ export default function TicketCheckout() {
   const orderSummaryRef = useRef(null);
   const { choosenFlight } = useSelector((state) => state.flight);
 
+  const { token } = useSelector((state) => state.login);
   const [isChecked, setIsChecked] = useState(false);
   const [minutes, setMinutes] = useState(15);
   const [seconds, setSeconds] = useState(0);
@@ -97,10 +100,17 @@ export default function TicketCheckout() {
     setPassengers(newPassengers);
   };
 
-  //Handler untuk tanggal lahir dan berlaku sampai
-  const handleDateChange = (index, name, date) => {
+  // Handler untuk date of birth
+  const handleDateBirth = (index, date) => {
     const newPassengers = [...passengers];
-    newPassengers[index][name] = date[0];
+    newPassengers[index].date_of_birth = date;
+    setPassengers(newPassengers);
+  };
+
+  // Handler untuk valid until
+  const handleDateValidUntil = (index, date) => {
+    const newPassengers = [...passengers];
+    newPassengers[index].valid_until = date;
     setPassengers(newPassengers);
   };
 
@@ -158,11 +168,16 @@ export default function TicketCheckout() {
   };
 
   const { ticket } = useSelector((state) => state.ticket);
+  const { passengerDetails } = useSelector((state) => state.booking);
   useEffect(() => {
     if (ticket) {
       dispatch(setTicketSelected(ticket));
+      dispatch(setPassengerDetails(passengers));
     }
   }, [ticket]);
+
+  console.log("passengerDetails: ", passengerDetails);
+  // }, [passengers]);
 
   const handleLanjutPembayaran = () => {
     navigate(`/payment/${ticket?.booking_code}`);
@@ -527,6 +542,7 @@ export default function TicketCheckout() {
                             onChange={(e) => handlePassengerChange(index, e)}
                             className="appearance-none w-full p-2 border border-[#8A8A8A] rounded-xl focus-within:border-[#2A629A] text-sm focus:outline-none text-[#2A629A] py-2 pl-3 pr-10"
                           >
+                            <option value="">Pilih Gelar</option>
                             <option className="text-[#2A629A]">Tuan</option>
                             <option className="text-[#2A629A]">Nyonya</option>
                             <option className="text-[#2A629A]">Nona</option>
@@ -579,22 +595,24 @@ export default function TicketCheckout() {
                         />
                       </div>
                       <div className="ps-4 pe-4 mt-4">
-                        <label className="block text-[#2A629A] mb-2 text-sm font-medium">
-                          Tanggal Lahir
-                        </label>
-                        <Flatpickr
-                          value={passenger.date_of_birth}
-                          onChange={(date) =>
-                            handleDateChange(index, "date_of_birth", date)
-                          }
-                          className="w-full p-2 border border-[#8A8A8A] rounded-xl focus-within:border-[#2A629A] text-sm focus:outline-none text-[#2A629A]"
-                          placeholder="01-01-2001"
-                          required
-                          options={{
-                            // maxDate: new Date(),
-                            dateFormat: "d-m-Y",
-                          }}
-                        />
+                        <div>
+                          <label className="block text-[#2A629A] mb-2 text-sm font-medium">
+                            Tanggal Lahir
+                          </label>
+                          <DatePicker
+                            selected={passenger.date_of_birth}
+                            onChange={(date) => handleDateBirth(index, date)}
+                            maxDate={new Date()}
+                            placeholderText="mm/dd/yyyy"
+                            className="w-full p-2 border border-[#8A8A8A] rounded-xl focus-within:border-[#2A629A] text-sm focus:outline-none text-[#2A629A]"
+                            peekNextMonth
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+                            withPortal
+                            portalId="root-portal"
+                          />
+                        </div>
                       </div>
                       <div className="ps-4 pe-4 mt-4">
                         <label className="block text-[#2A629A] mb-2 text-sm font-medium">
@@ -643,18 +661,18 @@ export default function TicketCheckout() {
                         <label className="block text-[#2A629A] mb-2 text-sm font-medium">
                           Berlaku Sampai
                         </label>
-                        <Flatpickr
-                          value={passenger.valid_until}
-                          onChange={(date) =>
-                            handleDateChange(index, "valid_until", date)
-                          }
+                        <DatePicker
+                          selected={passenger.valid_until}
+                          onChange={(date) => handleDateValidUntil(index, date)}
+                          minDate={new Date()}
+                          placeholderText="mm/dd/yyyy"
                           className="w-full p-2 border border-[#8A8A8A] rounded-xl focus-within:border-[#2A629A] text-sm focus:outline-none text-[#2A629A]"
-                          placeholder="01-01-2045"
-                          required
-                          options={{
-                            // minDate: new Date(),
-                            dateFormat: "d-m-Y",
-                          }}
+                          peekNextMonth
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          withPortal
+                          portalId="root-portal"
                         />
                       </div>
                     </div>

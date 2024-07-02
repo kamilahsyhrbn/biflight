@@ -116,10 +116,8 @@ export default function Payment() {
 
   // Fungsi untuk membersihkan state ketika komponen di-refresh
   useEffect(() => {
-    return () => {
-      dispatch(resetPaymentState());
-    };
-  }, [dispatch]);
+    dispatch(resetPaymentState());
+  }, []);
 
   // Fungsi untuk memformat nomor kartu kredit dengan spasi setiap 4 digit
   const formatCardNumber = (number) => {

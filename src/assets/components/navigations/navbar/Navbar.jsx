@@ -191,7 +191,7 @@ export default function Navbar() {
                           handleConfirmModalToggle();
                       }}
                     >
-                      <IoMdLogOut className="text-xl" /> Keluar
+                      <IoMdLogOut className="rotate-180 text-xl" /> Keluar
                     </button>
                   </div>
                 </div>

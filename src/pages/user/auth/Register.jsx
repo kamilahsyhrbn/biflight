@@ -21,9 +21,9 @@ import {
   clearError,
 } from "../../../redux/reducers/auth/registerReducers";
 import Footer from "../../../assets/components/navigations/Footer";
-import backgroundImage from "../../../assets/images/loginregister.png";
-import Logobiflight from "../../../assets/images/logobiflight.png";
 import BtnScrollTop from "../../../assets/components/BtnScrollUp";
+import Logobiflight from "../../../assets/images/logobiflight.png";
+import Plane from "../../../assets/images/pesawat.png";
 
 export default function Register() {
   const dispatch = useDispatch();
@@ -50,19 +50,19 @@ export default function Register() {
 
   // Mengatur ulang state registrasi ke nilai awal atau kosong
   useEffect(() => {
-    return () => {
-      dispatch(setName(""));
-      dispatch(setNameTouched(false));
-      dispatch(setNameValid(false));
-      dispatch(setEmail(""));
-      dispatch(setPhoneNumber(""));
-      dispatch(setPassword(""));
-      dispatch(setShowPassword(false));
-      dispatch(setConfirmPassword(""));
-      dispatch(setShowConfirmPassword(false));
-      dispatch(clearError());
-    };
-  }, [dispatch]);
+    // return () => {
+    dispatch(setName(""));
+    dispatch(setNameTouched(false));
+    dispatch(setNameValid(false));
+    dispatch(setEmail(""));
+    dispatch(setPhoneNumber(""));
+    dispatch(setPassword(""));
+    dispatch(setShowPassword(false));
+    dispatch(setConfirmPassword(""));
+    dispatch(setShowConfirmPassword(false));
+    dispatch(clearError());
+    // };
+  }, []);
 
   // Fungsi untuk menangani perubahan input nama
   const handleNameChange = (event) => {
@@ -382,55 +382,51 @@ export default function Register() {
 
   return (
     <div>
-      <div
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "20px",
-        }}
-      >
-        <div className="flex justify-center items-center min-h-screen w-full">
-          <div
-            className={`max-w-[400px] w-full rounded-lg p-5 sm:m-8 bg-[#FFF8ED] text-center relative shadow-lg
+      <div className="flex justify-center items-center min-h-screen bg-[#FFF8ED]">
+        <div className="hidden sm:flex flex-grow-0">
+          <img
+            src={Plane}
+            className="object-cover w-full h-full"
+            style={{ height: "75vw" }}
+            alt="Plane Image"
+          />
+        </div>
+        <div
+          className={`max-w-[400px] w-full rounded-lg p-5 sm:m-8 bg-[#FFF8ED] text-center relative
               ${isTablet ? "max-w-[650px] p-8" : ""}
             `}
-          >
-            <BiArrowBack
-              className="absolute top-4 left-4 cursor-pointer text-[#2A629A]"
-              size={20}
-              onClick={() => navigate("/")}
+        >
+          <BiArrowBack
+            className="absolute top-4 left-4 cursor-pointer text-[#2A629A]"
+            size={20}
+            onClick={() => navigate("/")}
+          />
+          <Toaster />
+          <div className="max-w-[550px] w-full mx-auto flex flex-col items-center mt-5">
+            <img
+              src={Logobiflight}
+              className="w-24 p-1.5"
+              alt="BiFlight Logo"
             />
-            <Toaster />
-            <div className="max-w-[550px] w-full mx-auto flex flex-col items-center mt-5">
-              <img
-                src={Logobiflight}
-                className="w-24 p-1.5"
-                alt="BiFlight Logo"
-              />
-              <h1 className="text-[#003285] text-2xl mb-3 mt-3 font-bold text-center w-full">
-                Buat Akun Baru Anda
-              </h1>
-              <h2 className="text-[#40A2E3] text-sm font-medium mb-10 text-center w-full">
-                <span className="text-[#40A2E3]">Daftarkan</span>
-                <span className="text-[#2A629A]"> </span>
-                <span className="text-[#8A8A8A]">
-                  akun Anda dan dapatkan akses ke promo tiket pesawat murah!
-                </span>
-              </h2>
+            <h1 className="text-[#003285] text-2xl mb-3 mt-3 font-bold text-center w-full">
+              Buat Akun Baru Anda
+            </h1>
+            <h2 className="text-[#40A2E3] text-sm font-medium mb-10 text-center w-full">
+              <span className="text-[#40A2E3]">Daftarkan</span>
+              <span className="text-[#2A629A]"> </span>
+              <span className="text-[#8A8A8A]">
+                akun Anda dan dapatkan akses ke promo tiket pesawat murah!
+              </span>
+            </h2>
 
-              <form onSubmit={handleRegister} className="w-full">
-                <div className="flex flex-col space-y-3">
-                  <div className="flex flex-col space-y-1">
-                    <label className="text-left text-[#2A629A] text-sm font-medium">
-                      Nama
-                    </label>
-                    <div
-                      className={`flex items-center p-2 rounded-xl border focus-within:shadow-lg
+            <form onSubmit={handleRegister} className="w-full">
+              <div className="flex flex-col space-y-3">
+                <div className="flex flex-col space-y-1">
+                  <label className="text-left text-[#2A629A] text-sm font-medium">
+                    Nama
+                  </label>
+                  <div
+                    className={`flex items-center p-2 rounded-xl border focus-within:shadow-lg
                     ${
                       name
                         ? isNameTouched
@@ -450,36 +446,36 @@ export default function Register() {
                           : "focus-within:border-[#2A629A]"
                         : "focus-within:border-[#FF0000] border-[#8A8A8A]"
                     }`}
-                    >
-                      <input
-                        className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
-                        type="text"
-                        placeholder="Nama Lengkap"
-                        value={name}
-                        onFocus={handleNameFocus}
-                        onBlur={handleNameBlur}
-                        onChange={handleNameChange}
-                      />
-                    </div>
-                    {isNameTouched && !name && (
-                      <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
-                        <BiErrorCircle className="w-[20px] h-[20px] mr-1.5 flex-shrink-0" />
-                        <p>Nama tidak boleh kosong</p>
-                      </div>
-                    )}
-                    {!isNameValid && name && name.length < 3 && (
-                      <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
-                        <BiErrorCircle className="w-[20px] h-[20px] mr-1.5 flex-shrink-0" />
-                        <p>Nama terlalu pendek, minimum 3 huruf</p>
-                      </div>
-                    )}
+                  >
+                    <input
+                      className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
+                      type="text"
+                      placeholder="Nama Lengkap"
+                      value={name}
+                      onFocus={handleNameFocus}
+                      onBlur={handleNameBlur}
+                      onChange={handleNameChange}
+                    />
                   </div>
-                  <div className="flex flex-col space-y-1">
-                    <label className="text-left text-[#2A629A] text-sm font-medium">
-                      Email
-                    </label>
-                    <div
-                      className={`flex items-center p-2 rounded-xl border focus-within:shadow-lg
+                  {isNameTouched && !name && (
+                    <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
+                      <BiErrorCircle className="w-[20px] h-[20px] mr-1.5 flex-shrink-0" />
+                      <p>Nama tidak boleh kosong</p>
+                    </div>
+                  )}
+                  {!isNameValid && name && name.length < 3 && (
+                    <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
+                      <BiErrorCircle className="w-[20px] h-[20px] mr-1.5 flex-shrink-0" />
+                      <p>Nama terlalu pendek, minimum 3 huruf</p>
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-col space-y-1">
+                  <label className="text-left text-[#2A629A] text-sm font-medium">
+                    Email
+                  </label>
+                  <div
+                    className={`flex items-center p-2 rounded-xl border focus-within:shadow-lg
                     ${
                       email
                         ? isEmailValid
@@ -492,33 +488,33 @@ export default function Register() {
                         ? "border-[#FF0000]"
                         : "border-[#8A8A8A]"
                     }`}
-                    >
-                      <input
-                        className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
-                        type="text"
-                        placeholder="Alamat Email"
-                        value={email}
-                        onChange={handleEmailChange}
-                      />
-                      {isEmailValid && (
-                        <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] flex-shrink-0" />
-                      )}
-                      {!isEmailValid && email && (
-                        <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] ml-2 flex-shrink-0" />
-                      )}
-                    </div>
+                  >
+                    <input
+                      className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
+                      type="text"
+                      placeholder="Alamat Email"
+                      value={email}
+                      onChange={handleEmailChange}
+                    />
+                    {isEmailValid && (
+                      <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] flex-shrink-0" />
+                    )}
                     {!isEmailValid && email && (
-                      <p className="text-[#FF0000] text-xs mt-1 text-left">
-                        Format Email salah
-                      </p>
+                      <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] ml-2 flex-shrink-0" />
                     )}
                   </div>
-                  <div className="flex flex-col space-y-1">
-                    <label className="text-left text-[#2A629A] text-sm font-medium">
-                      Nomor Ponsel
-                    </label>
-                    <div
-                      className={`flex items-center rounded-xl border focus-within:shadow-lg
+                  {!isEmailValid && email && (
+                    <p className="text-[#FF0000] text-xs mt-1 text-left">
+                      Format Email salah
+                    </p>
+                  )}
+                </div>
+                <div className="flex flex-col space-y-1">
+                  <label className="text-left text-[#2A629A] text-sm font-medium">
+                    Nomor Ponsel
+                  </label>
+                  <div
+                    className={`flex items-center rounded-xl border focus-within:shadow-lg
                     ${
                       phone_number
                         ? isPhoneNumberValid
@@ -531,162 +527,159 @@ export default function Register() {
                         ? "border-[#FF0000]"
                         : "border-[#8A8A8A]"
                     }`}
-                    >
-                      <div className="flex items-center bg-gray-300 p-2 px-3 rounded-l-xl border-r-0">
-                        <span className="text-sm text-[#2A629A] font-medium">
-                          +62
-                        </span>
-                      </div>
-                      <input
-                        className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] pl-2 min-w-0"
-                        type="text"
-                        placeholder="8123456789"
-                        value={phone_number}
-                        onChange={handlePhoneNumberChange}
-                      />
-                      {isPhoneNumberValid && (
-                        <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] mr-2 flex-shrink-0" />
-                      )}
-                      {!isPhoneNumberValid &&
-                        phone_number &&
-                        phone_number.length > 0 && (
-                          <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] mr-2.5 flex-shrink-0" />
-                        )}
-                    </div>
-                    {!isPhoneNumberValid &&
-                      phone_number &&
-                      phone_number.length < 8 && (
-                        <p className="text-[#FF0000] text-xs mt-1 text-left">
-                          Nomor ponsel terlalu pendek, minimum 8 angka
-                        </p>
-                      )}
-                    {!isPhoneNumberValid &&
-                      phone_number &&
-                      phone_number.length > 14 && (
-                        <p className="text-[#FF0000] text-xs mt-1 text-left">
-                          Nomor ponsel terlalu panjang, maksimum 14 angka
-                        </p>
-                      )}
-                  </div>
-                  <div className="flex flex-col space-y-1">
-                    <label className="text-left text-[#2A629A] text-sm font-medium">
-                      Kata Sandi
-                    </label>
-                    <div
-                      className={`flex items-center p-2 rounded-xl border ${
-                        password &&
-                        (passwordStrength === "weak" ||
-                          passwordStrength === "medium")
-                          ? "border-[#FF0000]"
-                          : "border-[#8A8A8A]"
-                      } border-[#2A629A] focus-within:shadow-lg`}
-                    >
-                      <input
-                        className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
-                        type={passwordInputType}
-                        placeholder="••••••••••"
-                        value={password}
-                        onChange={handlePasswordChange}
-                      />
-                      {showPassword ? (
-                        <FiEye
-                          className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
-                          onClick={togglePasswordVisibility}
-                        />
-                      ) : (
-                        <FiEyeOff
-                          className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
-                          onClick={togglePasswordVisibility}
-                        />
-                      )}
-                    </div>
-                    {password && (
-                      <div className="flex items-center mt-1">
-                        <div className="flex-shrink-0 w-[20px] h-[20px] mr-1.5">
-                          {passwordStrength === "weak" && (
-                            <BiErrorCircle className="text-[#FF0000] w-[20px] h-[20px] flex-shrink-0" />
-                          )}
-                          {passwordStrength === "medium" && (
-                            <BiErrorCircle className="text-yellow-500 w-[20px] h-[20px] flex-shrink-0" />
-                          )}
-                          {passwordStrength === "strong" && (
-                            <BiSolidCheckCircle className="text-[#28A745] w-[20px] h-[20px] flex-shrink-0" />
-                          )}
-                        </div>
-                        <p className="text-xs text-[#8A8A8A]">
-                          {passwordStrength === "weak"
-                            ? "Kata sandi lemah"
-                            : passwordStrength === "medium"
-                            ? "Kata sandi sedang"
-                            : "Kata sandi kuat"}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex flex-col space-y-1">
-                    <label className="text-left text-[#2A629A] text-sm font-medium">
-                      Konfirmasi Kata Sandi
-                    </label>
-                    <div
-                      className={`flex items-center p-2 rounded-xl border ${
-                        !passwordsMatch && confirmPassword
-                          ? "border-[#FF0000]"
-                          : "border-[#8A8A8A]"
-                      } border-[#2A629A] focus-within:shadow-lg`}
-                    >
-                      <input
-                        className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
-                        type={confirmPasswordInputType}
-                        placeholder="••••••••••"
-                        value={confirmPassword}
-                        onChange={handleConfirmPasswordChange}
-                      />
-                      {showConfirmPassword ? (
-                        <FiEye
-                          className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
-                          onClick={toggleConfirmPasswordVisibility}
-                        />
-                      ) : (
-                        <FiEyeOff
-                          className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
-                          onClick={toggleConfirmPasswordVisibility}
-                        />
-                      )}
-                    </div>
-                    {!passwordsMatch && confirmPassword && (
-                      <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
-                        <RxCrossCircled className="w-[20px] h-[20px] mr-1.5 flex-shrink-0" />
-                        <p>
-                          Konfirmasi kata sandi tidak cocok dengan kata sandi
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  <button
-                    type="submit"
-                    className="bg-[#2A629A] text-white text-sm font-medium p-2 rounded-xl focus:outline-none w-full transition-colors duration-300 hover:bg-[#003285] active:bg-[#003285]"
                   >
-                    Daftar
-                  </button>
+                    <div className="flex items-center bg-gray-300 p-2 px-3 rounded-l-xl border-r-0">
+                      <span className="text-sm text-[#2A629A] font-medium">
+                        +62
+                      </span>
+                    </div>
+                    <input
+                      className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] pl-2 min-w-0"
+                      type="text"
+                      placeholder="8123456789"
+                      value={phone_number}
+                      onChange={handlePhoneNumberChange}
+                    />
+                    {isPhoneNumberValid && (
+                      <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] mr-2 flex-shrink-0" />
+                    )}
+                    {!isPhoneNumberValid &&
+                      phone_number &&
+                      phone_number.length > 0 && (
+                        <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] mr-2.5 flex-shrink-0" />
+                      )}
+                  </div>
+                  {!isPhoneNumberValid &&
+                    phone_number &&
+                    phone_number.length < 8 && (
+                      <p className="text-[#FF0000] text-xs mt-1 text-left">
+                        Nomor ponsel terlalu pendek, minimum 8 angka
+                      </p>
+                    )}
+                  {!isPhoneNumberValid &&
+                    phone_number &&
+                    phone_number.length > 14 && (
+                      <p className="text-[#FF0000] text-xs mt-1 text-left">
+                        Nomor ponsel terlalu panjang, maksimum 14 angka
+                      </p>
+                    )}
                 </div>
-              </form>
-
-              <p className="text-[#8A8A8A] mt-7 text-sm font-medium">
-                Sudah punya akun{" "}
-                <a href="/" className="text-[#2A629A] mt-7 text-sm font-bold">
-                  BiFlight
-                </a>
-                <span className="text-[#8A8A8A] mt-7 text-sm font-medium">
-                  ?{" "}
-                </span>
-                <a
-                  href="/login"
-                  className="text-[#40A2E3] hover:underline font-semibold text-sm"
+                <div className="flex flex-col space-y-1">
+                  <label className="text-left text-[#2A629A] text-sm font-medium">
+                    Kata Sandi
+                  </label>
+                  <div
+                    className={`flex items-center p-2 rounded-xl border ${
+                      password &&
+                      (passwordStrength === "weak" ||
+                        passwordStrength === "medium")
+                        ? "border-[#FF0000]"
+                        : "border-[#8A8A8A]"
+                    } border-[#2A629A] focus-within:shadow-lg`}
+                  >
+                    <input
+                      className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
+                      type={passwordInputType}
+                      placeholder="••••••••••"
+                      value={password}
+                      onChange={handlePasswordChange}
+                    />
+                    {showPassword ? (
+                      <FiEye
+                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                        onClick={togglePasswordVisibility}
+                      />
+                    ) : (
+                      <FiEyeOff
+                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                        onClick={togglePasswordVisibility}
+                      />
+                    )}
+                  </div>
+                  {password && (
+                    <div className="flex items-center mt-1">
+                      <div className="flex-shrink-0 w-[20px] h-[20px] mr-1.5">
+                        {passwordStrength === "weak" && (
+                          <BiErrorCircle className="text-[#FF0000] w-[20px] h-[20px] flex-shrink-0" />
+                        )}
+                        {passwordStrength === "medium" && (
+                          <BiErrorCircle className="text-yellow-500 w-[20px] h-[20px] flex-shrink-0" />
+                        )}
+                        {passwordStrength === "strong" && (
+                          <BiSolidCheckCircle className="text-[#28A745] w-[20px] h-[20px] flex-shrink-0" />
+                        )}
+                      </div>
+                      <p className="text-xs text-[#8A8A8A]">
+                        {passwordStrength === "weak"
+                          ? "Kata sandi lemah"
+                          : passwordStrength === "medium"
+                          ? "Kata sandi sedang"
+                          : "Kata sandi kuat"}
+                      </p>
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-col space-y-1">
+                  <label className="text-left text-[#2A629A] text-sm font-medium">
+                    Konfirmasi Kata Sandi
+                  </label>
+                  <div
+                    className={`flex items-center p-2 rounded-xl border ${
+                      !passwordsMatch && confirmPassword
+                        ? "border-[#FF0000]"
+                        : "border-[#8A8A8A]"
+                    } border-[#2A629A] focus-within:shadow-lg`}
+                  >
+                    <input
+                      className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
+                      type={confirmPasswordInputType}
+                      placeholder="••••••••••"
+                      value={confirmPassword}
+                      onChange={handleConfirmPasswordChange}
+                    />
+                    {showConfirmPassword ? (
+                      <FiEye
+                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                        onClick={toggleConfirmPasswordVisibility}
+                      />
+                    ) : (
+                      <FiEyeOff
+                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                        onClick={toggleConfirmPasswordVisibility}
+                      />
+                    )}
+                  </div>
+                  {!passwordsMatch && confirmPassword && (
+                    <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
+                      <RxCrossCircled className="w-[20px] h-[20px] mr-1.5 flex-shrink-0" />
+                      <p>Konfirmasi kata sandi tidak cocok dengan kata sandi</p>
+                    </div>
+                  )}
+                </div>
+                <button
+                  type="submit"
+                  className="bg-[#2A629A] text-white text-sm font-medium p-2 rounded-xl focus:outline-none w-full transition-colors duration-300 hover:bg-[#003285] active:bg-[#003285]"
                 >
-                  Masuk di sini
-                </a>
-              </p>
-            </div>
+                  Daftar
+                </button>
+              </div>
+            </form>
+
+            <p className="text-[#8A8A8A] mt-7 text-sm font-medium">
+              Sudah punya akun{" "}
+              <a href="/" className="text-[#2A629A] mt-7 text-sm font-bold">
+                BiFlight
+              </a>
+              <span className="text-[#8A8A8A] mt-7 text-sm font-medium">
+                ?{" "}
+              </span>
+              <a
+                href="/login"
+                className="text-[#40A2E3] hover:underline font-semibold text-sm"
+              >
+                Masuk di sini
+              </a>
+            </p>
           </div>
         </div>
       </div>

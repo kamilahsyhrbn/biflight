@@ -16,9 +16,9 @@ import {
 } from "../../../redux/reducers/auth/loginReducers";
 import LoginGoogle from "./LoginGoogle";
 import Footer from "../../../assets/components/navigations/Footer";
-import backgroundImage from "../../../assets/images/loginregister.png";
-import Logobiflight from "../../../assets/images/logobiflight.png";
 import BtnScrollTop from "../../../assets/components/BtnScrollUp";
+import Logobiflight from "../../../assets/images/logobiflight.png";
+import Plane from "../../../assets/images/pesawat.png";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -235,56 +235,52 @@ export default function Login() {
 
   return (
     <div>
-      <div
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "20px",
-        }}
-      >
-        <div className="flex justify-center items-center min-h-screen w-full">
-          <div
-            className={`max-w-[400px] w-full rounded-lg p-5 sm:m-8 bg-[#FFF8ED] text-center relative shadow-lg
+      <div className="flex justify-center items-center min-h-screen bg-[#FFF8ED]">
+        <div className="hidden sm:flex flex-grow-0">
+          <img
+            src={Plane}
+            className="object-cover w-full h-full"
+            style={{ height: "67vw" }}
+            alt="Plane Image"
+          />
+        </div>
+        <div
+          className={`max-w-[400px] w-full rounded-lg p-5 sm:m-8 bg-[#FFF8ED] text-center relative
               ${isTablet ? "max-w-[650px] p-8" : ""}
             `}
-          >
-            <BiArrowBack
-              className="absolute top-4 left-4 cursor-pointer text-[#2A629A]"
-              size={20}
-              onClick={() => navigate("/")}
+        >
+          <BiArrowBack
+            className="absolute top-4 left-4 cursor-pointer text-[#2A629A]"
+            size={20}
+            onClick={() => navigate("/")}
+          />
+          <Toaster />
+          <div className="max-w-[550px] w-full mx-auto flex flex-col items-center mt-5">
+            <img
+              src={Logobiflight}
+              className="w-24 p-1.5"
+              alt="BiFlight Logo"
             />
-            <Toaster />
-            <div className="max-w-[550px] w-full mx-auto flex flex-col items-center mt-5">
-              <img
-                src={Logobiflight}
-                className="w-24 p-1.5"
-                alt="BiFlight Logo"
-              />
-              <h1 className="text-[#003285] text-2xl font-bold text-center w-full mt-3 mb-3">
-                Masuk ke Akun Anda
-              </h1>
-              <h2 className="text-[#40A2E3] text-sm font-medium mb-10 text-center w-full">
-                <span className="text-[#40A2E3]">Masuk</span>
-                <span className="text-[#2A629A]"> </span>
-                <span className="text-[#8A8A8A]">
-                  untuk akses cepat dan mudah ke tiket pesawat terbaik!
-                </span>
-              </h2>
+            <h1 className="text-[#003285] text-2xl font-bold text-center w-full mt-3 mb-3">
+              Masuk ke Akun Anda
+            </h1>
+            <h2 className="text-[#40A2E3] text-sm font-medium mb-10 text-center w-full">
+              <span className="text-[#40A2E3]">Masuk</span>
+              <span className="text-[#2A629A]"> </span>
+              <span className="text-[#8A8A8A]">
+                untuk akses cepat dan mudah <br /> ke tiket pesawat terbaik!
+              </span>
+            </h2>
 
-              {/* Form masuk akun Email */}
-              <form onSubmit={handleSubmit} className="w-full">
-                <div className="flex flex-col space-y-3">
-                  <div className="flex flex-col space-y-1">
-                    <label className="text-left text-[#2A629A] text-sm font-medium">
-                      Email
-                    </label>
-                    <div
-                      className={`flex items-center p-2 rounded-xl border focus-within:shadow-lg
+            {/* Form masuk akun Email */}
+            <form onSubmit={handleSubmit} className="w-full">
+              <div className="flex flex-col space-y-3">
+                <div className="flex flex-col space-y-1">
+                  <label className="text-left text-[#2A629A] text-sm font-medium">
+                    Email
+                  </label>
+                  <div
+                    className={`flex items-center p-2 rounded-xl border focus-within:shadow-lg
                               ${
                                 email
                                   ? isEmailValid
@@ -297,41 +293,41 @@ export default function Login() {
                                   ? "border-[#FF0000]"
                                   : "border-[#8A8A8A]"
                               }`}
-                    >
-                      <input
-                        className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
-                        type="text"
-                        placeholder="Alamat Email"
-                        value={email}
-                        onChange={handleEmailChange}
-                      />
-                      {isEmailValid && (
-                        <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] flex-shrink-0" />
-                      )}
-                      {!isEmailValid && email && (
-                        <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] ml-2 flex-shrink-0" />
-                      )}
-                    </div>
+                  >
+                    <input
+                      className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
+                      type="text"
+                      placeholder="Alamat Email"
+                      value={email}
+                      onChange={handleEmailChange}
+                    />
+                    {isEmailValid && (
+                      <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] flex-shrink-0" />
+                    )}
                     {!isEmailValid && email && (
-                      <p className="text-[#FF0000] text-xs mt-1 text-left">
-                        Format Email salah
-                      </p>
+                      <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] ml-2 flex-shrink-0" />
                     )}
                   </div>
-                  <div className="flex flex-col space-y-1">
-                    <div className="flex justify-between items-center">
-                      <label className="text-left text-[#2A629A] text-sm font-medium">
-                        Kata Sandi
-                      </label>
-                      <a
-                        href="forgot-password"
-                        className="text-[#40A2E3] text-sm hover:underline font-medium"
-                      >
-                        Lupa Kata Sandi
-                      </a>
-                    </div>
-                    <div
-                      className={`flex items-center p-2 rounded-xl border focus-within:shadow-lg
+                  {!isEmailValid && email && (
+                    <p className="text-[#FF0000] text-xs mt-1 text-left">
+                      Format Email salah
+                    </p>
+                  )}
+                </div>
+                <div className="flex flex-col space-y-1">
+                  <div className="flex justify-between items-center">
+                    <label className="text-left text-[#2A629A] text-sm font-medium">
+                      Kata Sandi
+                    </label>
+                    <a
+                      href="forgot-password"
+                      className="text-[#40A2E3] text-sm hover:underline font-medium"
+                    >
+                      Lupa Kata Sandi
+                    </a>
+                  </div>
+                  <div
+                    className={`flex items-center p-2 rounded-xl border focus-within:shadow-lg
                               ${
                                 password
                                   ? isPasswordValid
@@ -344,76 +340,75 @@ export default function Login() {
                                   ? "border-[#FF0000]"
                                   : "border-[#8A8A8A]"
                               }`}
-                    >
-                      <input
-                        className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
-                        type={passwordInputType}
-                        placeholder="••••••••••"
-                        value={password}
-                        onFocus={handlePasswordFocus}
-                        onBlur={handlePasswordBlur}
-                        onChange={handlePasswordChange}
+                  >
+                    <input
+                      className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
+                      type={passwordInputType}
+                      placeholder="••••••••••"
+                      value={password}
+                      onFocus={handlePasswordFocus}
+                      onBlur={handlePasswordBlur}
+                      onChange={handlePasswordChange}
+                    />
+                    {showPassword ? (
+                      <FiEye
+                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                        onClick={togglePasswordVisibility}
                       />
-                      {showPassword ? (
-                        <FiEye
-                          className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
-                          onClick={togglePasswordVisibility}
-                        />
-                      ) : (
-                        <FiEyeOff
-                          className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
-                          onClick={togglePasswordVisibility}
-                        />
-                      )}
-                    </div>
-                    {isPasswordTouched && !isPasswordValid && (
-                      <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
-                        <BiErrorCircle className="w-[20px] h-[20px] mr-1.5 flex-shrink-0" />
-                        <p>
-                          Kata sandi berisi minimal 8 karakter, termasuk huruf
-                          besar dan angka
-                        </p>
-                      </div>
+                    ) : (
+                      <FiEyeOff
+                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                        onClick={togglePasswordVisibility}
+                      />
                     )}
                   </div>
-
-                  {/* Tombol masuk ke akun pengguna */}
-                  <button
-                    type="submit"
-                    className="bg-[#2A629A] text-white text-sm font-medium p-2 rounded-xl focus:outline-none w-full transition-colors duration-300 hover:bg-[#003285] active:bg-[#003285]"
-                  >
-                    Masuk
-                  </button>
+                  {isPasswordTouched && !isPasswordValid && (
+                    <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
+                      <BiErrorCircle className="w-[20px] h-[20px] mr-1.5 flex-shrink-0" />
+                      <p>
+                        Kata sandi berisi minimal 8 karakter, termasuk huruf
+                        besar dan angka
+                      </p>
+                    </div>
+                  )}
                 </div>
-              </form>
 
-              <div className="relative max-w-[400px] w-full rounded-lg m-4 sm:m-8 mt-8 mb-8">
-                <hr className="absolute left-0 right-0 border-t border-[#8A8A8A]" />
-                <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#FFF8ED] px-2 text-[#2A629A] text-sm font-medium">
-                  atau
-                </p>
-              </div>
-
-              {/* Tombol masuk menggunakan akun Google kepada pengguna */}
-              <LoginGoogle buttonText={"Lanjutkan dengan Google"} />
-
-              {/* Mengarahkan ke halaman daftar jika pengguna belum punya akun */}
-              <p className="text-[#8A8A8A] mt-7 text-sm font-medium">
-                Baru di{" "}
-                <a href="/" className="text-[#2A629A] mt-7 text-sm font-bold">
-                  BiFlight
-                </a>
-                <span className="text-[#8A8A8A] mt-7 text-sm font-medium">
-                  ?{" "}
-                </span>
-                <a
-                  href="/register"
-                  className="text-[#40A2E3] font-semibold text-sm hover:underline"
+                {/* Tombol masuk ke akun pengguna */}
+                <button
+                  type="submit"
+                  className="bg-[#2A629A] text-white text-sm font-medium p-2 rounded-xl focus:outline-none w-full transition-colors duration-300 hover:bg-[#003285] active:bg-[#003285]"
                 >
-                  Daftar di sini
-                </a>
+                  Masuk
+                </button>
+              </div>
+            </form>
+
+            <div className="relative max-w-[400px] w-full rounded-lg m-4 sm:m-8 mt-8 mb-8">
+              <hr className="absolute left-0 right-0 border-t border-[#8A8A8A]" />
+              <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#FFF8ED] px-2 text-[#2A629A] text-sm font-medium">
+                atau
               </p>
             </div>
+
+            {/* Tombol masuk menggunakan akun Google kepada pengguna */}
+            <LoginGoogle buttonText={"Lanjutkan dengan Google"} />
+
+            {/* Mengarahkan ke halaman daftar jika pengguna belum punya akun */}
+            <p className="text-[#8A8A8A] mt-7 text-sm font-medium">
+              Baru di{" "}
+              <a href="/" className="text-[#2A629A] mt-7 text-sm font-bold">
+                BiFlight
+              </a>
+              <span className="text-[#8A8A8A] mt-7 text-sm font-medium">
+                ?{" "}
+              </span>
+              <a
+                href="/register"
+                className="text-[#40A2E3] font-semibold text-sm hover:underline"
+              >
+                Daftar di sini
+              </a>
+            </p>
           </div>
         </div>
       </div>

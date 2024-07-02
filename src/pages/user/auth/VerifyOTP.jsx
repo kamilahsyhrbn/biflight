@@ -9,7 +9,7 @@ import {
   resetTimer,
 } from "../../../redux/reducers/auth/otpReducers"; // Import setEmail dan timer actions
 import { verifyOtp, resendOtp } from "../../../redux/actions/auth/otpActions";
-import backgroundImage from "../../../assets/images/otp.png";
+// import backgroundImage from "../../../assets/images/otp.png";
 import BtnScrollTop from "../../../assets/components/BtnScrollUp";
 import Footer from "../../../assets/components/navigations/Footer";
 import { useMediaQuery } from "react-responsive";
@@ -136,7 +136,7 @@ export default function VerifyOTP() {
 
   return (
     <div>
-      <div
+      {/* <div
         style={{
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: "cover",
@@ -147,70 +147,70 @@ export default function VerifyOTP() {
           justifyContent: "center",
           padding: "20px",
         }}
-      >
-        <div className="flex justify-center items-center min-h-screen w-full">
-          <Toaster />
-          <div
-            className={`max-w-[400px] w-full rounded-lg p-5 sm:m-8 bg-[#FFF8ED] text-center relative shadow-lg
+      > */}
+      <div className="flex justify-center items-center min-h-screen w-full bg-[#FFF8ED]">
+        <Toaster />
+        <div
+          className={`max-w-[400px] w-full rounded-lg p-5 sm:m-8 bg-[#FFF8ED] text-center relative
               ${isTablet ? "max-w-[650px] p-8" : ""}
             `}
-          >
-            <BiArrowBack
-              className="absolute top-4 left-4 cursor-pointer text-[#2A629A]"
-              size={20}
-              onClick={() => navigate("/register")}
-            />
-            <div className="max-w-[550px] w-full mx-auto flex flex-col items-center mt-5">
-              <h1 className="text-[#003285] text-2xl font-bold text-center w-full mt-3 mb-8">
-                Verifikasi Email Anda
+        >
+          <BiArrowBack
+            className="absolute top-4 left-4 cursor-pointer text-[#2A629A]"
+            size={20}
+            onClick={() => navigate("/register")}
+          />
+          <div className="max-w-[550px] w-full mx-auto flex flex-col items-center mt-5">
+            <h1 className="text-[#003285] text-2xl font-bold text-center w-full mt-3 mb-8">
+              Verifikasi Email Anda
+            </h1>
+            <h2 className="text-[#8A8A8A] text-l mb-5 text-center text-sm font-medium">
+              Masukkan 6 Digit Kode OTP yang Dikirim ke <br />
+              <span className="font-bold text-[#2A629A]">
+                {email && censorEmail(email)}
+              </span>
+            </h2>
+
+            <form onSubmit={handleVerify} className="w-full">
+              <div className="flex justify-center items-center space-x-2 sm:space-x-3 mt-5">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <input
+                    key={index}
+                    type="text"
+                    name="otp"
+                    maxLength="1"
+                    value={otpInput[index] || ""}
+                    onChange={(e) => handleChange(e.target, index)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    className="w-12 h-12 sm:w-12 sm:h-12 text-center border border-[#2A629A] rounded-xl focus:border-[#2A629A]"
+                  />
+                ))}
+              </div>
+              <button
+                type="submit"
+                className="bg-[#2A629A] text-white text-sm font-medium p-2 mt-8 mb-5 rounded-xl focus:outline-none w-full transition-colors duration-300 hover:bg-[#003285] active:bg-[#003285]"
+                disabled={timer <= 0} // Menonaktifkan tombol jika timer habis
+              >
+                Konfirmasi Kode OTP
+              </button>
+
+              <h1 className="text-[#40A2E3] text-l mb-3 text-center text-sm font-medium">
+                {timer > 0 ? (
+                  `Waktu tersisa: ${formatTime(Math.max(timer, 0))}`
+                ) : (
+                  <span
+                    onClick={handleResendOtp}
+                    className="cursor-pointer text-[#40A2E3] text-sm hover:underline font-medium"
+                  >
+                    Kirim Ulang Kode OTP
+                  </span>
+                )}
               </h1>
-              <h2 className="text-[#8A8A8A] text-l mb-5 text-center text-sm font-medium">
-                Masukkan 6 Digit Kode OTP yang Dikirim ke <br />
-                <span className="font-bold text-[#2A629A]">
-                  {email && censorEmail(email)}
-                </span>
-              </h2>
-
-              <form onSubmit={handleVerify} className="w-full">
-                <div className="flex justify-center items-center space-x-2 sm:space-x-3 mt-5">
-                  {Array.from({ length: 6 }).map((_, index) => (
-                    <input
-                      key={index}
-                      type="text"
-                      name="otp"
-                      maxLength="1"
-                      value={otpInput[index] || ""}
-                      onChange={(e) => handleChange(e.target, index)}
-                      onKeyDown={(e) => handleKeyDown(e, index)}
-                      className="w-12 h-12 sm:w-12 sm:h-12 text-center border border-[#2A629A] rounded-xl focus:border-[#2A629A]"
-                    />
-                  ))}
-                </div>
-                <button
-                  type="submit"
-                  className="bg-[#2A629A] text-white text-sm font-medium p-2 mt-8 mb-5 rounded-xl focus:outline-none w-full transition-colors duration-300 hover:bg-[#003285] active:bg-[#003285]"
-                  disabled={timer <= 0} // Menonaktifkan tombol jika timer habis
-                >
-                  Konfirmasi Kode OTP
-                </button>
-
-                <h1 className="text-[#40A2E3] text-l mb-3 text-center text-sm font-medium">
-                  {timer > 0 ? (
-                    `Waktu tersisa: ${formatTime(Math.max(timer, 0))}`
-                  ) : (
-                    <span
-                      onClick={handleResendOtp}
-                      className="cursor-pointer text-[#40A2E3] text-sm hover:underline font-medium"
-                    >
-                      Kirim Ulang Kode OTP
-                    </span>
-                  )}
-                </h1>
-              </form>
-            </div>
+            </form>
           </div>
         </div>
       </div>
+      {/* </div> */}
       {isMobile ? "" : <BtnScrollTop />}
       <Footer />
     </div>
