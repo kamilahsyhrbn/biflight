@@ -235,17 +235,19 @@ export default function Login() {
 
   return (
     <div>
-      <div className="flex justify-center items-center min-h-screen bg-[#FFF8ED]">
-        <div className="hidden sm:flex flex-grow-0">
-          <img
-            src={Plane}
-            className="object-cover w-full h-full"
-            style={{ height: "67vw" }}
-            alt="Plane Image"
-          />
-        </div>
+      <div className="flex justify-center items-center h-screen bg-[#FFF8ED]">
+        {!isTablet && (
+          <div
+            className="hidden sm:flex flex-grow-0 w-full h-screen"
+            style={{
+              backgroundImage: `url(${Plane})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          ></div>
+        )}
         <div
-          className={`max-w-[400px] w-full rounded-lg p-5 sm:m-8 bg-[#FFF8ED] text-center relative
+          className={`max-w-[400px] w-full rounded-lg px-5 sm:m-8 bg-[#FFF8ED] text-center h-auto relative
               ${isTablet ? "max-w-[650px] p-8" : ""}
             `}
         >
