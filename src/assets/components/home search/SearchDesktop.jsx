@@ -22,7 +22,6 @@ import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import AirportInput from "../AirportInput";
 import { setChoosenFlight } from "../../../redux/reducers/flight/flightReducers";
-import { useMediaQuery } from "react-responsive";
 
 export default function SearchDesktop() {
   const dispatch = useDispatch();

@@ -24,8 +24,7 @@ export default function PrintTicket() {
   const { showConfirmationModal, showSuccessModal } = useSelector(
     (state) => state.payment
   ); // Menggunakan useSelector untuk mengambil data dari state payment
-  const { isLoading } = useSelector((state) => state.transaction); // Menggunakan useSelector untuk meng
-  console.log("isLoading", isLoading);
+  const { isLoading } = useSelector((state) => state.transaction); // Menggunakan useSelector untuk mengambil data isLoading dari state transaction
 
   // Fungsi untuk menampilkan modal konfirmasi cetak tiket
   const handlePrintTicket = async () => {

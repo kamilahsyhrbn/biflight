@@ -22,6 +22,7 @@ import {
   setSelectedMonth,
   setSelectedYear,
   clearError,
+  setPaymentSuccess,
 } from "../../../redux/reducers/flight/paymentReducers";
 import {
   processPayment,
@@ -51,44 +52,6 @@ export default function Payment() {
   } = useSelector((state) => state.payment); // Menggunakan useSelector untuk mengambil state payment dari reducers
   const { ticketSelected } = useSelector((state) => state.ticket); // Menggunakan useSelector untuk mengambil state ticket dari reducers
   const paymentSuccess = useSelector((state) => state.payment.paymentSuccess); // Mengambil status pembayaran sukses dari state payment
-  const [timeLeft, setTimeLeft] = useState(20000);
-  const [timeUpModal, setTimeUpModal] = useState(false); // Tambahkan state untuk status waktu habis
-
-  // Fungsi untuk mengubah milidetik menjadi format MM:SS
-  const formatTime = (milliseconds) => {
-    const seconds = Math.floor(milliseconds / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
-      .toString()
-      .padStart(2, "0")}`;
-  };
-
-  useEffect(() => {
-    let interval;
-    if (timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft((prevTime) => {
-          if (prevTime <= 1000) {
-            setTimeUpModal(true); // Set status waktu habis jika waktu kurang dari atau sama dengan 1000 ms
-            clearInterval(interval); // Hentikan interval jika waktu sudah habis
-            return 0;
-          }
-          return prevTime - 1000; // Kurangi waktu hanya jika belum habis
-        });
-      }, 1000);
-    } else {
-      setTimeUpModal(true); // Set status waktu habis jika waktu sudah 0 atau kurang
-    }
-
-    return () => clearInterval(interval);
-  }, [timeLeft]);
-
-  // Fungsi untuk menutup modal waktu habis
-  const closeTimeUpModal = () => {
-    setTimeUpModal(false);
-    setTimeLeft(0);
-  };
 
   // Fungsi untuk membersihkan state ketika komponen di-refresh
   useEffect(() => {
@@ -352,6 +315,7 @@ export default function Payment() {
       setTimeout(() => {
         navigate(`/print-ticket/${ticketSelected.booking_code}`);
       }, 3000);
+      dispatch(setPaymentSuccess(false));
     }
   }, [paymentSuccess, navigate, ticketSelected.booking_code]);
 

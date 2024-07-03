@@ -241,15 +241,33 @@ export default function BookingSummary() {
                         </p>
                       </div>
                       {/* Menambahkan detail penumpang */}
-                      {passengerDetails?.map((passenger, index) => (
-                        <div key={passenger?.passenger_id}>
-                          <h5 className="text-[#003285]">
-                            Penumpang {index + 1}: {passenger?.title}{" "}
-                            {passenger?.name}
-                          </h5>
-                          <p>ID: {passenger?.passenger_id}</p>
-                        </div>
-                      ))}
+                      {ticketSelected?.passengers ? (
+                        <>
+                          {ticketSelected?.passengers?.map(
+                            (passenger, index) => (
+                              <div key={passenger?.passenger_id}>
+                                <h5 className="text-[#003285]">
+                                  Penumpang {index + 1}: {passenger?.title}{" "}
+                                  {passenger?.name}
+                                </h5>
+                                <p>ID: {passenger?.passenger_id}</p>
+                              </div>
+                            )
+                          )}
+                        </>
+                      ) : (
+                        // {/* Menambahkan detail penumpang */}
+                        <>
+                          {passengerDetails?.map((passenger, index) => (
+                            <div key={index}>
+                              <h5 className="text-[#003285]">
+                                Penumpang {index + 1}: {passenger?.title}{" "}
+                                {passenger?.name}
+                              </h5>
+                            </div>
+                          ))}
+                        </>
+                      )}
                     </li>
                     <li className="ms-4">
                       <div className="absolute w-3 h-3 bg-[#2A629A] rounded-full mt-1.5 -start-1.5 border border-white"></div>

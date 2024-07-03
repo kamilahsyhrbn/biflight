@@ -55,7 +55,6 @@ export const getFlight =
         return false;
       } else {
         dispatch(setFlights([]));
-        dispatch(setIsLoading(false));
         dispatch(setChoosenFlight([]));
         toast("Terjadi kesalahan!", {
           style: {

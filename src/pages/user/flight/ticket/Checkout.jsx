@@ -168,7 +168,7 @@ export default function TicketCheckout() {
   };
 
   const { ticket } = useSelector((state) => state.ticket);
-  const { passengerDetails } = useSelector((state) => state.booking);
+
   useEffect(() => {
     if (ticket) {
       dispatch(setTicketSelected(ticket));
@@ -681,10 +681,11 @@ export default function TicketCheckout() {
 
                 <div>
                   <button
+                    disabled={isDataSaved}
                     type="submit"
                     className="w-full max-w-[800px] mt-6 inline-flex justify-center rounded-xl border-0 shadow-sm py-3 bg-[#2A629A] font-medium text-white hover:bg-[#003285] focus:outline-none focus:ring-0"
                   >
-                    Simpan
+                    {isDataSaved ? "Data Tersimpan" : " Simpan"}
                   </button>
                 </div>
               </div>

@@ -468,9 +468,8 @@ export default function SearchResult() {
     setDetailOpen(null);
   };
 
-  // UNTUK MEMBUAT STATE AWAL DARI QUERY URL
+  // UNTUK MEMBUAT FORMAT TANGGAL PADA DATE PICKER
   useEffect(() => {
-    // UNTUK MEMBUAT FORMAT TANGGAL
     const tanggalPergi = new Date(departure_date).toLocaleString("id-ID", {
       day: "2-digit",
       month: "long",
@@ -605,9 +604,9 @@ export default function SearchResult() {
     setFilter("");
   };
 
-  // UNTUK MENJALANKAN FUNGSI GET FLIGHT SAAT GANTI PAGE ATAU FILTER
+  // UNTUK MENJALANKAN FUNGSI GET FLIGHT SAAT DATE PICKER, GANTI PAGE ATAU FILTER
   useEffect(() => {
-    if (flights?.length > 0) {
+    if (!isLoading) {
       if (choosenFlight?.length === 0) {
         dispatch(
           getFlight(
@@ -1214,130 +1213,132 @@ export default function SearchResult() {
               </div>
 
               {/* PAGINATION */}
-              <nav>
-                <ul className="flex items-center justify-center mt-10 -space-x-px h-10">
-                  <li>
-                    <button
-                      onClick={goToPrevPage}
-                      disabled={currentPage === 1}
-                      className="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      <svg
-                        className="w-3 h-3"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 6 10"
+              {pages > 1 && (
+                <nav>
+                  <ul className="flex items-center justify-center mt-10 -space-x-px h-10">
+                    <li>
+                      <button
+                        onClick={goToPrevPage}
+                        disabled={currentPage === 1}
+                        className="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
                       >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 1 1 5l4 4"
-                        />
-                      </svg>
-                    </button>
-                  </li>
+                        <svg
+                          className="w-3 h-3"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 6 10"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 1 1 5l4 4"
+                          />
+                        </svg>
+                      </button>
+                    </li>
 
-                  {[...Array(pages)].map((_, index) => {
-                    const startPage = currentPage - 3;
-                    const endPage = currentPage + 1;
+                    {[...Array(pages)].map((_, index) => {
+                      const startPage = currentPage - 3;
+                      const endPage = currentPage + 1;
 
-                    if (pages > 4) {
-                      if (index < 4 && currentPage <= 2) {
-                        return (
-                          <li key={index}>
-                            <button
-                              onClick={() => goToPage(index + 1)}
-                              className={`flex items-center justify-center px-4 h-10 leading-tight ${
-                                currentPage === index + 1
-                                  ? "text-[#003285] border border-[#2A629A] bg-blue-50"
-                                  : "text-gray-500 bg-white border border-gray-300"
-                              } hover:bg-gray-100 hover:text-gray-700`}
+                      if (pages > 4) {
+                        if (index < 4 && currentPage <= 2) {
+                          return (
+                            <li key={index}>
+                              <button
+                                onClick={() => goToPage(index + 1)}
+                                className={`flex items-center justify-center px-4 h-10 leading-tight ${
+                                  currentPage === index + 1
+                                    ? "text-[#003285] border border-[#2A629A] bg-blue-50"
+                                    : "text-gray-500 bg-white border border-gray-300"
+                                } hover:bg-gray-100 hover:text-gray-700`}
+                              >
+                                {index + 1}
+                              </button>
+                            </li>
+                          );
+                        } else if (
+                          index >= startPage &&
+                          index < endPage &&
+                          currentPage > 2
+                        ) {
+                          return (
+                            <li key={index}>
+                              <button
+                                onClick={() => goToPage(index + 1)}
+                                className={`flex items-center justify-center px-4 h-10 leading-tight ${
+                                  currentPage === index + 1
+                                    ? "text-[#003285] border border-[#2A629A] bg-blue-50"
+                                    : "text-gray-500 bg-white border border-gray-300"
+                                } hover:bg-gray-100 hover:text-gray-700`}
+                              >
+                                {index + 1}
+                              </button>
+                            </li>
+                          );
+                        } else if (
+                          (index === 4 && currentPage <= 2) ||
+                          (index === endPage && currentPage > 2)
+                        ) {
+                          return (
+                            <li
+                              onClick={goToNextPage}
+                              key={index}
+                              className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
                             >
-                              {index + 1}
-                            </button>
-                          </li>
-                        );
-                      } else if (
-                        index >= startPage &&
-                        index < endPage &&
-                        currentPage > 2
-                      ) {
-                        return (
-                          <li key={index}>
-                            <button
-                              onClick={() => goToPage(index + 1)}
-                              className={`flex items-center justify-center px-4 h-10 leading-tight ${
-                                currentPage === index + 1
-                                  ? "text-[#003285] border border-[#2A629A] bg-blue-50"
-                                  : "text-gray-500 bg-white border border-gray-300"
-                              } hover:bg-gray-100 hover:text-gray-700`}
-                            >
-                              {index + 1}
-                            </button>
-                          </li>
-                        );
-                      } else if (
-                        (index === 4 && currentPage <= 2) ||
-                        (index === endPage && currentPage > 2)
-                      ) {
-                        return (
-                          <li
-                            onClick={goToNextPage}
-                            key={index}
-                            className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                          >
-                            ...
-                          </li>
-                        );
+                              ...
+                            </li>
+                          );
+                        } else {
+                          return null;
+                        }
                       } else {
-                        return null;
+                        return (
+                          <li key={index}>
+                            <button
+                              onClick={() => goToPage(index + 1)}
+                              className={`flex items-center justify-center px-4 h-10 leading-tight ${
+                                currentPage === index + 1
+                                  ? "text-[#003285] border border-[#2A629A] bg-blue-50"
+                                  : "text-gray-500 bg-white border border-gray-300"
+                              } hover:bg-gray-100 hover:text-gray-700`}
+                            >
+                              {index + 1}
+                            </button>
+                          </li>
+                        );
                       }
-                    } else {
-                      return (
-                        <li key={index}>
-                          <button
-                            onClick={() => goToPage(index + 1)}
-                            className={`flex items-center justify-center px-4 h-10 leading-tight ${
-                              currentPage === index + 1
-                                ? "text-[#003285] border border-[#2A629A] bg-blue-50"
-                                : "text-gray-500 bg-white border border-gray-300"
-                            } hover:bg-gray-100 hover:text-gray-700`}
-                          >
-                            {index + 1}
-                          </button>
-                        </li>
-                      );
-                    }
-                  })}
+                    })}
 
-                  <li>
-                    <button
-                      onClick={goToNextPage}
-                      disabled={currentPage === pages}
-                      className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      <svg
-                        className="w-3 h-3"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 6 10"
+                    <li>
+                      <button
+                        onClick={goToNextPage}
+                        disabled={currentPage === pages}
+                        className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
                       >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="m1 9 4-4-4-4"
-                        />
-                      </svg>
-                    </button>
-                  </li>
-                </ul>
-              </nav>
+                        <svg
+                          className="w-3 h-3"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 6 10"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="m1 9 4-4-4-4"
+                          />
+                        </svg>
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              )}
             </>
           )}
         </div>
