@@ -22,7 +22,7 @@ export default function NavbarMobile() {
     if (isLoggedIn) {
       dispatch(getNotification());
     }
-  }, [notifikasi]);
+  }, [dispatch]);
 
   return (
     <>

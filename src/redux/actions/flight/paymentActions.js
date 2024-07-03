@@ -58,7 +58,7 @@ export const processPayment =
         });
       }
     } catch (error) {
-      console.log("Payment error response:", error.response.data);
+      // console.log("Payment error response:", error.response.data);
       if (error?.response?.status === 401) {
         toast.error("Sesi Anda telah habis. Silakan masuk terlebih dahulu.", {
           icon: null,

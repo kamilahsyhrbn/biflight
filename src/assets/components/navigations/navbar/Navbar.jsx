@@ -27,23 +27,14 @@ export default function Navbar() {
 
   // MENDAPATKAN DATA USER BUAT DROPDOWN PROFIL
   useEffect(() => {
-    async function account() {
+    const account = async () => {
       if (isLoggedIn) {
         dispatch(getUser(navigate));
-      }
-    }
-    account();
-  }, []);
-
-  // MENDAPATKAN DATA DAN JUMLAH NOTIFIKASI
-  useEffect(() => {
-    const notif = async () => {
-      if (isLoggedIn) {
         dispatch(getNotification());
       }
     };
-    notif();
-  }, [notifikasi]);
+    account();
+  }, []);
 
   // NAMPILIN MODAL LOGOUT
   const handleConfirmModalToggle = () => {
