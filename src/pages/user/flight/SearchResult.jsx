@@ -347,21 +347,20 @@ export default function SearchResult() {
     }
 
     if (search?.departure_code === search?.arrival_code) {
-      toast("Harap pilih destinasi yang berbeda!"),
-        {
-          style: {
-            background: "#FF0000", // Background merah
-            color: "#FFFFFF", // Teks putih
-            borderRadius: "12px", // Rounded-xl
-            fontSize: "14px", // Ukuran font
-            textAlign: "center", // Posisi teks di tengah
-            padding: "10px 20px", // Padding
-            width: "full",
-            maxWidth: "900px",
-          },
-          position: "top-center", // Posisi toast
-          duration: 3000, // Durasi toast
-        };
+      toast("Harap pilih destinasi yang berbeda!", {
+        style: {
+          background: "#FF0000", // Background merah
+          color: "#FFFFFF", // Teks putih
+          borderRadius: "12px", // Rounded-xl
+          fontSize: "14px", // Ukuran font
+          textAlign: "center", // Posisi teks di tengah
+          padding: "10px 20px", // Padding
+          width: "full",
+          maxWidth: "900px",
+        },
+        position: "top-center", // Posisi toast
+        duration: 3000, // Durasi toast
+      });
       return;
     }
 

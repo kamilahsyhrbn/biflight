@@ -2,6 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import {
   setIsLoading,
+  setIsPrintLoading,
   setTransactions,
 } from "../../reducers/flight/transactionReducers";
 import {
@@ -59,7 +60,7 @@ export const getTransactions = (lt, gte, q) => async (dispatch, getState) => {
 // Action untuk mencetak tiket
 export const printTransactions = (id) => async (dispatch, getState) => {
   const { token } = getState().login;
-  dispatch(setLoading(true));
+  dispatch(setIsPrintLoading(true));
   dispatch(setShowSuccessModal(false));
   try {
     const response = await axios.get(
@@ -91,8 +92,8 @@ export const printTransactions = (id) => async (dispatch, getState) => {
       } else {
         dispatch(setShowConfirmationModal(false));
         dispatch(setShowSuccessModal(true)); // Tampilkan modal sukses setelah cetak tiket berhasil
-        dispatch(setLoading(false));
       }
+      dispatch(setIsPrintLoading(false));
     }
   } catch (error) {
     // console.log(

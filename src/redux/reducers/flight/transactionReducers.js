@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   transactions: [],
   isLoading: true,
+  isPrintLoading: true,
   recentSearch: [],
 };
 
@@ -15,6 +16,9 @@ const transactionSlicer = createSlice({
     },
     setIsLoading: (state, action) => {
       state.isLoading = action.payload;
+    },
+    setIsPrintLoading: (state, action) => {
+      state.isPrintLoading = action.payload;
     },
     addToRecentSearch: (state, action) => {
       state.recentSearch = [...state.recentSearch, action.payload];
@@ -38,6 +42,7 @@ export const {
   addToRecentSearch,
   removeAllFromRecentSearch,
   removeFromRecentSearch,
+  setIsPrintLoading,
 } = transactionSlicer.actions;
 
 export default transactionSlicer.reducer;

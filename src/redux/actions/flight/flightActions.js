@@ -86,7 +86,7 @@ export const getCheapestFlights = () => async (dispatch) => {
     );
 
     if (response?.status === 200) {
-      dispatch(setCheapestFlights(response?.data?.data.slice(0, 20)));
+      dispatch(setCheapestFlights(response?.data?.data.slice(81, 100)));
       dispatch(setIsLoading(false));
     }
   } catch (error) {

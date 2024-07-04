@@ -24,7 +24,7 @@ export default function PrintTicket() {
   const { showConfirmationModal, showSuccessModal } = useSelector(
     (state) => state.payment
   ); // Menggunakan useSelector untuk mengambil data dari state payment
-  const { isLoading } = useSelector((state) => state.transaction); // Menggunakan useSelector untuk mengambil data isLoading dari state transaction
+  const { isPrintLoading } = useSelector((state) => state.transaction); // Menggunakan useSelector untuk mengambil data isPrintLoading dari state transaction
 
   // Fungsi untuk menampilkan modal konfirmasi cetak tiket
   const handlePrintTicket = async () => {
@@ -379,15 +379,15 @@ export default function PrintTicket() {
         )}
       </div>
       <div>
-        {isLoading && (
+        {isPrintLoading && (
           <div
             className={`fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50 overflow-y-scroll transition-opacity duration-300  ${
-              isLoading ? "opacity-100" : "opacity-0 pointer-events-none"
+              isPrintLoading ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
           >
             <div
               className={`relative p-4 w-full max-w-3xl max-h-full transform transition-transform duration-300 ease-in-out ${
-                isLoading ? "translate-y-0" : "-translate-y-full"
+                isPrintLoading ? "translate-y-0" : "-translate-y-full"
               }`}
             >
               <Loader />

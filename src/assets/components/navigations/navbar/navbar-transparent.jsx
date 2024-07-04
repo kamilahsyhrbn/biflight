@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoNotificationsOutline, IoPersonOutline } from "react-icons/io5";
-import { TbUser } from "react-icons/tb";
 import { FiLogIn } from "react-icons/fi";
 import Logobiflight from "../../../images/logobiflight.png";
-import { IoMdNotifications, IoMdLogOut } from "react-icons/io";
+import { IoMdNotifications } from "react-icons/io";
 import { PiEyes } from "react-icons/pi";
 import { logout } from "../../../../redux/actions/auth/loginActions";
 import { useDispatch, useSelector } from "react-redux";
@@ -192,21 +191,21 @@ export default function NavbarTransparent() {
                     <li>
                       <a
                         href="/profil"
-                        className=" py-2 px-4 text-sm text-gray-700 hover:bg-[#EEF5FF] flex items-center"
+                        className=" py-2 px-4 text-sm text-gray-700 hover:bg-[#EEF5FF] flex items-center gap-1"
                       >
-                        <TbUser className="text-xl" /> Profil
+                        <IoPersonOutline className="text-xl" /> Profil
                       </a>
                     </li>
                   </ul>
                   <div className="py-2">
                     <button
-                      className="w-full py-2 px-4 text-sm text-gray-700 hover:bg-[#EEF5FF] flex items-center"
+                      className="w-full py-2 px-4 text-sm text-gray-700 hover:bg-[#EEF5FF] flex items-center gap-1"
                       onClick={() => {
                         setShowDropdownProfile(!showDropdownProfile),
                           handleConfirmModalToggle();
                       }}
                     >
-                      <IoMdLogOut className="rotate-180 text-xl" /> Keluar
+                      <FiLogIn className="rotate-180 text-xl" /> Keluar
                     </button>
                   </div>
                 </div>

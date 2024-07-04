@@ -257,7 +257,7 @@ export default function OrderSummary() {
                 </div>
               </div>
 
-              <div className="my-4 py-3 border-y-2">
+              <div className="my-4 py-3 border-t-2">
                 <div className="flex justify-between font-semibold text-lg text-[#003285]">
                   <h5>Total Harga</h5>
                   <h5>

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { TbUser, TbEdit, TbUserMinus } from "react-icons/tb";
-import { IoMdLogOut, IoMdRefresh } from "react-icons/io";
+import { TbEdit } from "react-icons/tb";
+import { IoMdRefresh } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../redux/actions/auth/loginActions";
 import { deleteUser } from "../../redux/actions/user/userActions";
 import toast from "react-hot-toast";
 import captcha from "../images/captcha.png";
+import { FiLogIn } from "react-icons/fi";
+import { IoPersonOutline, IoPersonRemoveOutline } from "react-icons/io5";
 
 export default function sideMenu() {
   const { profile, isLoading } = useSelector((state) => state.user);
@@ -150,7 +152,7 @@ export default function sideMenu() {
                  }
               `}
               >
-                <TbUser
+                <IoPersonOutline
                   className={`mr-2 text-2xl ${
                     location.pathname === "/profil" ||
                     location.pathname === "/ubah-akun"
@@ -187,8 +189,8 @@ export default function sideMenu() {
               className="flex items-center px-4 py-3 text-[#FF0000] hover:bg-[#EEF5FF]"
               onClick={handleConfirmDeleteToggle}
             >
-              <TbUserMinus className="mr-2 text-2xl text-[#FF0000]" /> Hapus
-              Akun
+              <IoPersonRemoveOutline className="mr-2 text-2xl text-[#FF0000]" />{" "}
+              Hapus Akun
             </div>
           </div>
         </div>
@@ -197,7 +199,7 @@ export default function sideMenu() {
             className="flex items-center hover:bg-[#EEF5FF] p-4 w-full rounded-b-3xl text-[#003285]"
             onClick={handleConfirmModalToggle}
           >
-            <IoMdLogOut className="rotate-180 mr-2 text-2xl" /> Keluar
+            <FiLogIn className="rotate-180 mr-2 text-2xl" /> Keluar
           </div>
         </div>
       </div>

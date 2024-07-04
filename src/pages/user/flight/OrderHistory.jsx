@@ -46,7 +46,9 @@ export default function OrderHistory() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
 
-  const { transactions, isLoading } = useSelector((state) => state.transaction);
+  const { transactions, isLoading, isPrintLoading } = useSelector(
+    (state) => state.transaction
+  );
 
   const { profile } = useSelector((state) => state.user);
   const email = profile?.email;
@@ -1141,6 +1143,7 @@ export default function OrderHistory() {
                     <div className="w-full">
                       {selectedTicket?.status === "BERHASIL" && (
                         <button
+                          disabled={isLoading}
                           onClick={() =>
                             dispatch(
                               printTransactions(selectedTicket?.booking_code)
@@ -1148,7 +1151,7 @@ export default function OrderHistory() {
                           }
                           className="mt-4 w-full inline-flex justify-center rounded-xl border-0 shadow-sm py-3 bg-[#2A629A] font-medium text-white hover:bg-[#003285] focus:outline-none focus:ring-0"
                         >
-                          Cetak Tiket
+                          {isPrintLoading ? "Memproses..." : "Cetak Tiket"}
                         </button>
                       )}
                       {selectedTicket?.status === "BELUM DIBAYAR" && (
