@@ -151,7 +151,7 @@ export const loginWithGoogle = (accessToken, navigate) => async (dispatch) => {
           maxWidth: "900px",
         },
         position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        // duration: 2500, // Durasi toast
       }
     );
     setTimeout(() => {

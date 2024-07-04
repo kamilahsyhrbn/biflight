@@ -9,6 +9,7 @@ import { getTicket } from "../../../../redux/actions/ticket/ticketActions";
 import OrderSummary from "./OrderSummary";
 import { IoIosArrowBack, IoIosArrowDown } from "react-icons/io";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { BiErrorCircle } from "react-icons/bi";
 import Modal from "react-modal";
 import "../../../../index.css";
 import Navbar from "../../../../assets/components/navigations/navbar/Navbar";
@@ -36,6 +37,7 @@ export default function TicketCheckout() {
 
   const { token } = useSelector((state) => state.login);
   const [isChecked, setIsChecked] = useState(false);
+  const [isNameValid, setIsNameValid] = useState(false);
   const [minutes, setMinutes] = useState(15);
   const [seconds, setSeconds] = useState(0);
   const [timeUpModal, setTimeUpModal] = useState(false);
@@ -70,51 +72,146 @@ export default function TicketCheckout() {
     },
   ]);
 
-  //Handler untuk mengupdate state ordered
+  // Fungsi untuk menyimpan kesalahan di form orderer
+  const [ordererErrors, setOrdererErrors] = useState({
+    name: "",
+    family_name: "",
+    phone_number: "",
+  });
+
+  // Fungsi untuk menyimpan kesalahan di form passenger
+  const [passengerErrors, setPassengerErrors] = useState(
+    passengers.map(() => ({
+      name: "",
+      phone_number: "",
+      identity_number: "",
+    }))
+  );
+
+  //Fungsi untuk mengupdate state ordered
   const handleOrdererChange = (e) => {
     const { name, value } = e.target;
+    let error = "";
 
-    // Hanya memperbolehkan angka
-    if (name === "phone_number" && !/^\d*$/.test(value)) {
-      return;
+    if (name === "name") {
+      if (!/^[a-zA-Z\s]*$/.test(value)) {
+        return;
+      }
+      if (value.length < 3) {
+        error = "Nama minimal memiliki 3 huruf.";
+      }
     }
+
+    if (name === "family_name") {
+      if (!/^[a-zA-Z\s]*$/.test(value)) {
+        return;
+      }
+      if (value.length < 3) {
+        error = "Nama keluarga minimal memiliki 3 huruf.";
+      }
+    }
+
+    if (name === "phone_number") {
+      if (!/^\d*$/.test(value)) {
+        return;
+      }
+      if (value.length < 8 || value.length > 14) {
+        error = "Nomor ponsel harus memiliki 8-14 digit.";
+      }
+    }
+
     setOrderer({
       ...orderer,
-      [e.target.name]: e.target.value,
+      [name]: value,
+    });
+    setOrdererErrors({
+      ...ordererErrors,
+      [name]: error,
     });
   };
 
-  //Handler untuk mengupdate state passengers
+  //Fungsi untuk mengupdate state passengers
   const handlePassengerChange = (index, e) => {
     const { name, value } = e.target;
 
-    // Hanya memperbolehkan angka
-    if (
-      (name === "phone_number" || name === "identity_number") &&
-      !/^\d*$/.test(value)
-    ) {
-      return;
+    if (index < 0 || index >= passengers.length) {
+      return; // Keluar dari fungsi jika index tidak valid
     }
+
     const newPassengers = [...passengers];
-    newPassengers[index][e.target.name] = e.target.value;
+    const newPassengerErrors = [...passengerErrors];
+
+    let error = "";
+
+    if (name === "name") {
+      if (!/^[a-zA-Z\s]*$/.test(value)) {
+        return;
+      }
+      if (value.length < 3) {
+        error = "Nama minimal memiliki 3 huruf.";
+      }
+    }
+
+    if (name === "phone_number") {
+      if (!/^\d*$/.test(value)) {
+        return;
+      }
+      if (value.length < 8 || value.length > 14) {
+        error = "Nomor ponsel harus memiliki 8-14 digit.";
+      }
+    }
+
+    if (name === "identity_number") {
+      if (!/^\d*$/.test(value)) {
+        return;
+      }
+      if (value.length !== 16) {
+        error = "Nomor identitas harus tepat 16 digit.";
+      }
+    }
+
+    if (name === "nationality") {
+      if (!/^[a-zA-Z\s]*$/.test(value)) {
+        return;
+      }
+    }
+
+    if (name === "issuing_country") {
+      if (!/^[a-zA-Z\s]*$/.test(value)) {
+        return;
+      }
+    }
+
+    // memastikan bahwa newPassengers[index] dan newPassengerErrors[index] ada
+    if (!newPassengers[index]) {
+      newPassengers[index] = {}; // Inisialisasi jika belum ada
+    }
+    if (!newPassengerErrors[index]) {
+      newPassengerErrors[index] = {}; // Inisialisasi jika belum ada
+    }
+
+    newPassengers[index][name] = value;
+    newPassengerErrors[index][name] = error;
+
     setPassengers(newPassengers);
+    setPassengerErrors(newPassengerErrors);
   };
 
-  // Handler untuk date of birth
+  // Fungsi untuk date of birth
   const handleDateBirth = (index, date) => {
     const newPassengers = [...passengers];
     newPassengers[index].date_of_birth = date;
     setPassengers(newPassengers);
   };
 
-  // Handler untuk valid until
+  // Fungsi untuk valid until
   const handleDateValidUntil = (index, date) => {
     const newPassengers = [...passengers];
     newPassengers[index].valid_until = date;
     setPassengers(newPassengers);
   };
 
-  //Handler untuk validasi form
+  //Fungsi untuk validasi form
   const validateForm = () => {
     if (!orderer.name || !orderer.email || !orderer.phone_number) {
       return false;
@@ -136,14 +233,147 @@ export default function TicketCheckout() {
     return true;
   };
 
-  //untuk toogle nama keluarga
+  // Fungsi untuk toogle nama keluarga
   const handleToogle = () => {
     setIsChecked(!isChecked);
   };
 
-  //Handler untuk submit form
+  // Fungsi untuk menangani fokus input nama
+  const handleNameFocus = () => {
+    if (!isNameValid) {
+      setIsNameValid(true);
+    }
+  };
+
+  // Fungsi untuk submit form
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const hasOrdererErrors = Object.values(ordererErrors).some(
+      (error) => error !== ""
+    );
+    const hasPassengerErrors = passengerErrors.some((passengerError) =>
+      Object.values(passengerError).some((error) => error !== "")
+    );
+
+    if (hasOrdererErrors || hasPassengerErrors) {
+      toast.error("Harap lengkapi semua data dengan benar", {
+        icon: null,
+        style: {
+          background: "#FF0000", // Background merah
+          color: "#FFFFFF", // Teks putih
+          borderRadius: "12px", // Rounded-xl
+          fontSize: "14px", // Ukuran font
+          textAlign: "center", // Posisi teks di tengah
+          padding: "10px 20px", // Padding
+          width: "full",
+          maxWidth: "900px",
+        },
+        position: "top-center", // Posisi toast
+        duration: 3000, // Durasi toast
+      });
+      return;
+    }
+
+    const { name, phone_number } = orderer;
+
+    if (!name) {
+      toast.error("Mohon masukkan nama Anda!", {
+        icon: null,
+        style: {
+          background: "#FF0000", // Background merah
+          color: "#FFFFFF", // Teks putih
+          borderRadius: "12px", // Rounded-xl
+          fontSize: "14px", // Ukuran font
+          textAlign: "center", // Posisi teks di tengah
+          padding: "10px 20px", // Padding
+          width: "full",
+          maxWidth: "900px",
+        },
+        position: "top-center", // Posisi toast
+        duration: 3000, // Durasi toast
+      });
+      return;
+    }
+
+    if (name.length < 3) {
+      toast.error("Nama minimal memiliki 3 huruf!", {
+        icon: null,
+        style: {
+          background: "#FF0000", // Background merah
+          color: "#FFFFFF", // Teks putih
+          borderRadius: "12px", // Rounded-xl
+          fontSize: "14px", // Ukuran font
+          textAlign: "center", // Posisi teks di tengah
+          padding: "10px 20px", // Padding
+          width: "full",
+          maxWidth: "900px",
+        },
+        position: "top-center", // Posisi toast
+        duration: 3000, // Durasi toast
+      });
+      return;
+    }
+
+    if (!phone_number) {
+      toast.error("Mohon masukkan nomor ponsel Anda!", {
+        icon: null,
+        style: {
+          background: "#FF0000", // Background merah
+          color: "#FFFFFF", // Teks putih
+          borderRadius: "12px", // Rounded-xl
+          fontSize: "14px", // Ukuran font
+          textAlign: "center", // Posisi teks di tengah
+          padding: "10px 20px", // Padding
+          width: "full",
+          maxWidth: "900px",
+        },
+        position: "top-center", // Posisi toast
+        duration: 3000, // Durasi toast
+      });
+      return;
+    }
+
+    if (phone_number.length < 8 || phone_number.length > 14) {
+      toast.error("Nomor ponsel harus memiliki 8-14 digit!", {
+        icon: null,
+        style: {
+          background: "#FF0000", // Background merah
+          color: "#FFFFFF", // Teks putih
+          borderRadius: "12px", // Rounded-xl
+          fontSize: "14px", // Ukuran font
+          textAlign: "center", // Posisi teks di tengah
+          padding: "10px 20px", // Padding
+          width: "full",
+          maxWidth: "900px",
+        },
+        position: "top-center", // Posisi toast
+        duration: 3000, // Durasi toast
+      });
+      return;
+    }
+
+    const identityNumberErrors = passengers.map(
+      (passenger) => passenger.identity_number.length !== 16
+    );
+    if (identityNumberErrors.includes(true)) {
+      toast.error("Nomor identitas harus tepat 16 digit!", {
+        icon: null,
+        style: {
+          background: "#FF0000", // Background merah
+          color: "#FFFFFF", // Teks putih
+          borderRadius: "12px", // Rounded-xl
+          fontSize: "14px", // Ukuran font
+          textAlign: "center", // Posisi teks di tengah
+          padding: "10px 20px", // Padding
+          width: "full",
+          maxWidth: "900px",
+        },
+        position: "top-center", // Posisi toast
+        duration: 3000, // Durasi toast
+      });
+      return;
+    }
 
     if (validateForm()) {
       const flightIds = choosenFlight.map((flight) => flight.flight_id);
@@ -162,8 +392,6 @@ export default function TicketCheckout() {
       if (orderSummaryRef.current) {
         orderSummaryRef.current.scrollIntoView({ behavior: "smooth" });
       }
-    } else {
-      toast.error("Harap lengkapi semua data");
     }
   };
 
@@ -255,6 +483,17 @@ export default function TicketCheckout() {
     }
     setPassengers(newPassengers);
   }, [adult, child, infant]);
+
+  useEffect(() => {
+    if (isLaptop) {
+      if (isDataSaved) {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [isDataSaved]);
 
   return (
     <div className="bg-[#FFF0DC]">
@@ -452,12 +691,19 @@ export default function TicketCheckout() {
                       <input
                         type="text"
                         name="name"
+                        onFocus={handleNameFocus}
                         value={orderer.name}
                         onChange={handleOrdererChange}
                         className="w-full p-2 border border-[#8A8A8A] rounded-xl text-sm focus:outline-none focus-within:border-[#2A629A] text-[#2A629A]"
                         placeholder="Nama lengkap sesuai KTP/identitas lainnya"
                         required
                       />
+                      {ordererErrors.name && (
+                        <p className="flex items-center text-[#FF0000] text-sm mt-1 text-left">
+                          <BiErrorCircle className="w-[20px] h-[20px] mr-1" />
+                          {ordererErrors.name}
+                        </p>
+                      )}
                     </div>
                     <div className="flex items-center ps-4 pe-4 mt-4">
                       <label className="text-[#2A629A] mr-2 text-sm font-medium">
@@ -486,6 +732,12 @@ export default function TicketCheckout() {
                           className="w-full p-2 border border-[#8A8A8A] rounded-xl focus-within:border-[#2A629A] text-sm focus:outline-none  text-[#2A629A]"
                           placeholder="Nama keluarga (opsional)"
                         />
+                        {ordererErrors.family_name && (
+                          <p className="flex items-center text-[#FF0000] text-sm mt-1 text-left">
+                            <BiErrorCircle className="w-[20px] h-[20px] mr-1" />
+                            {ordererErrors.family_name}
+                          </p>
+                        )}
                       </div>
                     )}
                     <div className="ps-4 pe-4 mt-4">
@@ -509,12 +761,19 @@ export default function TicketCheckout() {
                       <input
                         type="tel"
                         name="phone_number"
+                        maxLength={12}
                         value={orderer.phone_number}
                         onChange={handleOrdererChange}
                         className="w-full p-2 border border-[#8A8A8A] rounded-xl focus-within:border-[#2A629A] text-sm focus:outline-none text-[#2A629A]"
                         placeholder="08123456789"
                         required
                       />
+                      {ordererErrors.phone_number && (
+                        <p className="flex items-center text-[#FF0000] text-sm mt-1 text-left">
+                          <BiErrorCircle className="w-[20px] h-[20px] mr-1" />
+                          {ordererErrors.phone_number}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -541,6 +800,7 @@ export default function TicketCheckout() {
                             value={passenger.title}
                             onChange={(e) => handlePassengerChange(index, e)}
                             className="appearance-none w-full p-2 border border-[#8A8A8A] rounded-xl focus-within:border-[#2A629A] text-sm focus:outline-none text-[#2A629A] py-2 pl-3 pr-10"
+                            required
                           >
                             <option value="">Pilih Gelar</option>
                             <option className="text-[#2A629A]">Tuan</option>
@@ -559,12 +819,18 @@ export default function TicketCheckout() {
                         <input
                           type="text"
                           name="name"
-                          value={passenger.name}
+                          value={passengers[index].name}
                           onChange={(e) => handlePassengerChange(index, e)}
                           className="w-full p-2 border border-[#8A8A8A] rounded-xl focus-within:border-[#2A629A] text-sm focus:outline-none text-[#2A629A]"
                           placeholder="Nama lengkap sesuai KTP/identitas lainnya"
                           required
                         />
+                        {passengerErrors[index]?.name && (
+                          <p className="flex items-center text-[#FF0000] text-sm mt-1 text-left">
+                            <BiErrorCircle className="w-[20px] h-[20px] mr-1" />
+                            {passengerErrors[index].name}
+                          </p>
+                        )}
                       </div>
                       <div className="ps-4 pe-4 mt-4">
                         <label className="block text-[#2A629A] mb-2 text-sm font-medium">
@@ -587,12 +853,19 @@ export default function TicketCheckout() {
                         <input
                           type="tel"
                           name="phone_number"
-                          value={passenger.phone_number}
+                          maxLength={12}
+                          value={passengers[index].phone_number}
                           onChange={(e) => handlePassengerChange(index, e)}
                           className="w-full p-2 border border-[#8A8A8A] rounded-xl focus-within:border-[#2A629A] text-sm focus:outline-none text-[#2A629A]"
                           placeholder="08123456789"
                           required
                         />
+                        {passengerErrors[index]?.phone_number && (
+                          <p className="flex items-center text-[#FF0000] text-sm mt-1 text-left">
+                            <BiErrorCircle className="w-[20px] h-[20px] mr-1" />
+                            {passengerErrors[index].phone_number}
+                          </p>
+                        )}
                       </div>
                       <div className="ps-4 pe-4 mt-4">
                         <div>
@@ -635,13 +908,19 @@ export default function TicketCheckout() {
                         <input
                           type="tel"
                           name="identity_number"
-                          value={passenger.identity_number}
+                          value={passengers[index].identity_number}
                           onChange={(e) => handlePassengerChange(index, e)}
                           maxLength={16}
                           className="w-full p-2 border border-[#8A8A8A] rounded-xl focus-within:border-[#2A629A] text-sm focus:outline-none text-[#2A629A]"
                           placeholder="357800030003000"
                           required
                         />
+                        {passengerErrors[index]?.identity_number && (
+                          <p className="flex items-center text-[#FF0000] text-sm mt-1 text-left">
+                            <BiErrorCircle className="w-[20px] h-[20px] mr-1" />
+                            {passengerErrors[index].identity_number}
+                          </p>
+                        )}
                       </div>
                       <div className="ps-4 pe-4 mt-4">
                         <label className="block text-[#2A629A] mb-2 text-sm font-medium">
@@ -683,7 +962,11 @@ export default function TicketCheckout() {
                   <button
                     disabled={isDataSaved}
                     type="submit"
-                    className="w-full max-w-[800px] mt-6 inline-flex justify-center rounded-xl border-0 shadow-sm py-3 bg-[#2A629A] font-medium text-white hover:bg-[#003285] focus:outline-none focus:ring-0"
+                    className={`w-full max-w-[800px] mt-6 inline-flex justify-center rounded-xl border-0 shadow-sm py-3 ${
+                      isDataSaved
+                        ? "bg-[#2A629A]/75"
+                        : "bg-[#2A629A] hover:bg-[#003285]"
+                    } font-medium text-white  focus:outline-none focus:ring-0`}
                   >
                     {isDataSaved ? "Data Tersimpan" : " Simpan"}
                   </button>

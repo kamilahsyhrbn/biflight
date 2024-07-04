@@ -167,7 +167,10 @@ export default function PrintTicket() {
             }`}
           >
             <ol className="inline-flex items-center space-x-1 md:space-x-2">
-              <li className="inline-flex items-center">
+              <li
+                className="inline-flex items-center cursor-pointer"
+                onClick={() => navigate("/riwayat-pemesanan")}
+              >
                 <span className="flex items-center">
                   <span className="flex items-center justify-center w-5 h-5 me-1 ms-1 md:ms-2 text-xs border bg-[#003285] text-white rounded-full shrink-0">
                     1

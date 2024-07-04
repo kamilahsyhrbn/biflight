@@ -141,16 +141,16 @@ const ForgotPassword = () => {
 
   return (
     <div>
-      <div className="flex justify-center items-center h-screen bg-[#FFF8ED]">
+      <div className="flex justify-center items-center h-screen bg-[#FFF8ED] overflow-hidden">
         {!isTablet && (
-          <div
-            className="hidden sm:flex flex-grow-0 w-full h-screen"
-            style={{
-              backgroundImage: `url(${Plane})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          ></div>
+          <div className="hidden sm:flex flex-grow-0">
+            <img
+              src={Plane}
+              className="object-cover w-full h-full"
+              style={{ height: "60vw", width: "100vw" }}
+              alt="Plane Image"
+            />
+          </div>
         )}
         <div
           className={`max-w-[400px] w-full rounded-lg px-5 sm:m-8 bg-[#FFF8ED] text-center h-auto relative
@@ -162,7 +162,7 @@ const ForgotPassword = () => {
             size={20}
             onClick={() => navigate("/forgot-password")}
           />
-          <Toaster />
+          {/* <Toaster /> */}
           <div className="max-w-[550px] mx-auto flex flex-col items-center mt-5">
             <img
               src={Logobiflight}

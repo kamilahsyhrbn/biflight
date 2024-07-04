@@ -320,7 +320,7 @@ export default function PengaturanAkun() {
           </div>
         )}
 
-        <Toaster />
+        {/* <Toaster /> */}
 
         <div className="flex flex-col lg:flex-row justify-start lg:mx-24 gap-12 ">
           {/* SIDE MENU */}

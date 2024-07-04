@@ -33,8 +33,12 @@ export default function UbahAkun() {
     account();
   }, []);
 
+  // FUNGSI UNTUK MENANGANI PERUBAHAN INPUT NAMA
   const handleNameChange = (e) => {
-    setName(e.target.value);
+    const { value } = e.target;
+    if (/^[a-zA-Z\s]*$/.test(value)) {
+      setName(value);
+    }
   };
 
   // Fungsi untuk menangani fokus input nama
@@ -167,7 +171,7 @@ export default function UbahAkun() {
           </Link>
         </div>
 
-        <Toaster />
+        {/* <Toaster /> */}
 
         <div className="flex flex-col lg:flex-row justify-start lg:mx-24 gap-12">
           {/* SIDE MENU */}

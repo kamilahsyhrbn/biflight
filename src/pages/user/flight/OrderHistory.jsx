@@ -258,7 +258,7 @@ export default function OrderHistory() {
     <div className="bg-[#FFF0DC] py-5 md:py-0">
       <div>
         {isMobile ? <NavbarMobile /> : <Navbar />}
-        <Toaster />
+        {/* <Toaster /> */}
         {selectedTicket?.status === "BELUM DIBAYAR" && (
           <div
             className={`fixed flex bg-[#FF0000] text-white py-2 px-4 text-center w-full z-10 transition-transform duration-300 ease-in-out ${
@@ -282,7 +282,7 @@ export default function OrderHistory() {
               <button
                 data-dismiss-target="#sticky-banner"
                 type="button"
-                className="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-white hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5"
+                className="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-white hover:text-gray-900 rounded-lg text-sm p-1.5"
                 onClick={() => setIsBannerShow(false)}
               >
                 <svg

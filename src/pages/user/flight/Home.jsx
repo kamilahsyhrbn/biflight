@@ -16,9 +16,9 @@ import {
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { FaPerson, FaBaby, FaChildDress } from "react-icons/fa6";
 
 // ICON
+import { FaPerson, FaBaby, FaChildDress } from "react-icons/fa6";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { setChoosenFlight } from "../../../redux/reducers/flight/flightReducers";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +27,7 @@ export default function Home() {
   const isMobile = useMediaQuery({ maxWidth: 767 }); // UNTUK TAMPILAN MOBILE
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); // UNTUK TAMPILAN TABLET
 
-  const { cheapestFlights } = useSelector((state) => state.flight);
+  const { cheapestFlights, isLoading } = useSelector((state) => state.flight);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedFlight, setSelectedFlight] = useState(null);
@@ -175,25 +175,54 @@ export default function Home() {
             </h2>
 
             <div className="lg:mx-20">
-              {cheapestFlights.length === 0 ? (
+              {isLoading ? (
                 <div className="flex flex-col items-center">
-                  <iframe src="https://lottie.host/embed/d3072280-f0c3-4850-9067-359d9d6b5744/V9wwvXaroH.json"></iframe>
-                  <h5 className="text-[#003285] text-center">
-                    Tiket penerbangan tidak ditemukan
-                  </h5>
+                  <div className="flex flex-col justify-center items-center mt-2">
+                    <div className="flex gap-2 items-center">
+                      <div className="text-white text-xl text-center w-8 h-8 rounded-full bg-[#2A629A] flex items-center justify-center animate-bounce">
+                        M
+                      </div>
+                      <div className="text-white text-xl text-center w-8 h-8 rounded-full bg-[#2A629A] flex items-center justify-center animate-bounce [animation-delay:-.5s]">
+                        e
+                      </div>
+                      <div className="text-white text-xl text-center w-8 h-8 rounded-full bg-[#2A629A] flex items-center justify-center animate-bounce [animation-delay:-.4s]">
+                        m
+                      </div>
+                      <div className="text-white text-xl text-center w-8 h-8 rounded-full bg-[#2A629A] flex items-center justify-center animate-bounce [animation-delay:-.3s]">
+                        u
+                      </div>
+                      <div className="text-white text-xl text-center w-8 h-8 rounded-full bg-[#2A629A] flex items-center justify-center animate-bounce [animation-delay:-.2s]">
+                        a
+                      </div>
+                      <div className="text-white text-xl text-center w-8 h-8 rounded-full bg-[#2A629A] flex items-center justify-center animate-bounce [animation-delay:-.1s]">
+                        t
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <>
-                  <Slider {...settings}>
-                    {cheapestFlights?.map((flight) => (
-                      <div key={flight?.flight_id}>
-                        <Card
-                          flight={flight}
-                          onClick={() => handlePassengerModal(flight)}
-                        />
-                      </div>
-                    ))}
-                  </Slider>
+                  {cheapestFlights.length === 0 ? (
+                    <div className="flex flex-col items-center">
+                      <iframe src="https://lottie.host/embed/d3072280-f0c3-4850-9067-359d9d6b5744/V9wwvXaroH.json"></iframe>
+                      <h5 className="text-[#003285] text-center">
+                        Tiket penerbangan tidak ditemukan
+                      </h5>
+                    </div>
+                  ) : (
+                    <>
+                      <Slider {...settings}>
+                        {cheapestFlights?.map((flight) => (
+                          <div key={flight?.flight_id}>
+                            <Card
+                              flight={flight}
+                              onClick={() => handlePassengerModal(flight)}
+                            />
+                          </div>
+                        ))}
+                      </Slider>
+                    </>
+                  )}
                 </>
               )}
             </div>

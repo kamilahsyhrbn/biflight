@@ -149,7 +149,7 @@ export default function VerifyOTP() {
         }}
       >
         <div className="flex justify-center items-center min-h-screen w-full">
-          <Toaster />
+          {/* <Toaster /> */}
           <div
             className={`max-w-[400px] w-full rounded-lg p-5 sm:m-8 bg-[#FFF8ED] text-center relative
               ${isTablet ? "max-w-[650px] p-8" : ""}

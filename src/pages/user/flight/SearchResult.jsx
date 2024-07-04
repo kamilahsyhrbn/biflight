@@ -653,9 +653,7 @@ export default function SearchResult() {
 
   return (
     <div className="bg-[#FFF0DC] ">
-      <div>
-        <Toaster />
-      </div>
+      <div>{/* <Toaster /> */}</div>
       {isMobile ? (
         <div className="flex flex-col justify-center items-center bg-[#2A629A] text-white py-3 rounded-b-3xl">
           <h5 className="font-medium text-lg">
