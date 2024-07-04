@@ -413,22 +413,23 @@ export default function TicketCheckout() {
   //Timer
   useEffect(() => {
     const timer = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds - 1);
-      }
-      if (seconds === 0) {
-        if (minutes === 0) {
-          clearInterval(timer);
-          setTimeUpModal(true);
-        } else {
-          setMinutes(minutes - 1);
-          setSeconds(59);
+      if (!isDataSaved) {
+        if (seconds > 0) {
+          setSeconds(seconds - 1);
+        }
+        if (seconds === 0) {
+          if (minutes === 0) {
+            clearInterval(timer);
+            setTimeUpModal(true);
+          } else {
+            setMinutes(minutes - 1);
+            setSeconds(59);
+          }
         }
       }
     }, 1000);
-
     return () => clearInterval(timer);
-  }, [minutes, seconds, navigate]);
+  }, [minutes, seconds, navigate, isDataSaved]);
 
   //Modal Timer
   const closeTimeUpModal = () => {
