@@ -180,7 +180,7 @@ export default function sideMenu() {
                 />{" "}
                 {profile?.isPasswordExist
                   ? "    Ubah Kata Sandi"
-                  : "Buat Kata Sandi"}
+                  : "Buat Kata Sandi Baru"}
               </div>
             </Link>
             <div

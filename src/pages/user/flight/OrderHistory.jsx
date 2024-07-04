@@ -149,11 +149,8 @@ export default function OrderHistory() {
     setLt(lessThan);
     setGte(greaterThan);
 
-    if (lessThan === greaterThan) {
-      dispatch(getTransactions("", greaterThan, ""));
-    } else {
-      dispatch(getTransactions(lessThan, greaterThan, ""));
-    }
+    dispatch(getTransactions(lessThan, greaterThan, ""));
+
     setIsSearchDateOpen(false);
     setIsSearchModalOpen(false);
     setSelectedTicket([]);
@@ -426,22 +423,35 @@ export default function OrderHistory() {
                 <div>
                   {query && !lt && !gte ? (
                     <h5 className="font-medium text-[#003285] text-xl text-center">
-                      Hasil pencarian "{query}"
+                      Hasil pencarian nomor penerbangan "{query}"
                     </h5>
                   ) : (
                     <h5 className="font-medium text-[#003285] text-xl text-center">
-                      Hasil pencarian dari tanggal{" "}
-                      {new Date(gte).toLocaleString("id-ID", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                      })}{" "}
-                      hingga{" "}
-                      {new Date(lt).toLocaleString("id-ID", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                      })}
+                      {gte === lt ? (
+                        <>
+                          Hasil pencarian transaksi pada tanggal{" "}
+                          {new Date(gte).toLocaleString("id-ID", {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                          })}
+                        </>
+                      ) : (
+                        <>
+                          Hasil pencarian transaksi dari tanggal{" "}
+                          {new Date(gte).toLocaleString("id-ID", {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                          })}{" "}
+                          hingga{" "}
+                          {new Date(lt).toLocaleString("id-ID", {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                          })}
+                        </>
+                      )}
                     </h5>
                   )}
                 </div>

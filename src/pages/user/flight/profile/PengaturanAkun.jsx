@@ -337,7 +337,7 @@ export default function PengaturanAkun() {
               >
                 {profile?.isPasswordExist
                   ? "  Ubah Kata Sandi"
-                  : "  Buat Kata Sandi"}
+                  : "  Buat Kata Sandi Baru"}
               </h2>
             </div>
             <div>
@@ -431,10 +431,10 @@ export default function PengaturanAkun() {
                             </div>
                             <p className="text-xs text-[#8A8A8A]">
                               {passwordStrength === "weak"
-                                ? "Password lemah"
+                                ? "Kata sandi lemah"
                                 : passwordStrength === "medium"
-                                ? "Password sedang"
-                                : "Password kuat"}
+                                ? "Kata sandi sedang"
+                                : "Kata sandi kuat"}
                             </p>
                           </div>
                         )}
@@ -619,10 +619,10 @@ export default function PengaturanAkun() {
                             </div>
                             <p className="text-xs">
                               {passwordStrength === "weak"
-                                ? "Password lemah"
+                                ? "Kata sandi lemah"
                                 : passwordStrength === "medium"
-                                ? "Password sedang"
-                                : "Password kuat"}
+                                ? "Kata sandi sedang"
+                                : "Kata sandi kuat"}
                             </p>
                           </div>
                         )}
