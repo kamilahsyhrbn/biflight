@@ -328,7 +328,7 @@ export default function Payment() {
       <div className="py-5 md:pt-12">
         {isMobile ? <NavbarMobile /> : <Navbar />}
         <div className="md:m-10 md:mt-5">
-          <Toaster reverseOrder={false} />
+          {/* <Toaster reverseOrder={false} /> */}
 
           {/* TENGGAT PEMABAYARAN */}
           <div className="flex justify-center">

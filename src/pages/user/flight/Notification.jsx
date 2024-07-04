@@ -77,7 +77,7 @@ export default function Notification() {
             </Link>
           </div>
 
-          <Toaster />
+          {/* <Toaster /> */}
           <div className="text-center flex-1">
             <h5 className="text-3xl font-medium text-[#003285]">Notifikasi</h5>
           </div>

@@ -239,7 +239,7 @@ export default function SearchMobile() {
   return (
     <div className={`${isChecked ? "mb-10" : ""}`}>
       <div className="bg-[#2A629A] rounded-b-3xl w-full h-[300px] py-3 px-4">
-        <Toaster
+        {/* <Toaster
           toastOptions={{
             className: "w-full",
             duration: 3000,
@@ -248,7 +248,7 @@ export default function SearchMobile() {
               color: "#fff",
             },
           }}
-        />
+        /> */}
         <h4 className="text-2xl text-white font-medium my-3">
           Ke mana pun Anda pergi, kami akan mengantar Anda!
         </h4>

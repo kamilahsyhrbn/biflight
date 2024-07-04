@@ -498,7 +498,7 @@ export default function TicketCheckout() {
   return (
     <div className="bg-[#FFF0DC]">
       {isMobile ? <NavbarMobile /> : <Navbar />}
-      <Toaster />
+      {/* <Toaster /> */}
       <div className="p-3 my-10 pt-3">
         {/* Menampilkan modal waktu habis */}
         <Modal

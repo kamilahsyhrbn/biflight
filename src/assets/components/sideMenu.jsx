@@ -194,7 +194,7 @@ export default function sideMenu() {
         </div>
         <div className=" bg-white rounded-b-3xl shadow mb-2">
           <div
-            className="flex items-center hover:bg-[#EEF5FF] p-4 w-full rounded-b-lg text-[#003285]"
+            className="flex items-center hover:bg-[#EEF5FF] p-4 w-full rounded-b-3xl text-[#003285]"
             onClick={handleConfirmModalToggle}
           >
             <IoMdLogOut className="rotate-180 mr-2 text-2xl" /> Keluar

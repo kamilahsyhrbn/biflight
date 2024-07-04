@@ -243,7 +243,7 @@ export default function SearchDesktop() {
 
   return (
     <div className="bg-[#FFF0DC]">
-      <Toaster
+      {/* <Toaster
         toastOptions={{
           className: "w-full",
           duration: 3000,
@@ -252,7 +252,7 @@ export default function SearchDesktop() {
             color: "#fff",
           },
         }}
-      />
+      /> */}
       <div className="w-full h-[300px]">
         <div
           style={{
@@ -287,7 +287,7 @@ export default function SearchDesktop() {
                                 onChange={(airportCode) =>
                                   setDeparture_code(airportCode)
                                 }
-                                placeholder="Pilih kota Awal"
+                                placeholder="Pilih kota awal"
                                 className="block py-2.5 lg:pr-10 md:pr-0 w-full text-sm text-gray-900 border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2A629A] peer"
                               />
                             </div>
