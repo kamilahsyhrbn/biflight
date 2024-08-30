@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import { FiEye, FiEyeOff } from "react-icons/fi";
-import { BiErrorCircle, BiArrowBack } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getUpdatePass } from "../../../redux/actions/auth/getPassActions";
 import { useMediaQuery } from "react-responsive";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { BiErrorCircle, BiArrowBack } from "react-icons/bi";
+import toast from "react-hot-toast";
+import { getUpdatePass } from "../../../redux/actions/auth/getPassActions";
 import BtnScrollTop from "../../../assets/components/BtnScrollUp";
 import Footer from "../../../assets/components/navigations/Footer";
 import Logobiflight from "../../../assets/images/logobiflight.png";
@@ -38,13 +38,11 @@ const ForgotPassword = () => {
       toast.error("Kata sandi yang Anda masukkan tidak cocok!", {
         icon: null,
         style: {
-          background: "#FF0000 ",
+          background: "#FF0000",
           color: "#FFFFFF",
-          borderRadius: "12px",
+          borderRadius: "10px",
           fontSize: "14px",
           textAlign: "center",
-          padding: "10px 20px",
-          width: "full",
           maxWidth: "900px",
         },
         position: "top-center",
@@ -57,13 +55,11 @@ const ForgotPassword = () => {
       toast.error("Mohon masukkan kata sandi baru Anda!", {
         icon: null,
         style: {
-          background: "#FF0000 ",
+          background: "#FF0000",
           color: "#FFFFFF",
-          borderRadius: "12px",
+          borderRadius: "10px",
           fontSize: "14px",
           textAlign: "center",
-          padding: "10px 20px",
-          width: "full",
           maxWidth: "900px",
         },
         position: "top-center",
@@ -76,13 +72,11 @@ const ForgotPassword = () => {
       toast.error("Mohon ulangi kata sandi baru Anda!", {
         icon: null,
         style: {
-          background: "#FF0000 ",
+          background: "#FF0000",
           color: "#FFFFFF",
-          borderRadius: "12px",
+          borderRadius: "10px",
           fontSize: "14px",
           textAlign: "center",
-          padding: "10px 20px",
-          width: "full",
           maxWidth: "900px",
         },
         position: "top-center",
@@ -95,13 +89,11 @@ const ForgotPassword = () => {
       toast.error("Mohon masukkan kata sandi sesuai ketentuan!", {
         icon: null,
         style: {
-          background: "#FF0000 ",
+          background: "#FF0000",
           color: "#FFFFFF",
-          borderRadius: "12px",
+          borderRadius: "10px",
           fontSize: "14px",
           textAlign: "center",
-          padding: "10px 20px",
-          width: "full",
           maxWidth: "900px",
         },
         position: "top-center",
@@ -142,7 +134,7 @@ const ForgotPassword = () => {
   return (
     <div>
       <div className="flex justify-center items-center h-screen bg-[#FFF8ED] overflow-hidden">
-        {!isTablet && (
+        {/* {!isTablet && (
           <div className="hidden sm:flex flex-grow-0">
             <img
               src={Plane}
@@ -151,7 +143,17 @@ const ForgotPassword = () => {
               alt="Plane Image"
             />
           </div>
-        )}
+        )} */}
+        {/* Photo on Forgot Password Section */}
+        <div className="hidden lg:block relative w-0 flex-1 bg-main">
+          <img
+            className="h-full w-full object-cover"
+            src={Plane}
+            style={{ height: "60vw", width: "100vw" }}
+            alt="Plane Image"
+          />
+          <div className="absolute inset-0 bg-black opacity-10"></div>
+        </div>
         <div
           className={`max-w-[400px] w-full rounded-lg px-5 sm:m-8 bg-[#FFF8ED] text-center h-auto relative
               ${isTablet ? "max-w-[650px] p-8" : ""}
@@ -194,7 +196,7 @@ const ForgotPassword = () => {
                       password
                         ? isPasswordValid
                           ? "border-[#2A629A]"
-                          : "border-red-500"
+                          : "border-[#FF0000]"
                         : "border-[#8A8A8A]"
                     }`}
                   >
@@ -207,19 +209,19 @@ const ForgotPassword = () => {
                       className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
                     />
                     {showNewPassword ? (
-                      <FiEye
-                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                      <FaEye
+                        className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                         onClick={toggleNewPasswordVisibility}
                       />
                     ) : (
-                      <FiEyeOff
-                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                      <FaEyeSlash
+                        className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                         onClick={toggleNewPasswordVisibility}
                       />
                     )}
                   </div>
                   {isPasswordTouched && !isPasswordValid && (
-                    <div className="flex items-center text-red-500 text-xs mt-1 text-left">
+                    <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
                       <BiErrorCircle className="w-[20px] h-[20px] mr-1.5 flex-shrink-0" />
                       <p>
                         Kata sandi berisi minimal 8 karakter, termasuk huruf
@@ -237,7 +239,7 @@ const ForgotPassword = () => {
                       confirmPassword
                         ? confirmPassword === password
                           ? "border-[#2A629A]"
-                          : "border-red-500"
+                          : "border-[#FF0000]"
                         : "border-[#8A8A8A]"
                     }`}
                   >
@@ -250,19 +252,19 @@ const ForgotPassword = () => {
                       className="flex-grow bg-transparent border-none focus:outline-none text-sm text-[#2A629A] min-w-0"
                     />
                     {showConfirmPassword ? (
-                      <FiEye
-                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                      <FaEye
+                        className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                         onClick={toggleConfirmPasswordVisibility}
                       />
                     ) : (
-                      <FiEyeOff
-                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                      <FaEyeSlash
+                        className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                         onClick={toggleConfirmPasswordVisibility}
                       />
                     )}
                   </div>
                   {confirmPassword && confirmPassword !== password && (
-                    <div className="flex items-center text-red-500 text-xs mt-1 text-left">
+                    <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
                       <BiErrorCircle className="w-[20px] h-[20px] mr-1.5 flex-shrink-0" />
                       <p>Kata sandi tidak cocok</p>
                     </div>

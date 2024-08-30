@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
-import toast, { Toaster } from "react-hot-toast";
 import { BiArrowBack, BiSolidCheckCircle, BiErrorCircle } from "react-icons/bi";
 import { RxCrossCircled } from "react-icons/rx";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import toast from "react-hot-toast";
 import { login } from "../../../redux/actions/auth/loginActions";
 import {
   setEmail,
@@ -23,7 +23,6 @@ import Plane from "../../../assets/images/pesawat.png";
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isMobile = useMediaQuery({ maxWidth: 767 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
   const {
     email,
@@ -31,12 +30,10 @@ export default function Login() {
     password,
     showPassword,
     isPasswordTouched,
+    loading,
     error,
   } = useSelector((state) => state.login); // Menggunakan useSelector untuk mengambil data dari state login
   const passwordInputType = showPassword ? "text" : "password";
-  // Validasi password (minimal 8 karakter, termasuk huruf besar dan angka)
-  const isPasswordValid =
-    password.length >= 8 && /[A-Z]/.test(password) && /\d/.test(password);
 
   // Mengatur ulang state login ke nilai awal atau kosong
   useEffect(() => {
@@ -87,18 +84,17 @@ export default function Login() {
   useEffect(() => {
     if (error) {
       toast.error(error, {
-        // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
+          maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
     }
   }, [error]);
@@ -108,20 +104,17 @@ export default function Login() {
     event.preventDefault();
     if (!email) {
       toast.error("Mohon masukkan alamat Email Anda!", {
-        // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       return;
     }
@@ -129,134 +122,96 @@ export default function Login() {
     // Jika kata sandi pengguna tidak diisi
     if (!password) {
       toast.error("Mohon masukkan kata sandi Anda!", {
-        // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       return;
     }
 
     // Jika semua kolom tidak diisi
     if (!email || !password) {
-      toast.error("Mohon isi semua kolom terlebih dahulu!", {
-        // Menampilkan toast error
-        icon: null,
-        style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
-          maxWidth: "900px",
-        },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
-      });
-      return;
-    }
-
-    // Jika email dan kata sandi pengguna tidak sesuai ketentuan
-    if (!isEmailValid && !isPasswordValid) {
-      toast.error("Mohon isi kedua kolom sesuai ketentuan!", {
-        // Menampilkan toast error
-        icon: null,
-        style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
-          maxWidth: "900px",
-        },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
-      });
+      toast.error(
+        "Mohon masukkan alamat Email dan kata sandi terlebih dahulu!",
+        {
+          icon: null,
+          style: {
+            background: "#FF0000",
+            color: "#FFFFFF",
+            borderRadius: "10px",
+            fontSize: "14px",
+            textAlign: "center",
+            maxWidth: "900px",
+          },
+          position: "top-center",
+          duration: 3000,
+        }
+      );
       return;
     }
 
     // Jika Email pengguna tidak diisi
     if (!isEmailValid) {
       toast.error("Mohon masukkan alamat Email dengan benar!", {
-        // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       return;
     }
 
-    // Jika kata sandi pengguna tidak valid
-    if (!isPasswordValid) {
-      toast.error("Mohon masukkan kata sandi sesuai ketentuan!", {
-        // Menampilkan toast error
-        icon: null,
-        style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
-          maxWidth: "900px",
-        },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
-      });
-      return;
-    }
     dispatch(login(email, password, navigate));
   };
 
   return (
     <div>
       <div className="flex justify-center items-center h-screen bg-[#FFF8ED] overflow-hidden">
-        {!isTablet && (
-          <div className="hidden sm:flex flex-grow-0">
+        {/* {!isTablet && (
+          <div className="hidden sm:block flex-grow-0 w-full h-full relative">
             <img
               src={Plane}
               className="object-cover w-full h-full"
-              style={{ height: "60vw", width: "100vw" }}
               alt="Plane Image"
             />
+            <div className="absolute inset-0 bg-black opacity-10"></div>
           </div>
-        )}
+        )} */}
+        {/* Photo on Login Section */}
+        <div className="hidden lg:block relative w-0 flex-1 bg-main">
+          <img
+            className="h-full w-full object-cover"
+            src={Plane}
+            style={{ height: "60vw", width: "100vw" }}
+            alt="Plane Image"
+          />
+          <div className="absolute inset-0 bg-black opacity-10"></div>
+        </div>
         <div
           className={`max-w-[400px] w-full rounded-lg px-5 sm:m-8 bg-[#FFF8ED] text-center h-auto relative
               ${isTablet ? "max-w-[650px] p-8" : ""}
             `}
         >
           <BiArrowBack
-            className="absolute top-4 left-4 cursor-pointer text-[#2A629A]"
+            className="absolute top-4 left-4 cursor-pointer text-[#2A629A] hover:text-[#40A2E3]"
             size={20}
             onClick={() => navigate("/")}
           />
-          {/* <Toaster /> */}
           <div className="max-w-[550px] w-full mx-auto flex flex-col items-center mt-5">
             <img
               src={Logobiflight}
@@ -304,10 +259,10 @@ export default function Login() {
                       onChange={handleEmailChange}
                     />
                     {isEmailValid && (
-                      <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] flex-shrink-0" />
+                      <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] flex-shrink-0 mr-1" />
                     )}
                     {!isEmailValid && email && (
-                      <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] ml-2 flex-shrink-0" />
+                      <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] ml-2 flex-shrink-0 mr-1" />
                     )}
                   </div>
                   {!isEmailValid && email && (
@@ -332,14 +287,12 @@ export default function Login() {
                     className={`flex items-center p-2 rounded-xl border focus-within:shadow-lg
                               ${
                                 password
-                                  ? isPasswordValid
-                                    ? "focus-within:border-[#2A629A]"
-                                    : "focus-within:border-[#FF0000]"
-                                  : "focus-within:border-[#2A629A]"
+                                  ? "focus-within:border-[#2A629A]"
+                                  : "focus-within:border-[#FF0000]"
                               } 
                               ${
-                                isPasswordTouched && !isPasswordValid
-                                  ? "border-[#FF0000]"
+                                isPasswordTouched
+                                  ? "border-[#8A8A8A] focus-within:border-[#2A629A]"
                                   : "border-[#8A8A8A]"
                               }`}
                   >
@@ -353,35 +306,188 @@ export default function Login() {
                       onChange={handlePasswordChange}
                     />
                     {showPassword ? (
-                      <FiEye
-                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                      <FaEye
+                        className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                         onClick={togglePasswordVisibility}
                       />
                     ) : (
-                      <FiEyeOff
-                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                      <FaEyeSlash
+                        className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                         onClick={togglePasswordVisibility}
                       />
                     )}
                   </div>
-                  {isPasswordTouched && !isPasswordValid && (
+                  {isPasswordTouched && !password && (
                     <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
                       <BiErrorCircle className="w-[20px] h-[20px] mr-1.5 flex-shrink-0" />
-                      <p>
-                        Kata sandi berisi minimal 8 karakter, termasuk huruf
-                        besar dan angka
-                      </p>
+                      <p>Kata sandi tidak boleh kosong</p>
                     </div>
                   )}
                 </div>
 
                 {/* Tombol masuk ke akun pengguna */}
-                <button
+                {/* <button
                   type="submit"
                   className="bg-[#2A629A] text-white text-sm font-medium p-2 rounded-xl focus:outline-none w-full transition-colors duration-300 hover:bg-[#003285] active:bg-[#003285]"
                 >
                   Masuk
-                </button>
+                </button> */}
+
+                {/* Loader dan Tombol Masuk Akun */}
+                <div>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className={`${
+                      loading
+                        ? "bg-[#003285]"
+                        : "bg-[#2A629A] hover:bg-[#003285]"
+                    } text-white text-sm font-medium w-full py-2 rounded-xl focus:outline-none transition duration-300 flex items-center justify-center`}
+                  >
+                    {loading ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 24 24"
+                        className="w-20 h-5"
+                      >
+                        <circle cx="12" cy="2" r="0" fill="currentColor">
+                          <animate
+                            attributeName="r"
+                            begin="0"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                        <circle
+                          cx="12"
+                          cy="2"
+                          r="0"
+                          fill="currentColor"
+                          transform="rotate(45 12 12)"
+                        >
+                          <animate
+                            attributeName="r"
+                            begin="0.125s"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                        <circle
+                          cx="12"
+                          cy="2"
+                          r="0"
+                          fill="currentColor"
+                          transform="rotate(90 12 12)"
+                        >
+                          <animate
+                            attributeName="r"
+                            begin="0.25s"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                        <circle
+                          cx="12"
+                          cy="2"
+                          r="0"
+                          fill="currentColor"
+                          transform="rotate(135 12 12)"
+                        >
+                          <animate
+                            attributeName="r"
+                            begin="0.375s"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                        <circle
+                          cx="12"
+                          cy="2"
+                          r="0"
+                          fill="currentColor"
+                          transform="rotate(180 12 12)"
+                        >
+                          <animate
+                            attributeName="r"
+                            begin="0.5s"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                        <circle
+                          cx="12"
+                          cy="2"
+                          r="0"
+                          fill="currentColor"
+                          transform="rotate(225 12 12)"
+                        >
+                          <animate
+                            attributeName="r"
+                            begin="0.625s"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                        <circle
+                          cx="12"
+                          cy="2"
+                          r="0"
+                          fill="currentColor"
+                          transform="rotate(270 12 12)"
+                        >
+                          <animate
+                            attributeName="r"
+                            begin="0.75s"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                        <circle
+                          cx="12"
+                          cy="2"
+                          r="0"
+                          fill="currentColor"
+                          transform="rotate(315 12 12)"
+                        >
+                          <animate
+                            attributeName="r"
+                            begin="0.875s"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                      </svg>
+                    ) : (
+                      "Masuk"
+                    )}
+                  </button>
+                </div>
               </div>
             </form>
 
@@ -414,7 +520,11 @@ export default function Login() {
           </div>
         </div>
       </div>
-      {isMobile ? "" : <BtnScrollTop />}
+
+      {/* Scroll Up Button */}
+      <BtnScrollTop />
+
+      {/* Footer Section */}
       <Footer />
     </div>
   );

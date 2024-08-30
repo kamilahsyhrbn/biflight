@@ -8,6 +8,7 @@ const initialState = {
   isPasswordTouched: false,
   token: null,
   user: null,
+  loading: false,
   error: null,
   isLoggedIn: false,
 };
@@ -35,6 +36,9 @@ const loginSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
     setError: (state, action) => {
       state.error = action.payload;
     },
@@ -54,6 +58,7 @@ export const {
   setPasswordTouched,
   setToken,
   setUser,
+  setLoading,
   setError,
   clearError,
   setIsLoggedIn,

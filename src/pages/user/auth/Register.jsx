@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
-import toast, { Toaster } from "react-hot-toast";
 import { BiArrowBack, BiSolidCheckCircle, BiErrorCircle } from "react-icons/bi";
 import { RxCrossCircled } from "react-icons/rx";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import toast from "react-hot-toast";
 import { register } from "../../../redux/actions/auth/registerActions";
 import {
   setName,
@@ -28,7 +28,6 @@ import Plane from "../../../assets/images/pesawat.png";
 export default function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isMobile = useMediaQuery({ maxWidth: 767 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
   const {
     name,
@@ -43,6 +42,7 @@ export default function Register() {
     showConfirmPassword,
     phone_number,
     isPhoneNumberValid,
+    loading,
   } = useSelector((state) => state.register); // Menggunakan useSelector untuk mengambil data dari state register
   const passwordInputType = showPassword ? "text" : "password"; // Menentukan tipe input untuk kata sandi
   const confirmPasswordInputType = showConfirmPassword ? "text" : "password"; // Menentukan tipe input untuk konfirmasi kata sandi
@@ -149,17 +149,15 @@ export default function Register() {
         // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       return;
     }
@@ -170,17 +168,15 @@ export default function Register() {
         // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       return;
     }
@@ -191,17 +187,15 @@ export default function Register() {
         // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       return;
     }
@@ -212,17 +206,15 @@ export default function Register() {
         // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       return;
     }
@@ -233,17 +225,15 @@ export default function Register() {
         // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 30px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       return;
     }
@@ -254,17 +244,15 @@ export default function Register() {
         // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       return;
     }
@@ -275,17 +263,15 @@ export default function Register() {
         // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       return;
     }
@@ -296,17 +282,15 @@ export default function Register() {
         // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       return;
     }
@@ -317,17 +301,15 @@ export default function Register() {
         // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       return;
     }
@@ -341,17 +323,15 @@ export default function Register() {
           // Menampilkan toast error
           icon: null,
           style: {
-            background: "#FF0000", // Background merah
-            color: "#FFFFFF", // Teks putih
-            borderRadius: "12px", // Rounded-xl
-            fontSize: "14px", // Ukuran font
-            textAlign: "center", // Posisi teks di tengah
-            padding: "10px 20px", // Padding
-            width: "full",
+            background: "#FF0000",
+            color: "#FFFFFF",
+            borderRadius: "10px",
+            fontSize: "14px",
+            textAlign: "center",
             maxWidth: "900px",
           },
-          position: "top-center", // Posisi toast
-          duration: 3000, // Durasi toast
+          position: "top-center",
+          duration: 3000,
         }
       );
       return;
@@ -367,15 +347,13 @@ export default function Register() {
           style: {
             background: "#FF0000",
             color: "#FFFFFF",
-            borderRadius: "12px",
+            borderRadius: "10px",
             fontSize: "14px",
             textAlign: "center",
-            padding: "10px 20px",
-            width: "full",
             maxWidth: "900px",
           },
           position: "top-center",
-          duration: 2000,
+          duration: 3000,
         }
       );
       return;
@@ -387,27 +365,38 @@ export default function Register() {
   return (
     <div>
       <div className="flex justify-center items-center min-h-screen bg-[#FFF8ED]">
-        {!isTablet && (
+        {/* {!isTablet && (
           <div className="hidden sm:flex flex-grow-0">
             <img
               src={Plane}
               className="object-cover w-full h-full"
-              style={{ height: "60vw", width: "100vw" }}
+              style={{ height: "64vw", width: "100vw" }}
               alt="Plane Image"
             />
+            <div className="absolute inset-0 bg-black opacity-10"></div>
           </div>
-        )}
+        )} */}
+        {/* Photo on Register Section */}
+        <div className="hidden lg:block relative w-0 flex-1 bg-main">
+          <img
+            className="h-full w-full object-cover"
+            src={Plane}
+            style={{ height: "68vw", width: "100vw" }}
+            alt="Plane Image"
+          />
+          <div className="absolute inset-0 bg-black opacity-10"></div>
+        </div>
         <div
           className={`max-w-[400px] w-full rounded-lg px-5 sm:m-8 bg-[#FFF8ED] text-center relative
               ${isTablet ? "max-w-[650px] p-8" : ""}
             `}
         >
           <BiArrowBack
-            className="absolute top-4 left-4 cursor-pointer text-[#2A629A]"
+            className="absolute top-4 left-4 cursor-pointer text-[#2A629A] hover:text-[#40A2E3]"
             size={20}
             onClick={() => navigate("/login")}
           />
-          {/* <Toaster /> */}
+
           <div className="max-w-[550px] w-full mx-auto flex flex-col items-center mt-5">
             <img
               src={Logobiflight}
@@ -425,6 +414,7 @@ export default function Register() {
               </span>
             </h2>
 
+            {/* Forms Section */}
             <form onSubmit={handleRegister} className="w-full">
               <div className="flex flex-col space-y-3">
                 <div className="flex flex-col space-y-1">
@@ -503,10 +493,10 @@ export default function Register() {
                       onChange={handleEmailChange}
                     />
                     {isEmailValid && (
-                      <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] flex-shrink-0" />
+                      <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] flex-shrink-0 mr-1" />
                     )}
                     {!isEmailValid && email && (
-                      <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] ml-2 flex-shrink-0" />
+                      <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] ml-2 flex-shrink-0 mr-1" />
                     )}
                   </div>
                   {!isEmailValid && email && (
@@ -547,7 +537,7 @@ export default function Register() {
                       onChange={handlePhoneNumberChange}
                     />
                     {isPhoneNumberValid && (
-                      <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] mr-2 flex-shrink-0" />
+                      <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] mr-3 flex-shrink-0" />
                     )}
                     {!isPhoneNumberValid &&
                       phone_number &&
@@ -591,13 +581,13 @@ export default function Register() {
                       onChange={handlePasswordChange}
                     />
                     {showPassword ? (
-                      <FiEye
-                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                      <FaEye
+                        className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                         onClick={togglePasswordVisibility}
                       />
                     ) : (
-                      <FiEyeOff
-                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                      <FaEyeSlash
+                        className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                         onClick={togglePasswordVisibility}
                       />
                     )}
@@ -644,13 +634,13 @@ export default function Register() {
                       onChange={handleConfirmPasswordChange}
                     />
                     {showConfirmPassword ? (
-                      <FiEye
-                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                      <FaEye
+                        className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                         onClick={toggleConfirmPasswordVisibility}
                       />
                     ) : (
-                      <FiEyeOff
-                        className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer flex-shrink-0"
+                      <FaEyeSlash
+                        className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                         onClick={toggleConfirmPasswordVisibility}
                       />
                     )}
@@ -662,12 +652,162 @@ export default function Register() {
                     </div>
                   )}
                 </div>
-                <button
-                  type="submit"
-                  className="bg-[#2A629A] text-white text-sm font-medium p-2 rounded-xl focus:outline-none w-full transition-colors duration-300 hover:bg-[#003285] active:bg-[#003285]"
-                >
-                  Daftar
-                </button>
+
+                {/* Loader dan Tombol Daftar Akun */}
+                <div>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className={`${
+                      loading
+                        ? "bg-[#003285]"
+                        : "bg-[#2A629A] hover:bg-[#003285]"
+                    } text-white text-sm font-medium w-full py-2 rounded-xl focus:outline-none transition duration-300 flex items-center justify-center`}
+                  >
+                    {loading ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 24 24"
+                        className="w-20 h-5"
+                      >
+                        <circle cx="12" cy="2" r="0" fill="currentColor">
+                          <animate
+                            attributeName="r"
+                            begin="0"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                        <circle
+                          cx="12"
+                          cy="2"
+                          r="0"
+                          fill="currentColor"
+                          transform="rotate(45 12 12)"
+                        >
+                          <animate
+                            attributeName="r"
+                            begin="0.125s"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                        <circle
+                          cx="12"
+                          cy="2"
+                          r="0"
+                          fill="currentColor"
+                          transform="rotate(90 12 12)"
+                        >
+                          <animate
+                            attributeName="r"
+                            begin="0.25s"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                        <circle
+                          cx="12"
+                          cy="2"
+                          r="0"
+                          fill="currentColor"
+                          transform="rotate(135 12 12)"
+                        >
+                          <animate
+                            attributeName="r"
+                            begin="0.375s"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                        <circle
+                          cx="12"
+                          cy="2"
+                          r="0"
+                          fill="currentColor"
+                          transform="rotate(180 12 12)"
+                        >
+                          <animate
+                            attributeName="r"
+                            begin="0.5s"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                        <circle
+                          cx="12"
+                          cy="2"
+                          r="0"
+                          fill="currentColor"
+                          transform="rotate(225 12 12)"
+                        >
+                          <animate
+                            attributeName="r"
+                            begin="0.625s"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                        <circle
+                          cx="12"
+                          cy="2"
+                          r="0"
+                          fill="currentColor"
+                          transform="rotate(270 12 12)"
+                        >
+                          <animate
+                            attributeName="r"
+                            begin="0.75s"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                        <circle
+                          cx="12"
+                          cy="2"
+                          r="0"
+                          fill="currentColor"
+                          transform="rotate(315 12 12)"
+                        >
+                          <animate
+                            attributeName="r"
+                            begin="0.875s"
+                            calcMode="spline"
+                            dur="1s"
+                            keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                            repeatCount="indefinite"
+                            values="0;2;0;0"
+                          />
+                        </circle>
+                      </svg>
+                    ) : (
+                      "Daftar"
+                    )}
+                  </button>
+                </div>
               </div>
             </form>
 
@@ -689,7 +829,11 @@ export default function Register() {
           </div>
         </div>
       </div>
-      {isMobile ? "" : <BtnScrollTop />}
+
+      {/* Scroll Up Button */}
+      <BtnScrollTop />
+
+      {/* Footer Section */}
       <Footer />
     </div>
   );

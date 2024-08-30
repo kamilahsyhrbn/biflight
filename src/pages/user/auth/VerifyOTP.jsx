@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Toaster, toast } from "react-hot-toast";
+import { useMediaQuery } from "react-responsive";
+import toast from "react-hot-toast";
 import { BiArrowBack } from "react-icons/bi";
 import {
   setOtpInput,
@@ -12,7 +13,6 @@ import { verifyOtp, resendOtp } from "../../../redux/actions/auth/otpActions";
 import backgroundImage from "../../../assets/images/otp.png";
 import BtnScrollTop from "../../../assets/components/BtnScrollUp";
 import Footer from "../../../assets/components/navigations/Footer";
-import { useMediaQuery } from "react-responsive";
 
 export default function VerifyOTP() {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ export default function VerifyOTP() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
   const registerEmail = useSelector((state) => state.register.email); // Mengambil email dari state register
-  const { otpInput, timer } = useSelector((state) => state.otp); // Mengambil otpInput dan timer dari state otp
+  const { otpInput, timer, loading } = useSelector((state) => state.otp); // Mengambil otpInput dan timer dari state otp
   const [isToastShown, setIsToastShown] = useState(false); // State untuk memastikan toast hanya muncul sekali
   const [isResendVisible, setIsResendVisible] = useState(false); // State untuk tombol Resend OTP
 
@@ -54,17 +54,15 @@ export default function VerifyOTP() {
       toast.error("Waktu habis! Silakan minta OTP baru.", {
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       setIsToastShown(true);
       setIsResendVisible(true); // Menampilkan tombol Resend OTP ketika timer habis
@@ -99,17 +97,15 @@ export default function VerifyOTP() {
       toast.error("Mohon masukkan kode OTP Anda!", {
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       return;
     }
@@ -156,7 +152,7 @@ export default function VerifyOTP() {
             `}
           >
             <BiArrowBack
-              className="absolute left-4 cursor-pointer text-[#2A629A]"
+              className="absolute left-4 cursor-pointer text-[#2A629A] hover:text-[#40A2E3]"
               size={20}
               onClick={() => navigate("/register")}
             />
@@ -192,12 +188,164 @@ export default function VerifyOTP() {
                     />
                   ))}
                 </div>
-                <button
+                {/* <button
                   type="submit"
                   className="bg-[#2A629A] text-white text-sm font-medium p-2 mt-8 mb-5 rounded-xl focus:outline-none w-full transition-colors duration-300 hover:bg-[#003285] active:bg-[#003285]"
                   disabled={timer <= 0} // Menonaktifkan tombol jika timer habis
                 >
                   Konfirmasi Kode OTP
+                </button> */}
+
+                {/* Loader dan Tombol Masuk Akun */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`${
+                    loading ? "bg-[#003285]" : "bg-[#2A629A] hover:bg-[#003285]"
+                  }  text-white text-sm font-medium p-2 mt-8 mb-5 rounded-xl focus:outline-none w-full transition-colors duration-300 flex justify-center items-center`}
+                >
+                  {loading ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1em"
+                      height="1em"
+                      viewBox="0 0 24 24"
+                      className="w-20 h-5"
+                    >
+                      <circle cx="12" cy="2" r="0" fill="currentColor">
+                        <animate
+                          attributeName="r"
+                          begin="0"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;2;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="12"
+                        cy="2"
+                        r="0"
+                        fill="currentColor"
+                        transform="rotate(45 12 12)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.125s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;2;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="12"
+                        cy="2"
+                        r="0"
+                        fill="currentColor"
+                        transform="rotate(90 12 12)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.25s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;2;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="12"
+                        cy="2"
+                        r="0"
+                        fill="currentColor"
+                        transform="rotate(135 12 12)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.375s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;2;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="12"
+                        cy="2"
+                        r="0"
+                        fill="currentColor"
+                        transform="rotate(180 12 12)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.5s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;2;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="12"
+                        cy="2"
+                        r="0"
+                        fill="currentColor"
+                        transform="rotate(225 12 12)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.625s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;2;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="12"
+                        cy="2"
+                        r="0"
+                        fill="currentColor"
+                        transform="rotate(270 12 12)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.75s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;2;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="12"
+                        cy="2"
+                        r="0"
+                        fill="currentColor"
+                        transform="rotate(315 12 12)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.875s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;2;0;0"
+                        />
+                      </circle>
+                    </svg>
+                  ) : (
+                    "Masuk"
+                  )}
                 </button>
 
                 <h1 className="text-[#40A2E3] text-l mb-1 text-center text-sm font-medium">
@@ -217,7 +365,11 @@ export default function VerifyOTP() {
           </div>
         </div>
       </div>
-      {isMobile ? "" : <BtnScrollTop />}
+
+      {/* Scroll Up Button */}
+      <BtnScrollTop />
+
+      {/* Footer Section */}
       <Footer />
     </div>
   );

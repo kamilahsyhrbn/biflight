@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   otpInput: "",
   email: "",
+  loading: false,
   error: null,
   timer: 120,
 };
@@ -16,6 +17,9 @@ const otpSlice = createSlice({
     },
     setEmail: (state, action) => {
       state.email = action.payload;
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
     },
     setError: (state, action) => {
       state.error = action.payload;
@@ -35,6 +39,7 @@ const otpSlice = createSlice({
 export const {
   setOtpInput,
   setEmail,
+  setLoading,
   setError,
   clearError,
   decrementTimer,

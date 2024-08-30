@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useMediaQuery } from "react-responsive";
-import { getForgetPassAction } from "../../../redux/actions/auth/getPassActions";
 import { RxCrossCircled } from "react-icons/rx";
 import { BiSolidCheckCircle, BiArrowBack } from "react-icons/bi";
+import toast from "react-hot-toast";
+import { getForgetPassAction } from "../../../redux/actions/auth/getPassActions";
 import BtnScrollTop from "../../../assets/components/BtnScrollUp";
 import Footer from "../../../assets/components/navigations/Footer";
 import Logobiflight from "../../../assets/images/logobiflight.png";
@@ -14,8 +14,8 @@ import Plane from "../../../assets/images/pesawat.png";
 const EmailResetPassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isMobile = useMediaQuery({ maxWidth: 767 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
 
@@ -36,11 +36,9 @@ const EmailResetPassword = () => {
         style: {
           background: "#FF0000",
           color: "#FFFFFF",
-          borderRadius: "12px",
+          borderRadius: "10px",
           fontSize: "14px",
           textAlign: "center",
-          padding: "10px 20px",
-          width: "full",
           maxWidth: "900px",
         },
         position: "top-center",
@@ -52,14 +50,11 @@ const EmailResetPassword = () => {
       toast.error("Mohon masukkan alamat Email dengan benar!", {
         icon: null,
         style: {
-          icon: null,
-          background: "#FF0000 ",
+          background: "#FF0000",
           color: "#FFFFFF",
-          borderRadius: "12px",
+          borderRadius: "10px",
           fontSize: "14px",
           textAlign: "center",
-          padding: "10px 20px",
-          width: "full",
           maxWidth: "900px",
         },
         position: "top-center",
@@ -75,27 +70,36 @@ const EmailResetPassword = () => {
   return (
     <div>
       <div className="flex justify-center items-center h-screen bg-[#FFF8ED] overflow-hidden">
-        {!isTablet && (
-          <div className="hidden sm:flex flex-grow-0">
+        {/* {!isTablet && (
+          <div className="hidden sm:block flex-grow-0 w-full h-full relative">
             <img
               src={Plane}
               className="object-cover w-full h-full"
-              style={{ height: "60vw", width: "100vw" }}
               alt="Plane Image"
             />
+            <div className="absolute inset-0 bg-black opacity-10"></div>
           </div>
-        )}
+        )} */}
+        {/* Photo on Forgot Password Section */}
+        <div className="hidden lg:block relative w-0 flex-1 bg-main">
+          <img
+            className="h-full w-full object-cover"
+            src={Plane}
+            style={{ height: "60vw", width: "100vw" }}
+            alt="Plane Image"
+          />
+          <div className="absolute inset-0 bg-black opacity-10"></div>
+        </div>
         <div
           className={`max-w-[400px] w-full rounded-lg px-5 sm:m-8 bg-[#FFF8ED] text-center h-auto relative
               ${isTablet ? "max-w-[650px] p-8" : ""}
             `}
         >
           <BiArrowBack
-            className="absolute top-4 left-4 cursor-pointer text-[#2A629A]"
+            className="absolute top-4 left-4 cursor-pointer text-[#2A629A] hover:text-[#40A2E3]"
             size={20}
             onClick={() => navigate("/login")}
           />
-          {/* <Toaster /> */}
           <div className="max-w-[550px] w-full mx-auto flex flex-col items-center mt-5">
             <img
               src={Logobiflight}
@@ -142,10 +146,10 @@ const EmailResetPassword = () => {
                     required
                   />
                   {isEmailValid && email && (
-                    <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] flex-shrink-0" />
+                    <BiSolidCheckCircle className="w-[21px] h-[21px] text-[#28A745] flex-shrink-0 mr-1" />
                   )}
                   {!isEmailValid && email && (
-                    <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] ml-2 flex-shrink-0" />
+                    <RxCrossCircled className="text-[#FF0000] w-[20px] h-[20px] ml-2 flex-shrink-0 mr-1" />
                   )}
                 </div>
 
@@ -182,7 +186,11 @@ const EmailResetPassword = () => {
           </div>
         </div>
       </div>
-      {isMobile ? "" : <BtnScrollTop />}
+
+      {/* Scroll Up Button */}
+      <BtnScrollTop />
+
+      {/* Footer Section */}
       <Footer />
     </div>
   );

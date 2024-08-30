@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../../../../assets/components/navigations/navbar/Navbar";
-import NavbarMobile from "../../../../assets/components/navigations/navbar/Navbar-mobile";
-import Footer from "../../../../assets/components/navigations/Footer";
-import { IoIosArrowBack } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { useMediaQuery } from "react-responsive";
+import { IoIosArrowBack } from "react-icons/io";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { RxCrossCircled } from "react-icons/rx";
 import { BiSolidCheckCircle, BiErrorCircle } from "react-icons/bi";
-import { useMediaQuery } from "react-responsive";
-import toast, { Toaster } from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import SideMenu from "../../../../assets/components/sideMenu";
+import toast from "react-hot-toast";
 import {
   addPassword,
   updatePassword,
 } from "../../../../redux/actions/user/userActions";
+import Navbar from "../../../../assets/components/navigations/navbar/Navbar";
+import NavbarMobile from "../../../../assets/components/navigations/navbar/Navbar-mobile";
+import Footer from "../../../../assets/components/navigations/Footer";
+import SideMenu from "../../../../assets/components/sideMenu";
 
 export default function PengaturanAkun() {
   const [oldPassword, setOldPassword] = useState("");
@@ -71,15 +71,15 @@ export default function PengaturanAkun() {
       toast.error("Mohon isi semua kolom terlebih dahulu!", {
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
+          maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       setSaveModalOpen(!saveModalOpen);
       return;
@@ -89,15 +89,15 @@ export default function PengaturanAkun() {
       toast.error("Mohon masukkan kata sandi lama Anda!", {
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
+          maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       setSaveModalOpen(!saveModalOpen);
       return;
@@ -107,15 +107,15 @@ export default function PengaturanAkun() {
       toast.error("Mohon masukkan kata sandi baru Anda!", {
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
+          maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       setSaveModalOpen(!saveModalOpen);
       return;
@@ -125,15 +125,15 @@ export default function PengaturanAkun() {
       toast.error("Mohon masukkan konfirmasi kata sandi Anda!", {
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
+          maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       setSaveModalOpen(!saveModalOpen);
       return;
@@ -145,15 +145,15 @@ export default function PengaturanAkun() {
         {
           icon: null,
           style: {
-            background: "#FF0000", // Background merah
-            color: "#FFFFFF", // Teks putih
-            borderRadius: "12px", // Rounded-xl
-            fontSize: "14px", // Ukuran font
-            textAlign: "center", // Posisi teks di tengah
-            padding: "10px 20px", // Padding
+            background: "#FF0000",
+            color: "#FFFFFF",
+            borderRadius: "10px",
+            fontSize: "14px",
+            textAlign: "center",
+            maxWidth: "900px",
           },
-          position: "top-center", // Posisi toast
-          duration: 3000, // Durasi toast
+          position: "top-center",
+          duration: 3000,
         }
       );
       setSaveModalOpen(!saveModalOpen);
@@ -164,15 +164,15 @@ export default function PengaturanAkun() {
       toast.error("Kata sandi yang Anda masukkan tidak cocok!", {
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
+          maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       setSaveModalOpen(!saveModalOpen);
       return;
@@ -195,15 +195,15 @@ export default function PengaturanAkun() {
       toast.error("Mohon isi semua kolom terlebih dahulu!", {
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
+          maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       setSubmitModalOpen(!submitModalOpen);
       return;
@@ -213,15 +213,15 @@ export default function PengaturanAkun() {
       toast.error("Mohon masukkan kata sandi baru Anda!", {
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
+          maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       setSubmitModalOpen(!submitModalOpen);
       return;
@@ -231,15 +231,15 @@ export default function PengaturanAkun() {
       toast.error("Mohon masukkan konfirmasi kata sandi baru Anda!", {
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
+          maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       setSubmitModalOpen(!submitModalOpen);
       return;
@@ -251,15 +251,15 @@ export default function PengaturanAkun() {
         {
           icon: null,
           style: {
-            background: "#FF0000", // Background merah
-            color: "#FFFFFF", // Teks putih
-            borderRadius: "12px", // Rounded-xl
-            fontSize: "14px", // Ukuran font
-            textAlign: "center", // Posisi teks di tengah
-            padding: "10px 20px", // Padding
+            background: "#FF0000",
+            color: "#FFFFFF",
+            borderRadius: "10px",
+            fontSize: "14px",
+            textAlign: "center",
+            maxWidth: "900px",
           },
-          position: "top-center", // Posisi toast
-          duration: 3000, // Durasi toast
+          position: "top-center",
+          duration: 3000,
         }
       );
       setSubmitModalOpen(!submitModalOpen);
@@ -270,15 +270,15 @@ export default function PengaturanAkun() {
       toast.error("Kata sandi yang Anda masukkan tidak cocok!", {
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
+          maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       setSubmitModalOpen(!submitModalOpen);
       return;
@@ -319,8 +319,6 @@ export default function PengaturanAkun() {
             </Link>
           </div>
         )}
-
-        {/* <Toaster /> */}
 
         <div className="flex flex-col lg:flex-row justify-start lg:mx-24 gap-12 ">
           {/* SIDE MENU */}
@@ -366,15 +364,15 @@ export default function PengaturanAkun() {
                             id="oldPassword"
                           />
                           {showOldPassword ? (
-                            <FiEye
-                              className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer"
+                            <FaEye
+                              className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                               onClick={() =>
                                 setShowOldPassword(!showOldPassword)
                               }
                             />
                           ) : (
-                            <FiEyeOff
-                              className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer"
+                            <FaEyeSlash
+                              className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                               onClick={() =>
                                 setShowOldPassword(!showOldPassword)
                               }
@@ -401,15 +399,15 @@ export default function PengaturanAkun() {
                             id="newPassword"
                           />
                           {showNewPassword ? (
-                            <FiEye
-                              className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer"
+                            <FaEye
+                              className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                               onClick={() =>
                                 setShowNewPassword(!showNewPassword)
                               }
                             />
                           ) : (
-                            <FiEyeOff
-                              className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer"
+                            <FaEyeSlash
+                              className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                               onClick={() =>
                                 setShowNewPassword(!showNewPassword)
                               }
@@ -420,13 +418,13 @@ export default function PengaturanAkun() {
                           <div className="flex items-center mt-1">
                             <div className="flex-shrink-0 w-[20px] h-[20px] mr-1">
                               {passwordStrength === "weak" && (
-                                <BiErrorCircle className="text-[#FF0000] w-[20px] h-[20px]" />
+                                <BiErrorCircle className="text-[#FF0000] w-[20px] h-[20px] flex-shrink-0" />
                               )}
                               {passwordStrength === "medium" && (
-                                <BiErrorCircle className="text-yellow-500 w-[20px] h-[20px]" />
+                                <BiErrorCircle className="text-yellow-500 w-[20px] h-[20px] flex-shrink-0" />
                               )}
                               {passwordStrength === "strong" && (
-                                <BiSolidCheckCircle className="text-[#28A745] w-[20px] h-[20px]" />
+                                <BiSolidCheckCircle className="text-[#28A745] w-[20px] h-[20px] flex-shrink-0" />
                               )}
                             </div>
                             <p className="text-xs text-[#8A8A8A]">
@@ -460,15 +458,15 @@ export default function PengaturanAkun() {
                             id="confirmPassword"
                           />
                           {showConfirmPassword ? (
-                            <FiEye
-                              className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer"
+                            <FaEye
+                              className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                               onClick={() =>
                                 setShowConfirmPassword(!showConfirmPassword)
                               }
                             />
                           ) : (
-                            <FiEyeOff
-                              className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer"
+                            <FaEyeSlash
+                              className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                               onClick={() =>
                                 setShowConfirmPassword(!showConfirmPassword)
                               }
@@ -477,7 +475,7 @@ export default function PengaturanAkun() {
                         </div>
                         {!passwordsMatch && confirmPassword && (
                           <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
-                            <RxCrossCircled className="w-[20px] h-[20px] mr-1" />
+                            <RxCrossCircled className="w-[20px] h-[20px] flex-shrink-0 mr-1" />
                             <p>
                               Konfirmasi kata sandi tidak cocok dengan kata
                               sandi baru!
@@ -486,7 +484,7 @@ export default function PengaturanAkun() {
                         )}
                         {passwordsMatch && confirmPassword && (
                           <div className="flex items-center text-xs mt-1 text-left">
-                            <BiSolidCheckCircle className="text-[#28A745] w-[20px] h-[20px] mr-1" />
+                            <BiSolidCheckCircle className="text-[#28A745] w-[20px] h-[20px] flex-shrink-0 mr-1" />
                             <p className="text-[#8A8A8A]">
                               Konfirmasi kata sandi sudah cocok dengan kata
                               sandi baru
@@ -502,7 +500,7 @@ export default function PengaturanAkun() {
                         onClick={handleSaveModal}
                         className="py-2 px-4 rounded-lg bg-[#2A629A] text-white hover:bg-[#003285]"
                       >
-                        <div className="flex items-center font-medium">
+                        <div className="text-sm md:text-base flex items-center font-medium">
                           Simpan Perubahan
                         </div>
                       </button>
@@ -541,7 +539,7 @@ export default function PengaturanAkun() {
                           </div>
 
                           <div className="p-4 md:p-5 space-y-4">
-                            <p className="text-base leading-relaxed text-gray-500">
+                            <p className="text-sm md:text-base leading-relaxed text-gray-500">
                               Apakah Anda yakin ingin menyimpan perubahan kata
                               sandi?
                             </p>
@@ -589,15 +587,15 @@ export default function PengaturanAkun() {
                             id="password1"
                           />
                           {showNewPassword ? (
-                            <FiEye
-                              className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer"
+                            <FaEye
+                              className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                               onClick={() =>
                                 setShowNewPassword(!showNewPassword)
                               }
                             />
                           ) : (
-                            <FiEyeOff
-                              className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer"
+                            <FaEyeSlash
+                              className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                               onClick={() =>
                                 setShowNewPassword(!showNewPassword)
                               }
@@ -608,13 +606,13 @@ export default function PengaturanAkun() {
                           <div className="flex items-center mt-1">
                             <div className="flex-shrink-0 w-[20px] h-[20px] mr-1">
                               {passwordStrength === "weak" && (
-                                <BiErrorCircle className="text-[#FF0000] w-[20px] h-[20px]" />
+                                <BiErrorCircle className="text-[#FF0000] w-[20px] h-[20px] flex-shrink-0" />
                               )}
                               {passwordStrength === "medium" && (
-                                <BiErrorCircle className="text-yellow-500 w-[20px] h-[20px]" />
+                                <BiErrorCircle className="text-yellow-500 w-[20px] h-[20px] flex-shrink-0" />
                               )}
                               {passwordStrength === "strong" && (
-                                <BiSolidCheckCircle className="text-[#28A745] w-[20px] h-[20px]" />
+                                <BiSolidCheckCircle className="text-[#28A745] w-[20px] h-[20px] flex-shrink-0" />
                               )}
                             </div>
                             <p className="text-xs">
@@ -648,15 +646,15 @@ export default function PengaturanAkun() {
                             id="password2"
                           />
                           {showConfirmPassword ? (
-                            <FiEye
-                              className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer"
+                            <FaEyeSlash
+                              className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                               onClick={() =>
                                 setShowConfirmPassword(!showConfirmPassword)
                               }
                             />
                           ) : (
-                            <FiEyeOff
-                              className="w-[17px] h-[17px] text-[#8A8A8A] cursor-pointer"
+                            <FaEyeSlash
+                              className="w-[17px] h-[17px] text-[#8A8A8A] hover:text-[#40A2E3] cursor-pointer flex-shrink-0 mr-1"
                               onClick={() =>
                                 setShowConfirmPassword(!showConfirmPassword)
                               }
@@ -665,7 +663,7 @@ export default function PengaturanAkun() {
                         </div>
                         {!newPasswordsMatch && password2 && (
                           <div className="flex items-center text-[#FF0000] text-xs mt-1 text-left">
-                            <RxCrossCircled className="w-[20px] h-[20px] mr-1" />
+                            <RxCrossCircled className="w-[20px] h-[20px] mr-1 flex-shrink-0" />
                             <p>
                               Konfirmasi kata sandi tidak cocok dengan kata
                               sandi baru!
@@ -674,7 +672,7 @@ export default function PengaturanAkun() {
                         )}
                         {newPasswordsMatch && password2 && (
                           <div className="flex items-center text-xs mt-1 text-left">
-                            <BiSolidCheckCircle className="text-[#28A745] w-[20px] h-[20px] mr-1" />
+                            <BiSolidCheckCircle className="text-[#28A745] w-[20px] h-[20px] mr-1 flex-shrink-0" />
                             <p>
                               Konfirmasi kata sandi sudah cocok dengan kata
                               sandi baru
@@ -728,7 +726,7 @@ export default function PengaturanAkun() {
                           </div>
 
                           <div className="p-4 md:p-5 space-y-4">
-                            <p className="text-base leading-relaxed text-gray-500">
+                            <p className="text-sm md:text-base leading-relaxed text-gray-500">
                               Apakah Anda sudah yakin dengan kata sandi Anda?
                             </p>
                           </div>

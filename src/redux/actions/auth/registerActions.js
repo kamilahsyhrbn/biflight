@@ -3,11 +3,13 @@ import toast from "react-hot-toast";
 import {
   clearError,
   setPasswordStrength,
+  setLoading,
 } from "../../reducers/auth/registerReducers";
 
 // Action untuk registrasi akun
 export const register =
   (email, name, password, phone_number, navigate) => async (dispatch) => {
+    dispatch(setLoading(true));
     try {
       const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
       if (!passwordRegex.test(password)) {
@@ -48,17 +50,15 @@ export const register =
             // Menampilkan toast sukses
             icon: null,
             style: {
-              background: "#28A745", // Background hijau
-              color: "#FFFFFF", // Teks putih
-              borderRadius: "12px",
-              fontSize: "14px", // Ukuran font
-              textAlign: "center", // Posisi teks di tengah
-              padding: "10px 20px", // Padding
-              width: "full",
+              background: "#28A745",
+              color: "#FFFFFF",
+              borderRadius: "10px",
+              fontSize: "14px",
+              textAlign: "center",
               maxWidth: "900px",
             },
-            position: "top-center", // Posisi toast
-            duration: 3000, // Durasi toast
+            position: "top-center",
+            duration: 3000,
           }
         );
       }
@@ -73,19 +73,19 @@ export const register =
             // Menampilkan toast error
             icon: null,
             style: {
-              background: "#FF0000", // Background merah
-              color: "#FFFFFF", // Teks putih
-              borderRadius: "12px", // Rounded-xl
-              fontSize: "14px", // Ukuran font
-              textAlign: "center", // Posisi teks di tengah
-              padding: "10px 20px", // Padding
-              width: "full",
+              background: "#FF0000",
+              color: "#FFFFFF",
+              borderRadius: "10px",
+              fontSize: "14px",
+              textAlign: "center",
               maxWidth: "900px",
             },
-            position: "top-center", // Posisi toast
-            duration: 3000, // Durasi toast
+            position: "top-center",
+            duration: 3000,
           }
         );
       }
+    } finally {
+      dispatch(setLoading(false));
     }
   };

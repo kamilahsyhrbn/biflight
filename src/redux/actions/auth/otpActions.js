@@ -1,9 +1,10 @@
 import axios from "axios";
-import { toast } from "react-hot-toast";
-import { clearError } from "../../reducers/auth/otpReducers";
+import toast from "react-hot-toast";
+import { setLoading, clearError } from "../../reducers/auth/otpReducers";
 
 // Action untuk verifikasi OTP
 export const verifyOtp = (navigate) => async (dispatch, getState) => {
+  dispatch(setLoading(true));
   const { otpInput } = getState().otp;
   const queryParams = new URLSearchParams(location.search);
   const email = queryParams.get("email");
@@ -28,20 +29,17 @@ export const verifyOtp = (navigate) => async (dispatch, getState) => {
       toast.success(
         "Verifikasi Email berhasil! Silakan masuk untuk melanjutkan.",
         {
-          // Menampilkan toast sukses
           icon: null,
           style: {
-            background: "#28A745", // Background hijau
-            color: "#FFFFFF", // Teks putih
-            borderRadius: "12px",
-            fontSize: "14px", // Ukuran font
-            textAlign: "center", // Posisi teks di tengah
-            padding: "10px 20px", // Padding
-            width: "full",
+            background: "#28A745",
+            color: "#FFFFFF",
+            borderRadius: "10px",
+            fontSize: "14px",
+            textAlign: "center",
             maxWidth: "900px",
           },
-          position: "top-center", // Posisi toast
-          duration: 3000, // Durasi toast
+          position: "top-center",
+          duration: 3000,
         }
       );
       setTimeout(() => {
@@ -57,21 +55,20 @@ export const verifyOtp = (navigate) => async (dispatch, getState) => {
     // );
     // dispatch(setError("Kode OTP salah! Silakan coba lagi."));
     toast.error("Kode OTP salah! Silakan coba lagi.", {
-      // Menampilkan toast error
       icon: null,
       style: {
-        background: "#FF0000", // Background merah
-        color: "#FFFFFF", // Teks putih
-        borderRadius: "12px", // Rounded-xl
-        fontSize: "14px", // Ukuran font
-        textAlign: "center", // Posisi teks di tengah
-        padding: "10px 20px", // Padding
-        width: "full",
+        background: "#FF0000",
+        color: "#FFFFFF",
+        borderRadius: "10px",
+        fontSize: "14px",
+        textAlign: "center",
         maxWidth: "900px",
       },
-      position: "top-center", // Posisi toast
-      duration: 3000, // Durasi toast
+      position: "top-center",
+      duration: 3000,
     });
+  } finally {
+    dispatch(setLoading(false));
   }
 };
 
@@ -102,17 +99,15 @@ export const resendOtp = () => async (dispatch) => {
       toast.success("Kode OTP baru telah dikirim ke Email Anda.", {
         icon: null,
         style: {
-          background: "#28A745", // Background hijau
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px",
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#28A745",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
     } else {
       throw new Error("Pengiriman ulang OTP gagal.");
@@ -126,17 +121,15 @@ export const resendOtp = () => async (dispatch) => {
     toast.error("Gagal mengirim ulang OTP! Silakan coba lagi.", {
       icon: null,
       style: {
-        background: "#FF0000", // Background merah
-        color: "#FFFFFF", // Teks putih
-        borderRadius: "12px",
-        fontSize: "14px", // Ukuran font
-        textAlign: "center", // Posisi teks di tengah
-        padding: "10px 20px", // Padding
-        width: "full",
+        background: "#FF0000",
+        color: "#FFFFFF",
+        borderRadius: "10px",
+        fontSize: "14px",
+        textAlign: "center",
         maxWidth: "900px",
       },
-      position: "top-center", // Posisi toast
-      duration: 3000, // Durasi toast
+      position: "top-center",
+      duration: 3000,
     });
   }
 };

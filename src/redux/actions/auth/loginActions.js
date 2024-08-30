@@ -4,6 +4,7 @@ import {
   setUser,
   setToken,
   clearError,
+  setLoading,
   setIsLoggedIn,
   setShowPassword,
 } from "../../reducers/auth/loginReducers";
@@ -13,6 +14,7 @@ import { setTransactions } from "../../reducers/flight/transactionReducers";
 
 // Action untuk login dengan Email
 export const login = (email, password, navigate) => async (dispatch) => {
+  dispatch(setLoading(true));
   try {
     const responseLogin = await axios.post(
       `${import.meta.env.VITE_REACT_APP_SERVER}/users/login`,
@@ -39,16 +41,15 @@ export const login = (email, password, navigate) => async (dispatch) => {
         //Menampilkan toast sukses
         icon: null,
         style: {
-          background: "#28A745", // Background hijau
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px",
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
+          background: "#28A745",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
       setTimeout(() => {
         navigate("/");
@@ -61,17 +62,15 @@ export const login = (email, password, navigate) => async (dispatch) => {
         // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
     } else if (error?.response?.data?.message === "Password salah") {
       toast.error(
@@ -80,17 +79,15 @@ export const login = (email, password, navigate) => async (dispatch) => {
           // Menampilkan toast error
           icon: null,
           style: {
-            background: "#FF0000", // Background merah
-            color: "#FFFFFF", // Teks putih
-            borderRadius: "12px", // Rounded-xl
-            fontSize: "14px", // Ukuran font
-            textAlign: "center", // Posisi teks di tengah
-            padding: "10px 20px", // Padding
-            width: "full",
+            background: "#FF0000",
+            color: "#FFFFFF",
+            borderRadius: "10px",
+            fontSize: "14px",
+            textAlign: "center",
             maxWidth: "900px",
           },
-          position: "top-center", // Posisi toast
-          duration: 3000, // Durasi toast
+          position: "top-center",
+          duration: 3000,
         }
       );
     } else {
@@ -99,19 +96,19 @@ export const login = (email, password, navigate) => async (dispatch) => {
         // Menampilkan toast error
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px", // Rounded-xl
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#FF0000",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
     }
+  } finally {
+    dispatch(setLoading(false));
   }
 };
 
@@ -141,17 +138,15 @@ export const loginWithGoogle = (accessToken, navigate) => async (dispatch) => {
         //Menampilkan toast sukses
         icon: null,
         style: {
-          background: "#28A745", // Background hijau
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px",
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#28A745",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        // duration: 2500, // Durasi toast
+        position: "top-center",
+        // duration: 3000,
       }
     );
     setTimeout(() => {
@@ -161,18 +156,17 @@ export const loginWithGoogle = (accessToken, navigate) => async (dispatch) => {
   } catch (error) {
     // console.log(error); // Menampilkan error di konsol
     toast.error("Gagal masuk dengan akun Google. Silakan coba lagi.", {
+      icon: null,
       style: {
-        background: "#FF0000", // Background merah
-        color: "#FFFFFF", // Teks putih
-        borderRadius: "12px", // Ukuran font
-        fontSize: "14px", // Ukuran font
-        textAlign: "center", // Posisi teks di tengah
-        padding: "10px 20px", // Padding
-        width: "full",
+        background: "#FF0000",
+        color: "#FFFFFF",
+        borderRadius: "10px",
+        fontSize: "14px",
+        textAlign: "center",
         maxWidth: "900px",
       },
-      position: "top-center", // Posisi toast
-      duration: 3000, // Durasi toast
+      position: "top-center",
+      duration: 3000,
     });
   }
 };
@@ -190,16 +184,15 @@ export const logout = (navigate) => async (dispatch) => {
         // Menampilkan toast sukses
         icon: null,
         style: {
-          background: "#28A745", // Background hijau
-          color: "#FFFFFF", // Teks putih
-          borderRadius: "12px",
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          background: "#28A745",
+          color: "#FFFFFF",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
+          maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 1500, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
     }
   } catch (error) {
@@ -216,17 +209,15 @@ export const checkToken = (navigate) => (dispatch, getState) => {
       toast("Maaf, Anda harus masuk terlebih dahulu!", {
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
+          background: "#FF0000",
           color: "#FFFFFF",
-          borderRadius: "12px",
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
     }, 10);
   }
@@ -240,17 +231,15 @@ export const checkIsLoggedIn = (navigate) => (dispatch, getState) => {
       toast("Maaf, Anda sudah masuk!", {
         icon: null,
         style: {
-          background: "#FF0000", // Background merah
+          background: "#FF0000",
           color: "#FFFFFF",
-          borderRadius: "12px",
-          fontSize: "14px", // Ukuran font
-          textAlign: "center", // Posisi teks di tengah
-          padding: "10px 20px", // Padding
-          width: "full",
+          borderRadius: "10px",
+          fontSize: "14px",
+          textAlign: "center",
           maxWidth: "900px",
         },
-        position: "top-center", // Posisi toast
-        duration: 3000, // Durasi toast
+        position: "top-center",
+        duration: 3000,
       });
     }, 1);
   }

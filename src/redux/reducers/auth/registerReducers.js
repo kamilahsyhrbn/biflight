@@ -14,6 +14,7 @@ const initialState = {
   showConfirmPassword: null,
   passwordStrength: "",
   error: null,
+  loading: false,
 };
 
 const registerSlice = createSlice({
@@ -59,6 +60,9 @@ const registerSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
   },
 });
 
@@ -75,6 +79,7 @@ export const {
   setShowConfirmPassword,
   setError,
   clearError,
+  setLoading,
 } = registerSlice.actions;
 
 export default registerSlice.reducer;
